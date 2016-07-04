@@ -1,0 +1,5 @@
+# gulp.gitignore - version 1.1.0 2016-06-24
+#
+# Drupal
+# Node_Modules
+/node_modules/

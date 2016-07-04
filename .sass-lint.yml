@@ -1,0 +1,515 @@
+##################################################
+## SASS Lint - version 1.0.1 2016-06-24 ##########
+##################################################
+##################################################
+## Configuration #################################
+##################################################
+## Setting rule to:
+##    0 - turns the rule off
+##    1 - Sets rule as a warning
+##    2 - Sets rule to error
+##------------------------------------------------
+## Create Array:
+##      -
+##        optionwitharray:
+##            - arrayitem1
+##            - arrayitem2
+##################################################
+
+# Linter Options
+options:
+  # Merge default rules
+  merge-default-rules: false
+  cache-config: true
+  formatter: stylish
+  output-file: ''
+
+# File Options
+files:
+  ignore:
+    - 'sass/vendor/**/*.*'
+
+# Rule Configuration
+rules:
+#---------------------------------------------------------------
+  bem-depth:
+  # Options:
+  #   Max-depth: number
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/bem-depth.md
+    - 0
+    -
+      max-depth: 1
+#---------------------------------------------------------------
+  border-zero:
+  # Options:
+  #   convention: '0' / 'none'
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/border-zero.md
+    - 0
+    -
+      convention: '0'
+#---------------------------------------------------------------
+  brace-style:
+  # Options:
+  #   style: '1tbs' / 'stroustrup' / 'allman'
+  #   allow-single-line: true / false
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/brace-style.md
+    - 0
+    -
+      style: 'stroustrup'
+      allow-single-line: false
+#---------------------------------------------------------------
+  class-name-format:
+  # Options:
+  #   allow-leading-underscore: true / false
+  #   convention: camelcase, snakecase, strictbem, hyphenatedbem, expression (e.g. ^[_A-Z]+$)
+  #   convention-explanation: String with custom convention explatnation
+  #   ignore: Array of files to ignore
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/class-name-format.md
+    - 0
+    -
+      allow-leading-underscore: true
+      convention: hyphenatedlowercase
+#---------------------------------------------------------------
+  clean-import-paths:
+  # Options:
+  #   leading-underscore: true / false
+  #   filename-extension: true / false
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/clean-import-paths.md
+    - 0
+    -
+      leading-underscore: false
+      filename-extension: false
+#---------------------------------------------------------------
+  empty-args:
+  # Options:
+  #   include: true / false
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/empty-args.md
+    - 0
+    -
+      include: true
+#---------------------------------------------------------------
+  empty-line-between-blocks:
+  # Options:
+  #   include: true / false
+  #   allow-single-line-rulesets: true / false
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/empty-line-between-blocks.md
+    - 0
+    -
+      include: false
+      allow-single-line-rulesets: false
+#---------------------------------------------------------------
+  extends-before-declarations:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/extends-before-declarations.md
+    - 0
+#---------------------------------------------------------------
+  extends-before-mixins:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/extends-before-mixins.md
+    - 0
+#---------------------------------------------------------------
+  final-newline:
+  # Options:
+  #   include: true / false
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/final-newline.md
+    - 0
+    -
+      include: false
+#---------------------------------------------------------------
+  force-attribute-nesting:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/force-attribute-nesting.md
+    - 0
+#---------------------------------------------------------------
+  force-element-nesting:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/force-element-nesting.md
+    - 0
+#---------------------------------------------------------------
+  force-pseudo-nesting:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/force-pseudo-nesting.md
+    - 0
+#---------------------------------------------------------------
+  function-name-format:
+  # Options:
+  #   allow-leading-underscore: true / false
+  #   convention: camelcase, snakecase, strictbem, hyphenatedbem, expression (e.g. ^[_A-Z]+$)
+  #   convention-explanation: String with custom convention explatnation
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/function-name-format.md
+    - 0
+    -
+      allow-leading-underscore: true
+      convention: hyphenatedlowercase
+#---------------------------------------------------------------
+  hex-length:
+  # Options:
+  #   style: short / long
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/hex-length.md
+    - 0
+    -
+      style: long
+#---------------------------------------------------------------
+  hex-notation:
+  # Options:
+  #   style: lowercase / uppercase
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/hex-notation.md
+    - 0
+    -
+      style: lowercase
+#---------------------------------------------------------------
+  id-name-format:
+  # Options:
+  #   allow-leading-underscore: true / false
+  #   convention: camelcase, snakecase, strictbem, hyphenatedbem, expression (e.g. ^[_A-Z]+$)
+  #   convention-explanation: String with custom convention explatnation
+  #   ignore: Array of selectors to ignore
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/id-name-format.md
+    - 0
+    -
+      allow-leading-underscore: true
+      convention: hyphenatedlowercase
+#---------------------------------------------------------------
+  indentation:
+  # Options:
+  #   size: number / 'tab'
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/indentation.md
+    - 0
+    -
+      size: 2
+#---------------------------------------------------------------
+  leading-zero:
+  # Options:
+  #   include: true / false
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/leading-zero.md
+    - 0
+    -
+      include: true
+#---------------------------------------------------------------
+  mixin-name-format:
+  # Options:
+  #   allow-leading-underscore: true / false
+  #   convention: camelcase, snakecase, strictbem, hyphenatedbem, expression (e.g. ^[_A-Z]+$)
+  #   convention-explanation: String with custom convention explatnation
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/mixin-name-format.md
+    - 0
+    -
+      allow-leading-underscore: true
+      convention: hyphenatedlowercase
+#---------------------------------------------------------------
+  mixins-before-declarations:
+  # Options:
+  #   exclude: ['ARRAY']
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/mixins-before-declarations.md
+    - 0
+    -
+      exclude: ['']
+#---------------------------------------------------------------
+  nesting-depth:
+  # Options:
+  #   max-depth: number
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/nesting-depth.md
+    - 0
+    -
+      max-depth: 2
+#---------------------------------------------------------------
+  no-attribute-selectors:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-attribute-selectors.md
+    - 0
+#---------------------------------------------------------------
+  no-color-keywords:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-color-keywords.md
+    - 0
+#---------------------------------------------------------------
+  no-color-literals:
+  # Options:
+  #   allow-map-identifiers: true / false
+  #   allow-rgba: true / false
+  #   allow-variable-identifiers: true / false
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-color-literals.md
+    - 0
+    -
+      allow-map-identifiers: true
+      allow-rgba: true
+      allow-variable-identifiers: true
+#---------------------------------------------------------------
+  no-combinators:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-combinators.md
+    - 0
+#---------------------------------------------------------------
+  no-css-comments:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-combinators.md
+    - 0
+#---------------------------------------------------------------
+  no-debug:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-debug.md
+    - 0
+#---------------------------------------------------------------
+  no-disallowed-properties:
+  # Options:
+  #   properties: ['ARRAY']
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-disallowed-properties.md
+    - 0
+    -
+      properties:
+        - ''
+#---------------------------------------------------------------
+  no-duplicate-properties:
+  # Options:
+  #   exclude: ['ARRAY']
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-duplicate-properties.md
+    - 0
+    -
+      exclude:
+        -
+#---------------------------------------------------------------
+  no-empty-rulesets:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-empty-rulesets.md
+    - 0
+#---------------------------------------------------------------
+  no-extends:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-extends.md
+    - 0
+#---------------------------------------------------------------
+  no-ids:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-ids.md
+    - 0
+#---------------------------------------------------------------
+  no-important:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-important.md
+    - 0
+#---------------------------------------------------------------
+  no-invalid-hex:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-invalid-hex.md
+    - 0
+#---------------------------------------------------------------
+  no-mergeable-selectors:
+  # Options:
+  #   whitelist: ['ARRAY']
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-mergeable-selectors.md
+    - 0
+    -
+      whitelist:
+        -
+#---------------------------------------------------------------
+  no-misspelled-properties:
+  # Options:
+  #   extra-properties: ['ARRAY']
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-misspelled-properties.md
+    - 0
+    -
+     extra-properties:
+        - ''
+#---------------------------------------------------------------
+  no-qualifying-elements:
+  # Options:
+  #   allow-element-with-attribute: true / false
+  #   allow-element-with-class: true / false
+  #   allow-element-with-id: true / false
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-qualifying-elements.md
+    - 0
+    -
+      allow-element-with-attribute: false
+      allow-element-with-class: true
+      allow-element-with-id: true
+#---------------------------------------------------------------
+  no-trailing-whitespace:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-trailing-whitespace.md
+    - 0
+#---------------------------------------------------------------
+  no-trailing-zero:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-trailing-zero.md
+    - 0
+#---------------------------------------------------------------
+  no-transition-all:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-transition-all.md
+    - 0
+#---------------------------------------------------------------
+  no-universal-selectors:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-universal-selectors.md
+    - 0
+#---------------------------------------------------------------
+  no-url-protocols:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-url-protocols.md
+    - 0
+#---------------------------------------------------------------
+  no-vendor-prefixes:
+  # Options:
+  #   additional-identifier: ['ARRAY']
+  #   excluded-identifiers: ['ARRAY'] (e.g. 'webkit','moz')
+  #   ignore-non-standard: true / false
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-vendor-prefixes.md
+    - 0
+    -
+      additional-identifier:
+        -
+      excluded-identifiers:
+        -
+      ignore-non-standard: true
+#---------------------------------------------------------------
+  no-warn:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/no-warn.md
+    - 0
+#---------------------------------------------------------------
+  one-declaration-per-line:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/one-declaration-per-line.md
+    - 0
+#---------------------------------------------------------------
+  placeholder-in-extend:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/placeholder-in-extend.md
+    - 0
+#---------------------------------------------------------------
+  placeholder-name-format:
+  # Options:
+  #   allow-leading-underscore: true / false
+  #   convention: camelcase, snakecase, strictbem, hyphenatedbem, expression (e.g. ^[_A-Z]+$)
+  #   convention-explanation: String with custom convention explatnation
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/placeholder-name-format.md
+    - 0
+    -
+      allow-leading-underscore: true
+      convention: hyphenatedlowercase
+#---------------------------------------------------------------
+  property-sort-order:
+  # Options:
+  #   order: 'alphabetical', 'concentric', 'recess', 'smacss'
+  #   ignore-custom-properties: true / false
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/property-sort-order.md
+    - 0
+    -
+      order: 'alphabetical'
+      ignore-custom-properties: false
+#---------------------------------------------------------------
+  property-units:
+  # Options:
+  #   global: ['em', 'px', 'rem', etc]  - [] is all allowed
+  #   per-property: { width: ['rem', 'px', etc], height: ['rem', 'px', etc], }
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/property-units.md
+    - 0
+    -
+      global: []
+      per-property: {}
+#---------------------------------------------------------------
+  pseudo-element:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/pseudo-element.md
+    - 0
+#---------------------------------------------------------------
+  quotes:
+  # Options;
+  #   style: single/double
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/quotes.md
+    - 0
+    -
+      style: single
+#---------------------------------------------------------------
+  shorthand-values:
+  # Options:
+  #   allowed-shorthands: [array of allowed shorthand lengths]
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/shorthand-values.md
+    - 0
+    -
+      allowed-shorthands: [1, 2, 3]
+#---------------------------------------------------------------
+  single-line-per-selector:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/single-line-per-selector.md
+    - 0
+#---------------------------------------------------------------
+  space-after-bang:
+  # Options:
+  #   include: true / false
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/space-after-bang.md
+    - 0
+    -
+      include: false
+#---------------------------------------------------------------
+  space-after-colon:
+  # Options:
+  #   include: true / false
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/space-after-colon.md
+    - 0
+    -
+      include: true
+#---------------------------------------------------------------
+  space-after-comma:
+  # Options:
+  #   include: true / false
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/space-after-comma.md
+    - 0
+    -
+      include: true
+#---------------------------------------------------------------
+  space-around-operator:
+  # Options:
+  #   include: true / false
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/space-around-operator.md
+    - 0
+    -
+      include: true
+#---------------------------------------------------------------
+  space-before-bang:
+  # Options:
+  #   include: true / false
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/space-before-bang.md
+    - 0
+    -
+      include: true
+#---------------------------------------------------------------
+  space-before-brace:
+  # Options:
+  #   include: true / false
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/space-before-brace.md
+    - 0
+    -
+      include: true
+#---------------------------------------------------------------
+  space-before-colon:
+  # Options:
+  #   include: true / false
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/space-before-colon.md
+    - 0
+    -
+      include: false
+#---------------------------------------------------------------
+  space-between-parens:
+  # Options:
+  #   include: true / false
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/space-between-parens.md
+    - 0
+    -
+      include: false
+#---------------------------------------------------------------
+  trailing-semicolon:
+  # Options:
+  #   include: true / false
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/trailing-semicolon.md
+    - 0
+    -
+      include: false
+#---------------------------------------------------------------
+  url-quotes:
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/url-quotes.md
+    - 0
+#---------------------------------------------------------------
+  variable-for-property:
+  # Options:
+  #   properties: ['ARRAY']
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/variable-for-property.md
+    - 0
+    -
+      properties:
+        -
+#---------------------------------------------------------------
+  variable-name-format:
+  # Options:
+  #   allow-leading-underscore: true / false
+  #   convention: camelcase, snakecase, strictbem, hyphenatedbem, expression (e.g. ^[_A-Z]+$)
+  #   convention-explanation: String with custom convention explatnation
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/variable-name-format.md
+    - 0
+    -
+      allow-leading-underscore: true
+      convention: hyphenatedlowercase
+#---------------------------------------------------------------
+  zero-unit:
+  # Options:
+  #   include: true / false
+  # https://github.com/sasstools/sass-lint/blob/master/docs/rules/zero-unit.md
+    - 0
+    -
+      include: false
+#---------------------------------------------------------------

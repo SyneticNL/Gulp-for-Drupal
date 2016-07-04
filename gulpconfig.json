@@ -1,0 +1,161 @@
+{
+  "version": "2.4.0",
+  "versiondate": "2016-07-01",
+  "gulpfileversion": "2.5.0",
+  "general" : {
+    "projectpath" : "example.dev/",
+    "logopath" : "images/logos/logo.png",
+    "themeroot" : "./"
+  },
+  "locations" : {
+    "src" : {
+      "scsspath" : "scss/",
+      "jspath" : "js/",
+      "imagespath" : "images/0_src",
+      "fontspath" : "fonts/",
+      "iconspath" : "icons/",
+      "templatepath" : "/template/",
+      "functionspath" : "/functions/"
+    },
+    "dist" : {
+      "csspath" : "css/",
+      "jspath" : "js/",
+      "imagespath" : "images/"
+    }
+  },
+  "css" : {
+    "mainscssfile" : "styles",
+    "browsersupport": ["last 25 versions"],
+    "minify" : true,
+    "gzip" :  true,
+    "compass" :  false,
+    "specificitygraphlocation" : "specificity-graph",
+    "sourcemaps" : {
+      "sourcemaps" :  true,
+      "location" : "/",
+      "loadmaps" : false,
+      "identitymap" : false,
+      "debug" : false,
+      "addcomment" : true,
+      "includecontent" : true,
+      "charset" : "utf8",
+      "destpath" : "",
+      "sourcemappingurlprefix" : ""
+    },
+    "bootstrap" : {
+      "path" : "scss/boostrap/"
+    },
+    "linter" : {
+      "config" : ".sass-lint.yml"
+    },
+    "parker" : {
+      "log" : true,
+      "logname" : "parker_css_report"
+    }
+  },
+  "js" : {
+    "jslibspath" : "js/libs/",
+    "jspluginspath" : "js/plugins/",
+    "eslint" : {
+      "configlocation" : ".eslintrc"
+    },
+    "sourcemaps" : {
+      "sourcemaps" : true,
+      "location" : "",
+      "loadmaps" : false,
+      "identitymap" : false,
+      "debug" : false,
+      "addcomment" : true,
+      "includecontent" : true,
+      "charset" : "utf8",
+      "destpath" : "",
+      "sourcemappingurlprefix" : ""
+    },
+    "minify" : true,
+    "gzip" : true,
+    "bootstrap" : {
+      "path": "js/bootstrap/src/",
+      "alertjs": true,
+      "buttonjs": true,
+      "carouseljs": true,
+      "collapsejs": true,
+      "dropdownjs": true,
+      "modaljs": true,
+      "popoverjs": true,
+      "scrollspyjs": true,
+      "tabjs": true,
+      "tooltipjs": true
+    },
+    "modernizr" : {
+      "alwaysinclude" : ["setClasses","addTest","html5printshiv","testProp","fnBind"],
+      "alwaysexclude" : [""]
+    }
+  },
+  "images" : {
+    "jpgprogressive" : true,
+    "pngoptimizationlevel" : 7,
+    "gifinterlaced" : true
+  },
+  "libraries" : {
+    "bootstrap" : true,
+    "bootstrapversion" : "@4.0.0-alpha.2",
+    "fontawesome" : false
+  },
+  "taskconfig" : {
+    "watchtasks" : ["jslibs", "jslint"],
+    "watch" : {
+      "lintscss" : true,
+      "images" : true,
+      "javascript" : true
+    },
+    "cacheclear" : {
+      "twig" : true,
+      "yaml" : true
+    }
+  },
+  "browsersync" : {
+    "open" : false,
+    "loglevel" : "info",
+    "logfilechanges" : false,
+    "watch" : {
+      "icons" : true,
+      "fonts" : true,
+      "images" : true,
+      "javascript" : true,
+      "phpfunctions" : true,
+      "template" : true,
+      "yaml" : true
+    }
+  },
+  "share" : {
+    "open" : false,
+    "clicks" : false,
+    "forms" : false,
+    "scroll" : false,
+    "port" : 3333
+  },
+  "testing" : {
+    "site" : "http://www.synetic.nl",
+    "threshold" : 80,
+    "mobilelocale" : "en_GB"
+  },
+  "quality" : {
+    "maxsize" : {
+      "maxsize" : "30000",
+      "css" : "10000",
+      "js" : "10000",
+      "images" : "15000"
+    }
+  },
+  "accessibility" : {
+    "pa11y" : {
+      "standard" : "WCAG2AA",
+      "failonerror" : true,
+      "showfailedonly" : true,
+      "reporter" : "console",
+      "htmlcs" : "http://squizlabs.github.io/HTML_CodeSniffer/build/HTMLCS.js",
+      "config" : null,
+      "timeout" : 30000
+    }
+  }
+}
