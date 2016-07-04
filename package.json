@@ -1,8 +1,8 @@
 {
-  "name": "Gulp for Drupal",
+  "name": "Gulp-for-Drupal",
   "installationdate" : "2016-07-04",
-  "version": "2.5.0",
-  "versiondate": "2016-07-01",
+  "version": "2.5.1",
+  "versiondate": "2016-07-04",
   "description": "Project with Gulp",
   "main": "gulpfile.js",
   "scripts": {
@@ -14,7 +14,11 @@
     "Drupal7"
   ],
   "author": "Synetic",
-  "license": "ISC",
+  "license": "GNU",
+  "repository" : {
+    "type" : "git",
+    "url" : "https://github.com/SyneticNL/Gulp-for-Drupal.git"
+  },
   "devDependencies": {
     "browser-sync": "^2.12.8",
     "cli-table": "^0.3.1",

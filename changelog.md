@@ -11,6 +11,9 @@ Included Gulp files:
     - .gitignore        (1.1.0) (2016-06-24)
     - README.md         (1.2.2) (2016-07-04)
 
+ 2016-07-04 - package.json 2.5.1
+    - Fixed wrong package.json name and changed license and repository to Github settings
+ 
  2016-07-04 - Gulpfile.js 2.5.1, gulpconfig.json 2.4.1, README.md 1.2.2
     - Changed naming from "Synetic Gulp" to "Gulp for Drupal"
  
