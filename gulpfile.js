@@ -1,5 +1,5 @@
 /*==========================================================================
- Synetic Gulpfile.js version 2.5.0 2016-07-01
+ Gulp for Drupal Gulpfile.js version 2.5.1 2016-07-04
  ===========================================================================*/
 var gulp = require('gulp-help')(require('gulp'));
 var config = require('./gulpconfig.json');
@@ -20,7 +20,7 @@ var gulpif = require('gulp-if'); //conditional tasks
 var addsrc = require('gulp-add-src'); //add files midstream
 var gulpSequence = require('gulp-sequence'); //Run tasks in set sequence
 var psi = require('psi'); //Run pagespeed insight on live site
-var shell = require('gulp-shell') //Run Shellcommands (used for pagespeedsinsight)
+var shell = require('gulp-shell'); //Run Shellcommands (used for pagespeedsinsight)
 var imagemin = require('gulp-imagemin'); //Optimize images
 var pngquant = require('imagemin-pngquant'); //Imagemin plugin to optimize PNG files with the pngquant library
 var bytediff = require('gulp-bytediff'); //Size difference before and after alteration

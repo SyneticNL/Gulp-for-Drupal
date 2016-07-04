@@ -1,4 +1,4 @@
-#Synetic Drupal Gulp Workflow
+#Gulp for Drupal
 
 ##Features
 
@@ -158,5 +158,5 @@ The gulp setup is made to be fully configurable by changing the settings in `gul
 ###.sass-lint.yml
 The SASS / SCSS linter is configurable from a separate file, all the settings are described inside `.sass-lint.yml`.
 
-
-_README.md updated on 2016-07-01 version 1.2.1_
+_Created by Synetic_
+_README.md updated on 2016-07-01 version 1.2.2_

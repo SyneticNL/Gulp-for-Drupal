@@ -1,7 +1,7 @@
 {
-  "version": "2.4.0",
-  "versiondate": "2016-07-01",
-  "gulpfileversion": "2.5.0",
+  "version": "2.4.1",
+  "versiondate": "2016-07-04",
+  "gulpfileversion": "2.5.1",
   "general" : {
     "projectpath" : "example.dev/",
     "logopath" : "images/logos/logo.png",

@@ -1,16 +1,19 @@
 /*==========================================================================
- Synetic Gulp Changelog version 1.6.0 2016-07-01
+ Gulp for Drupal Changelog version 1.6.1 2016-07-04
  ===========================================================================*/
 Included Gulp files:
-    - gulpfile.js       (2.5.0) (2016-07-01)
-    - gulpconfig.json   (2.4.0) (2016-07-01)
+    - gulpfile.js       (2.5.1) (2016-07-04)
+    - gulpconfig.json   (2.4.1) (2016-07-04)
     - package.json      (2.5.0) (2016-07-01)
     - .npmrc            (1.0.0) (2016-03-08)
     - .sass-lint.yml    (1.0.1) (2016-06-24)
     - .eslintrc         (1.1.0) (2016-07-01)
     - .gitignore        (1.1.0) (2016-06-24)
-    - README.md         (1.2.0) (2016-07-01)
+    - README.md         (1.2.2) (2016-07-04)
 
+ 2016-07-04 - Gulpfile.js 2.5.1, gulpconfig.json 2.4.1, README.md 1.2.2
+    - Changed naming from "Synetic Gulp" to "Gulp for Drupal"
+ 
  2016-07-01 - .eslintrc 1.1.0, README.md 1.2.1
     - Switched from .eslintrc.yml to .eslintrc ESlint configuration file.
     - Use Drupal ESlint settings

@@ -3,3 +3,4 @@
 # Drupal
 # Node_Modules
 /node_modules/
+.idea/
