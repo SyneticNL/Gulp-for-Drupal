@@ -1,5 +1,5 @@
 /*==========================================================================
- Gulp for Drupal Gulpfile.js version 2.5.1 2016-07-04
+ Gulp for Drupal Gulpfile.js version 2.6.0 2016-08-15
  ===========================================================================*/
 var gulp = require('gulp-help')(require('gulp'));
 var config = require('./gulpconfig.json');
@@ -81,6 +81,7 @@ var css_sourcemaps_charset = config.css.sourcemaps.charset; //Sets the charset f
 var css_sourcemaps_destpath = config.css.sourcemaps.destpath; //Set the destination path (the same you pass to gulp.dest()).
 var css_sourcemaps_sourcemappingurlprefix = config.css.sourcemaps.sourcemappingurlprefix; //Specify a prefix to be prepended onto the source map URL when writing external source maps.
 var cssgzip = config.css.gzip; //Want to GZip your CSS files?
+var css_exclude = config.css.exclude; //An array of SCSS files to exclude from compiling, example: bootstrap-grid.scss
 var csscompass = config.css.compass; //Allow use of compass functions?
 var cssspecificitygraphlocation = config.css.specificitygraphlocation; //Where to put Specificity Graph (if empty the folder will be: specificity-graph)
 var parkerlog = config.css.parker.log; //Want to log the parker results in a external file
@@ -195,7 +196,9 @@ gulp.task('sass', 'Compile Sass, create sourcemaps, autoprefix and minify.',[], 
     this.emit('end');
   };
   var filter_sourcemaps = filter(['**/*','!**/*.map'], {restore: true});
+  var filter_exclude = filter(css_exclude, {restore: false});
   return gulp.src(scsspathsrc + '/' + '**/*.s+(a|c)ss')
+    .pipe(filter_exclude)
     .pipe(plumber({errorHandler: onError}))
     .pipe(gulpif(css_sourcemaps == true,sourcemaps.init({
       loadMaps: css_sourcemaps_loadmaps,

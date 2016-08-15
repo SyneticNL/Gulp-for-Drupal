@@ -1,7 +1,7 @@
 {
-  "version": "2.4.1",
-  "versiondate": "2016-07-04",
-  "gulpfileversion": "2.5.1",
+  "version": "2.5.0",
+  "versiondate": "2016-08-15",
+  "gulpfileversion": "2.6.0",
   "general" : {
     "projectpath" : "example.dev/",
     "logopath" : "images/logos/logo.png",
@@ -29,6 +29,9 @@
     "minify" : true,
     "gzip" :  true,
     "compass" :  false,
+    "exclude" : [
+      "**/*"
+    ],
     "specificitygraphlocation" : "specificity-graph",
     "sourcemaps" : {
       "sourcemaps" :  true,
