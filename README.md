@@ -71,7 +71,7 @@ The gulp setup is made to be fully configurable by changing the settings in `gul
 |               |minify                     | Want to minify your CSS?                                                                                                                 |
 |               |gzip                       | Compress your CSS files using Gzip.                                                                                                      |
 |               |compass                    | Allow use of compass functions?                                                                                                          |
-|               |exclude                    | Exclude SCSS / SASS files from stream, ATENTION: always have "**/*" as a first item in your array                                        |
+|               |exclude                    | Exclude SCSS / SASS files from stream, ATTENTION: always have "**/*" as a first item in your array                                        |
 |               |specificitygraphlocation   | Where to put Specificity Graph (if empty the folder will be: specificity-graph)                                                          |
 |_eslint_       |configlocation             | path to your ESlint configuration file, default we supply a yml file but ESlint supports various formats                                 |
 |_sourcemaps_   |sourcemaps                 | Want CSS sourcemaps?                                                                                                                     |      
@@ -160,4 +160,4 @@ The gulp setup is made to be fully configurable by changing the settings in `gul
 The SASS / SCSS linter is configurable from a separate file, all the settings are described inside `.sass-lint.yml`.
 
 _Created by Synetic_
-_README.md updated on 2016-08-15 version 1.3.0_
+_README.md updated on 2016-08-15 version 1.3.1_

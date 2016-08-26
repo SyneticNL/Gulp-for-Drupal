@@ -1,6 +1,6 @@
 {
-  "version": "2.5.0",
-  "versiondate": "2016-08-15",
+  "version": "2.6.0",
+  "versiondate": "2016-08-26",
   "gulpfileversion": "2.6.0",
   "general" : {
     "projectpath" : "example.dev/",
@@ -26,8 +26,8 @@
   "css" : {
     "mainscssfile" : "styles",
     "browsersupport": ["last 25 versions"],
-    "minify" : true,
-    "gzip" :  true,
+    "minify" : false,
+    "gzip" :  false,
     "compass" :  false,
     "exclude" : [
       "**/*"
@@ -74,20 +74,20 @@
       "destpath" : "",
       "sourcemappingurlprefix" : ""
     },
-    "minify" : true,
-    "gzip" : true,
+    "minify" : false,
+    "gzip" : false,
     "bootstrap" : {
       "path": "js/bootstrap/src/",
-      "alertjs": true,
-      "buttonjs": true,
-      "carouseljs": true,
-      "collapsejs": true,
-      "dropdownjs": true,
-      "modaljs": true,
-      "popoverjs": true,
-      "scrollspyjs": true,
-      "tabjs": true,
-      "tooltipjs": true
+      "alertjs": false,
+      "buttonjs": false,
+      "carouseljs": false,
+      "collapsejs": false,
+      "dropdownjs": false,
+      "modaljs": false,
+      "popoverjs": false,
+      "scrollspyjs": false,
+      "tabjs": false,
+      "tooltipjs": false
     },
     "modernizr" : {
       "alwaysinclude" : ["setClasses","addTest","html5printshiv","testProp","fnBind"],
@@ -112,8 +112,8 @@
       "javascript" : true
     },
     "cacheclear" : {
-      "twig" : true,
-      "yaml" : true
+      "twig" : false,
+      "yaml" : false
     }
   },
   "browsersync" : {

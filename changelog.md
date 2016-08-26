@@ -1,15 +1,19 @@
 /*==========================================================================
- Gulp for Drupal Changelog version 1.7.0 2016-08-15
+ Gulp for Drupal Changelog version 1.8.0 2016-08-26
  ===========================================================================*/
 Included Gulp files:
     - gulpfile.js       (2.6.0) (2016-08-15)
-    - gulpconfig.json   (2.5.0) (2016-08-15)
+    - gulpconfig.json   (2.6.0) (2016-08-26)
     - package.json      (2.5.0) (2016-07-01)
     - .npmrc            (1.0.0) (2016-03-08)
     - .sass-lint.yml    (1.0.1) (2016-06-24)
     - .eslintrc         (1.1.0) (2016-07-01)
     - .gitignore        (1.1.0) (2016-06-24)
-    - README.md         (1.3.0) (2016-08-15)
+    - README.md         (1.3.1) (2016-08-26)
+
+ 2016-08-26 - gulpconfig.json 2.6.0, README.md 1.3.1
+    - Changed default settings for Gzip, minify, cacheclear and bootstrapjs to false
+    - Fixed typo
 
  2016-08-15 - gulpfile 2.6.0, gulpconfig 2.5.0
     - Added ability to exclude SCSS files from compiling
