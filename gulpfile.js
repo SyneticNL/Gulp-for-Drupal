@@ -1,5 +1,5 @@
 /*==========================================================================
- Gulp for Drupal Gulpfile.js version 2.6.0 2016-08-15
+ Gulp for Drupal Gulpfile.js version 2.7.0 2016-08-29
  ===========================================================================*/
 var gulp = require('gulp-help')(require('gulp'));
 var config = require('./gulpconfig.json');
@@ -43,6 +43,9 @@ var parker = require('gulp-parker'); //Parker stylesheet analysis
 var UglifyJS = require('uglify-js'); //Library to minify JavaScript files
 var eslint = require('gulp-eslint'); //Lint JavaScript with ESlint
 var pa11y = require('gulp-pa11y'); //Pa11y accessibility audit
+var bower = require('gulp-bower'); //install libraries via bower
+var order = require("gulp-order"); //Order files in a stream, used for bootstrap js files
+var debug = require('gulp-debug'); //returns files in stream
 var $ = require('gulp-load-plugins')(); //dynamically load gulp plugins
 
 var reload = browserSync.reload;
@@ -112,6 +115,9 @@ var imagepngoptimizationlevel = config.images.pngoptimizationlevel; //OPTIPNG op
 var imagegifinterlaced = config.images.gifinterlaced; //Interlaced or progressive gif images
 
 //Libraries
+var bower__path = config.libraries.bower.path; //Where to install bower components (default: bower_components)
+var bower__interactive = config.libraries.bower.interactive; //enable prompting from bower
+var bower__verbosity = config.libraries.bower.verbosity; //set verbosity level (0 = no output, 1 = error output, 2 = info)
 var bootstrap = config.libraries.bootstrap; //Want to install Bootstrap from NPM?
 var bootstrapversion = config.libraries.bootstrapversion; //Which version of bootstrap (v4 beta = '@4.0.0-alpha.2')
 var fontawesome = config.libraries.fontawesome; //Want to install Font Awesome from NPM?
@@ -358,50 +364,64 @@ gulp.task('jslint', 'JavaScript checker.', function() {
 /*---------------------------------------------------------------------------------------------------*/
 
 /*Libraries------------------------------------------------------------------------------------------*/
-//Install libraries
-gulp.task('installlibs', 'Install JavaScript Libraries via NPM', function() {
-  gulp.src(__filename)
-    .pipe(gulpif(bootstrap == true, (shell([
-      'npm install bootstrap' + bootstrapversion + ' --save-dev' +
-      '' +
-      ''
-    ]))))
-    .pipe(gulpif(fontawesome == true, (shell([
-      'npm install font-awesome --save-dev'
-    ]))))
+//Install libraries via Bower, configure in bower.json
+gulp.task('bower', 'Install libraries via Bower', function() {
+  return bower({
+    directory: './' + bower__path,
+    interactive: bower__interactive,
+    verbosity: bower__verbosity
+  })
 });
 
-//Get Bootstrap CSS from node modules
+//remove unnessesary files from bower_components, configured in bower.json
+var preen = require('preen', 'Remove unneeded files from bower components');
+gulp.task('preen', function(cb) {
+  return preen.preen({}, cb);
+});
+
+//Get Bootstrap CSS from bower components
 gulp.task('getbootstrapcss', 'Get Bootstrap SCSS files.', function () {
-  gulp.src('node_modules/bootstrap/scss/**/*.scss')
+  gulp.src(bower__path + '/bootstrap/scss/**/*.scss')
     .pipe(gulp.dest(bootstrapcsspath));
 });
 
-//Get Bootstrap JavaScript from node modules
-gulp.task('getbootstrapjs', 'Get Bootstrap JS files.', function () {
-  gulp.src('node_modules/bootstrap/dist/js/umd/*.js')
-    .pipe(gulp.dest(bootstrapjspath));
-});
 //Bootstrap - generate bootstrap javascript file, also uglified
 gulp.task('bootstrapjs', 'Generate bootstrap javascript file, also uglified.', function () {
-  return gulp.src(bootstrapjspath)
+  const filter__sourcemaps = filter(['**/*.js', '!**/*.map']);
+  return gulp.src([bower__path + "/bootstrap/js/dist/util.js"])
     .pipe(plumber())
-    .pipe(gulpif(bootalertjs == true, (addsrc(bootstrapjspath + 'alert.js'))))
-    .pipe(gulpif(bootbuttonjs == true, (addsrc(bootstrapjspath + 'button.js'))))
-    .pipe(gulpif(bootcarouseljs == true, (addsrc(bootstrapjspath + 'carousel.js'))))
-    .pipe(gulpif(bootcollapsejs == true, (addsrc(bootstrapjspath + 'collapse.js'))))
-    .pipe(gulpif(bootdropdownjs == true, (addsrc(bootstrapjspath + 'dropdown.js'))))
-    .pipe(gulpif(bootmodaljs == true, (addsrc(bootstrapjspath + 'modal.js'))))
-    .pipe(gulpif(bootpopoverjs == true, (addsrc(bootstrapjspath + 'popover.js'))))
-    .pipe(gulpif(bootscrollspyjs == true, (addsrc(bootstrapjspath + 'scrollspy.js'))))
-    .pipe(gulpif(boottabjs == true, (addsrc(bootstrapjspath + 'tab.js'))))
-    .pipe(gulpif(boottooltipjs == true, (addsrc(bootstrapjspath + 'tooltip.js'))))
-    .pipe(addsrc(bootstrapjspath + 'util.js'))
+    .pipe(gulpif(bootalertjs == true, (addsrc(bower__path + "/bootstrap/js/dist/" + 'alert.js'))))
+    .pipe(gulpif(bootbuttonjs == true, (addsrc(bower__path + "/bootstrap/js/dist/" + 'button.js'))))
+    .pipe(gulpif(bootcarouseljs == true, (addsrc(bower__path + "/bootstrap/js/dist/" + 'carousel.js'))))
+    .pipe(gulpif(bootcollapsejs == true, (addsrc(bower__path + "/bootstrap/js/dist/" + 'collapse.js'))))
+    .pipe(gulpif(bootdropdownjs == true, (addsrc(bower__path + "/bootstrap/js/dist/" + 'dropdown.js'))))
+    .pipe(gulpif(bootmodaljs == true, (addsrc(bower__path + "/bootstrap/js/dist/" + 'modal.js'))))
+    .pipe(gulpif(bootpopoverjs == true, (addsrc(bower__path + "/bootstrap/js/dist/" + 'popover.js'))))
+    .pipe(gulpif(bootscrollspyjs == true, (addsrc(bower__path + "/bootstrap/js/dist/" + 'scrollspy.js'))))
+    .pipe(gulpif(boottabjs == true, (addsrc(bower__path + "/bootstrap/js/dist/" + 'tab.js'))))
+    .pipe(gulpif(boottooltipjs == true, (addsrc(bower__path + "/tether/dist/js/tether.js"))))
+    .pipe(gulpif(boottooltipjs == true, (addsrc(bower__path + "/bootstrap/js/dist/" + 'tooltip.js'))))
+    .pipe(filter__sourcemaps)
     .pipe(gulpif(js_sourcemaps == true, sourcemaps.init({
       loadMaps: js_sourcemaps_loadmaps,
       identityMap: js_sourcemaps_identitymap,
       debug: js_sourcemaps_debug
     })))
+    .pipe(order([
+      "**/*/util.js",
+      "**/*/alert.js",
+      "**/*/button.js",
+      "**/*/carousel.js",
+      "**/*/collapse.js",
+      "**/*/dropdown.js",
+      "**/*/modal.js",
+      "**/*/scrollspy.js",
+      "**/*/tab.js",
+      "**/*/tether.js",
+      "**/*/tooltip.js",
+      "**/*/popover.js"
+    ], { base: './' }))
+    .pipe(debug({title: 'Using file:'}))
     .pipe(concat('bootstrap.js'))
     .pipe(gulpif(js_sourcemaps == true, sourcemaps.write(js_sourcemaps_location, {
       addComment: js_sourcemaps_addcomment,
@@ -435,8 +455,6 @@ gulp.task('bootstrapjs', 'Generate bootstrap javascript file, also uglified.', f
     .pipe(gulpif(jsminify == true, gulp.dest(jslibspath)))
     .pipe(gulpif(jsgzip == true, gzip()))
     .pipe(gulpif(jsgzip == true, gulp.dest(jslibspath)))
-}, {
-  aliases: ['boot']
 });
 
 //Modernizr - Create modernizr file from SCSS selectors and Javascript, Also uglified the file

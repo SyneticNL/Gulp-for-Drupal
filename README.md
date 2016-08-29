@@ -9,6 +9,7 @@ This gulp setup features a full Drupal Gulp workflow for proccesing your SCSS fi
 |---------------|-----------------------------------------------------------|
 |help           |Shows all available tasks                                  |             
 |bootstrapjs    |Generate bootstrap javascript file, also uglified          |
+|bower          |Install JavaScript Libraries via Bower                     |
 |browsersync    |Run server with syncronized screens on multiple devices    |
 |cc-all         |Run a Cache Clear via Drush                                |
 |cc-theme       | Run a Theme Cache Clear via Drush                         |
@@ -16,14 +17,13 @@ This gulp setup features a full Drupal Gulp workflow for proccesing your SCSS fi
 |clear          |Clear Gulp images Cache                                    |
 |colorblind     |Simulate colorblindness, this overwrites your css files    |
 |getbootstrapcss|Get Bootstrap SCSS files                                   |
-|getbootstrapjs |Get Bootstrap JS files                                     |
 |images         |Optimizes images (JPG, PNG, GIF and SVG                    |
-|installlibs    |Install JavaScript Libraries via NPM                       |
 |jslint         |JavaScript lint tool                                       |
 |jslibs         |Building JavaScript Libraries, Modernizr and Bootstrap.    |
 |modernizr      |Create modernizr file from SCSS selectors and Javascript   |
-|parker         | Analyse your CSS files with parker                        |
-|pa11y          | Perform a accessibility Audit on your site                |
+|parker         |Analyse your CSS files with parker                         |
+|pa11y          |Perform a accessibility Audit on your site                 |
+|preen          |Remove unneeded files from bower components                |
 |psi            | Run PageSpeed Insights with mobile & desktop settings.    |
 |sass           |Compile Sass, create sourcemaps, autoprefix and minify.    |
 |sasslint       |validate your SASS Aliases                                 |
@@ -111,10 +111,13 @@ The gulp setup is made to be fully configurable by changing the settings in `gul
 |               |jpgprogressive             | Make JPEG images progressive for beter perceived performance                                                                             |
 |               |pngoptimizationlevel       | OPTIPNG optimisation level between 1 and 7 (7 maximum optimalisation, takes longer)                                                      |
 |               |gifinterlaced              | Interlaced gif images                                                                                                                    |
-|**libraries**  |                           | Installing libraries via NPM by running Gulp installlibs, this will add the libraries to your package.json                               |
-|               |bootstrap                  | Want to install Bootstrap from NPM?                                                                                                      |
+|**libraries**  |                           | Installing libraries via Bower by running Gulp installlibs, this will add the libraries to your package.json                             |
+|_bower_        |path                       | here to install bower components (default: bower_components)                                                                             |
+|_bower_        |interactive                | enable prompting from bower                                                                                                              |
+|_bower_        |verbosity                  | set verbosity level (0 = no output, 1 = error output, 2 = info)                                                                          |
+|               |bootstrap                  | Want to install Bootstrap from Bower?                                                                                                    |
 |               |bootstrapversion           | Which version of bootstrap (v4 beta = '@4.0.0-alpha.2') (Currently only Bootstrap v4 supported)                                          |
-|               |fontawesome                | Want to install Font Awesome from NPM?                                                                                                   |
+|               |fontawesome                | Want to install Font Awesome from Bower?                                                                                                 |
 |**taskconfig** |                           |                                                                                                                                          |
 |               |watchtasks                 | Which tasks to run before gulp watch (Browsersync and SASS already included)                                                             |
 |_watch_        |lintscss                   | Lint your SCSS                                                                                                                           |
@@ -160,4 +163,4 @@ The gulp setup is made to be fully configurable by changing the settings in `gul
 The SASS / SCSS linter is configurable from a separate file, all the settings are described inside `.sass-lint.yml`.
 
 _Created by Synetic_
-_README.md updated on 2016-08-15 version 1.3.1_
+_README.md updated on 2016-08-15 version 1.4.0_

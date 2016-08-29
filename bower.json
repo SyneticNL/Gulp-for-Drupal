@@ -1,0 +1,37 @@
+{
+  "name": "Gulp-for-Drupal",
+  "version": "1.0.0",
+  "versiondate": "2016-08-29",
+  "description": "Project with Gulp",
+  "main": "gulpfile.js",
+  "authors": [
+    "Synetic"
+  ],
+  "license": "GNU",
+  "keywords": [
+    "Synetic",
+    "Gulp",
+    "Drupal7"
+  ],
+  "homepage": "https://github.com/SyneticNL/Gulp-for-Drupal",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "bootstrap": "v4.0.0-alpha.3"
+  },
+  "preen": {
+    "bootstrap": [
+      "js/dist/*.js",
+      "scss/*",
+      "CHANGELOG.md"
+    ],
+    "jquery": [
+      "*.js"
+    ]
+  }
+}
