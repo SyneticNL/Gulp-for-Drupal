@@ -1,5 +1,5 @@
 /*==========================================================================
- Gulp for Drupal Gulpfile.js version 2.7.0 2016-08-29
+ Gulp for Drupal Gulpfile.js version 2.8.0 2016-08-31
  ===========================================================================*/
 var gulp = require('gulp-help')(require('gulp'));
 var config = require('./gulpconfig.json');
@@ -14,22 +14,17 @@ var autoprefixer = require('gulp-autoprefixer');  //adds prefixes to css files
 var sourcemaps = require('gulp-sourcemaps'); // creates sourcemaps in css files
 var modernizr = require('gulp-modernizr'); // creates custom modernizr file
 var uglify = require('gulp-uglify'); // minifies javascript
-var size = require('gulp-size'); // Displays size of processed files
 var concat = require('gulp-concat'); //Concat files
 var gulpif = require('gulp-if'); //conditional tasks
 var addsrc = require('gulp-add-src'); //add files midstream
 var gulpSequence = require('gulp-sequence'); //Run tasks in set sequence
-var psi = require('psi'); //Run pagespeed insight on live site
 var shell = require('gulp-shell'); //Run Shellcommands (used for pagespeedsinsight)
 var imagemin = require('gulp-imagemin'); //Optimize images
 var pngquant = require('imagemin-pngquant'); //Imagemin plugin to optimize PNG files with the pngquant library
 var bytediff = require('gulp-bytediff'); //Size difference before and after alteration
 var cache = require('gulp-cache'); //Cache stream
-var del = require('del'); //Delete files
 var rename = require("gulp-rename"); //Rename files
 var filter = require('gulp-filter'); //Filter stream
-var argv = require('yargs').argv; //Create flags
-var gutil = require('gulp-util'); //Style terminal logs
 var gzip = require('gulp-gzip');//gZip CSS & JavaScript
 var sizereport = require('gulp-sizereport');//Create an sizereport for your project
 var checkDeps = require('gulp-check-deps'); //Check the dependencies
@@ -118,9 +113,6 @@ var imagegifinterlaced = config.images.gifinterlaced; //Interlaced or progressiv
 var bower__path = config.libraries.bower.path; //Where to install bower components (default: bower_components)
 var bower__interactive = config.libraries.bower.interactive; //enable prompting from bower
 var bower__verbosity = config.libraries.bower.verbosity; //set verbosity level (0 = no output, 1 = error output, 2 = info)
-var bootstrap = config.libraries.bootstrap; //Want to install Bootstrap from NPM?
-var bootstrapversion = config.libraries.bootstrapversion; //Which version of bootstrap (v4 beta = '@4.0.0-alpha.2')
-var fontawesome = config.libraries.fontawesome; //Want to install Font Awesome from NPM?
 
 //Configure Bootstrap CSS & JavaScript preferences
 var bootstrapcsspath = config.css.bootstrap.path;
@@ -141,8 +133,6 @@ var watchtasks = config.taskconfig.watchtasks; //Which tasks to run before gulp 
 var watchlintscss = config.taskconfig.watch.lintscss; //Lint your SCSS
 var watchimages = config.taskconfig.watch.images; //Want to process new or edited images?
 var watchjs = config.taskconfig.watch.javascript; //Want to lint new or edited javascript files?
-var cctwig = config.taskconfig.cacheclear.twig; //Perform a drush cacheclear after twig file modifications
-var ccyml = config.taskconfig.cacheclear.yaml; //Perform a drush cacheclear after yaml file modifications
 
 //Browsersync Settings
 var browsersyncopen = config.browsersync.open; // Open browsersync page after starting server
@@ -162,11 +152,6 @@ var shareclicks = config.share.clicks; // Sync clicks on share server
 var shareforms = config.share.forms; //Sync forms on share server
 var sharescroll = config.share.scroll; //Sync Scrolling on share server
 var shareport = config.share.port; // Set port number for share server
-
-//Testing  -- (to use "npm install --global psi")
-var site = config.testing.site; //live site (used for pagespeed)
-var threshold = config.testing.threshold; //Pagespeed threshold
-var testingmobilelocale = config.testing.mobilelocale; //Which language to use (If available)
 
 //Quality
 var maxsize = config.quality.maxsize.maxisize; //General max size of files, used with gulp sizereport
@@ -260,8 +245,6 @@ gulp.task('sass', 'Compile Sass, create sourcemaps, autoprefix and minify.',[], 
       wait: false
     }))
     .pipe(plumber.stop())
-}, {
-  aliases: ['scss','css'],
 });
 
 //SASSlinter validates your SASS
@@ -274,8 +257,6 @@ gulp.task('sasslint', 'validate your SASS', function() {
     }))
     .pipe(sassLint.format())
     .pipe(sassLint.failOnError())
-}, {
-  aliases: ['lint','csslint']
 });
 
 //Parker Stylesheet analysis
@@ -538,9 +519,6 @@ gulp.task('watch', 'Watches for file changes and runs sass appropriately.', func
   gulp.watch(scsspathsrc + '/**/*.s+(a|c)ss', gulpif(watchlintscss == true,(['sasslint'])));
   gulp.watch(jspathsrc + '**/*.js', gulpif(watchjs == true,(['jslint'])));
   gulp.watch(imagepathsrc + '**/*', gulpif(watchimages == true,(['images'])));
-  //Cache Clear
-  gulp.watch(templatepathsrc + '**/*.twig', gulpif(cctwig == true,(['cc-theme'])));
-  gulp.watch(themeroot + '**/*.yml', gulpif(ccyml == true,(['cc-theme'])));
   //Browsersync
   gulp.watch(imagepathsrc + '**/*', gulpif(bswatchimages == true,(browserSync.reload)));
   gulp.watch(jspathdist + '**/*', gulpif(bswatchjs == true,(browserSync.reload)));
@@ -550,35 +528,6 @@ gulp.task('watch', 'Watches for file changes and runs sass appropriately.', func
   gulp.watch(functionspathsrc + '**/*.php', gulpif(bswatchphpfunctions == true,(browserSync.reload)));
   gulp.watch(themeroot + '**/*.yml', gulpif(bswatchyaml == true,(browserSync.reload)));
 });
-/*---------------------------------------------------------------------------------------------------*/
-
-/*Performance----------------------------------------------------------------------------------------*/
-// Run PageSpeed Insights
-gulp.task('psi', 'Run PageSpeed Insights with mobile & desktop settings.', function () {
-  return gulp.src('*.js', {read: false})
-    .pipe(shell([
-      'psi ' + site + ' --strategy=desktop --threshold=' + threshold
-    ])),
-    psi(site, {
-      nokey: 'false',
-      locale: testingmobilelocale,
-      strategy: 'mobile'
-    }).then(function (data) {
-      console.log('Mobile: ' + gutil.colors.magenta(site))
-      console.log('Speed score: ' + gutil.colors.cyan(data.ruleGroups.SPEED.score));
-      console.log('Usability score: ' + gutil.colors.cyan(data.ruleGroups.USABILITY.score));
-    }),
-    setTimeout(function() {
-      psi(site, {
-        nokey: 'true',
-        strategy: 'desktop',
-      }).then(function (data) {
-        console.log('Desktop: ' + gutil.colors.magenta(site))
-        console.log('Speed score: ' + gutil.colors.cyan(data.ruleGroups.SPEED.score));
-      })
-    }, 500);
-});
-
 /*---------------------------------------------------------------------------------------------------*/
 
 /*Accessibility--------------------------------------------------------------------------------------*/
@@ -634,38 +583,6 @@ gulp.task('pa11y', 'Perform a accessibility Audit on your site', pa11y({
 }));
 /*---------------------------------------------------------------------------------------------------*/
 
-/*Drush---------------------------------------------------------------------------------------------*/
-// Run Drush cache clear Theme registry
-gulp.task('cc-theme','Run a Theme Cache Clear via Drush', function() {
-  return gulp.src('', {
-    read: false
-  })
-    .pipe($.shell([
-      'drush cc theme-registry',
-    ]))
-    .pipe($.notify({
-      title: "Caches cleared",
-      message: "Drupal Theme Registry cleared.",
-      onLast: true
-    }));
-});
-// Run Drush cache clear all
-gulp.task('cc-all','Run a Cache Clear via Drush', function() {
-  return gulp.src('', {
-    read: false
-  })
-    .pipe($.shell([
-      'drush cc all',
-    ]))
-    .pipe($.notify({
-      title: "Caches cleared",
-      message: "Drupal Caches cleared.",
-      onLast: true
-    }));
-});
-
-/*---------------------------------------------------------------------------------------------------*/
-
 /*Misc---------------------------------------------------------------------------------------------*/
 //Create a sizereport of your project
 gulp.task('sizereport','Create a sizereport of your project', function () {
@@ -693,7 +610,5 @@ notify.on('click', function (options) {
 //Clear Gulp Cache
 gulp.task('clear', 'Clear Gulp Cache.',[], function (done) {
   return cache.clearAll(done);
-}, {
-  aliases: ['wipecache']
 });
 /*---------------------------------------------------------------------------------------------------*/

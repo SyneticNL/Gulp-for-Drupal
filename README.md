@@ -11,8 +11,6 @@ This gulp setup features a full Drupal Gulp workflow for proccesing your SCSS fi
 |bootstrapjs    |Generate bootstrap javascript file, also uglified          |
 |bower          |Install JavaScript Libraries via Bower                     |
 |browsersync    |Run server with syncronized screens on multiple devices    |
-|cc-all         |Run a Cache Clear via Drush                                |
-|cc-theme       | Run a Theme Cache Clear via Drush                         |
 |check-deps     |Check your dependencies                                    |
 |clear          |Clear Gulp images Cache                                    |
 |colorblind     |Simulate colorblindness, this overwrites your css files    |
@@ -24,7 +22,6 @@ This gulp setup features a full Drupal Gulp workflow for proccesing your SCSS fi
 |parker         |Analyse your CSS files with parker                         |
 |pa11y          |Perform a accessibility Audit on your site                 |
 |preen          |Remove unneeded files from bower components                |
-|psi            | Run PageSpeed Insights with mobile & desktop settings.    |
 |sass           |Compile Sass, create sourcemaps, autoprefix and minify.    |
 |sasslint       |validate your SASS Aliases                                 |
 |share          |Run server to share progress                               |
@@ -115,16 +112,11 @@ The gulp setup is made to be fully configurable by changing the settings in `gul
 |_bower_        |path                       | here to install bower components (default: bower_components)                                                                             |
 |_bower_        |interactive                | enable prompting from bower                                                                                                              |
 |_bower_        |verbosity                  | set verbosity level (0 = no output, 1 = error output, 2 = info)                                                                          |
-|               |bootstrap                  | Want to install Bootstrap from Bower?                                                                                                    |
-|               |bootstrapversion           | Which version of bootstrap (v4 beta = '@4.0.0-alpha.2') (Currently only Bootstrap v4 supported)                                          |
-|               |fontawesome                | Want to install Font Awesome from Bower?                                                                                                 |
 |**taskconfig** |                           |                                                                                                                                          |
 |               |watchtasks                 | Which tasks to run before gulp watch (Browsersync and SASS already included)                                                             |
 |_watch_        |lintscss                   | Lint your SCSS                                                                                                                           |
 |_watch_        |images                     | Process new or edited images                                                                                                             |
 |_watch_        |javascript                 | Lint new or edited javascript files                                                                                                      |
-|_cacheclear_   |twig                       | Perform a drush cacheclear after twig file modifications                                                                                 |
-|_cacheclear_   |yaml                       | Perform a drush cacheclear after yaml file modifications                                                                                 |
 |**browsersync**|                           |                                                                                                                                          |
 |               |open                       | Open Browsersync page after starting server                                                                                              |
 |               |loglevel                   | Amount of Browsersync logging you want (debug, info or silent)                                                                           |
@@ -142,10 +134,6 @@ The gulp setup is made to be fully configurable by changing the settings in `gul
 |_share_        |forms                      | Sync forms on share server                                                                                                               |
 |_share_        |scroll                     | Sync Scrolling on share server                                                                                                           |
 |_share_        |port                       | Set port number for share server                                                                                                         |
-|**testing**    |                           | test using Pagespeed insights, make sure you have the psi package installed globally ("npm install --global psi")                        |
-|               |site                       | used for Pagespeed, needs to be accessible from the web                                                                                  |
-|               |threshold                  | Pagespeed threshold                                                                                                                      |
-|               |mobilelocale               | Which language to use (If available)                                                                                                     |
 |**quality**    |                           |                                                                                                                                          |
 |_maxsize_      |maxsize                    | General max size of files, used with gulp sizereport                                                                                     |
 |_maxsize_      |css                        | Maximum size of CSS files                                                                                                                |
@@ -163,4 +151,4 @@ The gulp setup is made to be fully configurable by changing the settings in `gul
 The SASS / SCSS linter is configurable from a separate file, all the settings are described inside `.sass-lint.yml`.
 
 _Created by Synetic_
-_README.md updated on 2016-08-15 version 1.4.0_
+_README.md updated on 2016-08-31 version 1.5.0_

@@ -1,14 +1,26 @@
-_Gulp for Drupal Changelog version 2.0.0 2016-08-29_
+_Gulp for Drupal Changelog version 2.1.0 2016-08-31_
 #### included Gulp files:
-    - gulpfile.js       (2.7.0) (2016-08-29)
-    - gulpconfig.json   (2.7.0) (2016-08-29)
-    - package.json      (2.6.0) (2016-08-29)
+    - gulpfile.js       (2.8.0) (2016-08-31)
+    - gulpconfig.json   (2.8.0) (2016-08-31)
+    - package.json      (2.7.0) (2016-08-31)
     - bower.json        (1.0.0) (2016-08-29)
     - .npmrc            (1.0.0) (2016-03-08)
     - .sass-lint.yml    (1.0.1) (2016-06-24)
     - .eslintrc         (1.1.0) (2016-07-01)
     - .gitignore        (1.1.0) (2016-06-24)
-    - README.md         (1.4.0) (2016-08-29)
+    - README.md         (1.5.0) (2016-08-31)
+
+#### 2016-08-31 - Task cleanup
+    gulpfile.js 2.8.0
+    gulpconfig.json 2.8.0
+    README.md 1.5.0
+    package.json  2.7.0
+    
+    - Removed PSI task, use https://developers.google.com/speed/pagespeed/ instead
+    - Removed cc-theme and cc-all tasks. you should use Drush to perform a cache clear
+    - Removed packages: yargs, gulp util, del, psi
+    - Removed unused variables
+    - Removed unneccessary dependencies (work in progress)
 
 #### 2016-08-29 - Bootstrap update
     gulpfile.js 2.7.0, 

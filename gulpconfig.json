@@ -1,7 +1,7 @@
 {
-  "version": "2.7.0",
-  "versiondate": "2016-08-29",
-  "gulpfileversion": "2.7.0",
+  "version": "2.8.0",
+  "versiondate": "2016-08-31",
+  "gulpfileversion": "2.8.0",
   "general" : {
     "projectpath" : "example.dev/",
     "logopath" : "images/logos/logo.png",
@@ -104,10 +104,7 @@
       "path" : "bower_components",
       "interactive" : true,
       "verbosity" : 2
-    },
-    "bootstrap" : true,
-    "bootstrapversion" : "@4.0.0-alpha.2",
-    "fontawesome" : false
+    }
   },
   "taskconfig" : {
     "watchtasks" : ["jslibs", "jslint"],
@@ -115,10 +112,6 @@
       "lintscss" : true,
       "images" : true,
       "javascript" : true
-    },
-    "cacheclear" : {
-      "twig" : false,
-      "yaml" : false
     }
   },
   "browsersync" : {
