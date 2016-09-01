@@ -1,8 +1,8 @@
 {
   "name": "Gulp-for-Drupal",
-  "installationdate": "2016-08-31",
-  "version": "2.7.0",
-  "versiondate": "2016-08-31",
+  "installationdate": "2016-09-01",
+  "version": "2.8.0",
+  "versiondate": "2016-09-01",
   "description": "Project with Gulp",
   "main": "gulpfile.js",
   "scripts": {
@@ -61,7 +61,8 @@
     "gulp-uglify": "^1.5.3",
     "hexa-color-regex": "^1.0.0",
     "imagemin-jpegoptim": "^5.0.0",
-    "imagemin-pngquant": "",
+    "imagemin-pngquant": "^5.0.0",
+    "imagemin-webp": "^4.0.0",
     "postcss": "^4.1.16",
     "postcss-colorblind": "^0.4.0",
     "preen": "^1.2.0",

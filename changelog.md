@@ -1,14 +1,35 @@
-_Gulp for Drupal Changelog version 2.1.0 2016-08-31_
+_Gulp for Drupal Changelog version 2.3.0 2016-09-01_
 #### included Gulp files:
-    - gulpfile.js       (2.8.0) (2016-08-31)
-    - gulpconfig.json   (2.8.0) (2016-08-31)
-    - package.json      (2.7.0) (2016-08-31)
+    - gulpfile.js       (3.0.0) (2016-09-01)
+    - gulpconfig.json   (2.9.0) (2016-09-01)
+    - package.json      (2.8.0) (2016-09-01)
     - bower.json        (1.0.0) (2016-08-29)
     - .npmrc            (1.0.0) (2016-03-08)
     - .sass-lint.yml    (1.0.1) (2016-06-24)
     - .eslintrc         (1.1.0) (2016-07-01)
     - .gitignore        (1.1.0) (2016-06-24)
-    - README.md         (1.5.0) (2016-08-31)
+    - README.md         (1.6.0) (2016-09-01)
+
+#### 2016-09-01 - Variable cleanup
+    gulpfile.js 3.0.0
+    
+    - Changed variable configuration construction to use the configuration file directly
+    - Removed unused variables
+    - Restructured includes of plugins
+
+#### 2016-09-01 - Image Optimize
+    gulpfile.js 2.9.0
+    gulpconfig.json 2.9.0
+    README.md 1.6.0
+    package.json 2.8.0
+    
+    - Changed imageoptimize jpegtran to jpegoptim
+    - Changed imageoptimize optipng to pngquant
+    - improved default settings
+    - added ability to output webp images
+    - added more configuration options to the plugins
+    - fixed imagehandling by changing default image location setting
+
 
 #### 2016-08-31 - Task cleanup
     gulpfile.js 2.8.0

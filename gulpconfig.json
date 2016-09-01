@@ -1,7 +1,7 @@
 {
-  "version": "2.8.0",
-  "versiondate": "2016-08-31",
-  "gulpfileversion": "2.8.0",
+  "version": "2.9.0",
+  "versiondate": "2016-09-01",
+  "gulpfileversion": "3.0.0",
   "general" : {
     "projectpath" : "example.dev/",
     "logopath" : "images/logos/logo.png",
@@ -11,7 +11,7 @@
     "src" : {
       "scsspath" : "scss/",
       "jspath" : "js/",
-      "imagespath" : "images/0_src",
+      "imagespath" : "images/0_src/",
       "fontspath" : "fonts/",
       "iconspath" : "icons/",
       "templatepath" : "/template/",
@@ -95,9 +95,30 @@
     }
   },
   "images" : {
-    "jpgprogressive" : true,
-    "pngoptimizationlevel" : 7,
-    "gifinterlaced" : true
+    "gif" : {
+      "interlaced" : true,
+      "optimizationlevel" : 3
+    },
+    "jpeg" : {
+      "progressive" : true,
+      "max" : 80
+    },
+    "png" : {
+      "floyd" : 0.5,
+      "nofs" : false,
+      "quality" : 100,
+      "speed" : 3,
+      "verbose" : false
+    },
+    "webp" : {
+      "use" : false,
+      "preset" : "default",
+      "quality" : 75,
+      "alphaQuality" : 100,
+      "method" : 4,
+      "sns" : 80,
+      "lossless" : false
+    }
   },
   "libraries" : {
     "bower" : {
@@ -134,11 +155,6 @@
     "forms" : false,
     "scroll" : false,
     "port" : 3333
-  },
-  "testing" : {
-    "site" : "http://www.synetic.nl",
-    "threshold" : 80,
-    "mobilelocale" : "en_GB"
   },
   "quality" : {
     "maxsize" : {

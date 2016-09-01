@@ -1,179 +1,58 @@
 /*==========================================================================
- Gulp for Drupal Gulpfile.js version 2.8.0 2016-08-31
+ Gulp for Drupal Gulpfile.js version 3.0.0 2016-09-01
  ===========================================================================*/
-var gulp = require('gulp-help')(require('gulp'));
-var config = require('./gulpconfig.json');
-var path = require('path');
-var sass = require('gulp-sass'); // sass compiler
-var browserSync = require('browser-sync').create(); //Run synchronized server
-var nano = require('gulp-cssnano'); //minifies css
-var notify = require("gulp-notify"); //adds notifications to tasks
-var plumber = require('gulp-plumber'); //Error Handling
-var open = require('gulp-open'); // Opens url (from notification)
-var autoprefixer = require('gulp-autoprefixer');  //adds prefixes to css files
-var sourcemaps = require('gulp-sourcemaps'); // creates sourcemaps in css files
-var modernizr = require('gulp-modernizr'); // creates custom modernizr file
-var uglify = require('gulp-uglify'); // minifies javascript
-var concat = require('gulp-concat'); //Concat files
-var gulpif = require('gulp-if'); //conditional tasks
-var addsrc = require('gulp-add-src'); //add files midstream
-var gulpSequence = require('gulp-sequence'); //Run tasks in set sequence
-var shell = require('gulp-shell'); //Run Shellcommands (used for pagespeedsinsight)
-var imagemin = require('gulp-imagemin'); //Optimize images
-var pngquant = require('imagemin-pngquant'); //Imagemin plugin to optimize PNG files with the pngquant library
-var bytediff = require('gulp-bytediff'); //Size difference before and after alteration
-var cache = require('gulp-cache'); //Cache stream
-var rename = require("gulp-rename"); //Rename files
-var filter = require('gulp-filter'); //Filter stream
-var gzip = require('gulp-gzip');//gZip CSS & JavaScript
-var sizereport = require('gulp-sizereport');//Create an sizereport for your project
-var checkDeps = require('gulp-check-deps'); //Check the dependencies
-var compass = require('compass-importer'); //Add ability for compass mixins
-var sassLint = require('gulp-sass-lint'); //Lint SCSS for code consistency
-var postcss = require('gulp-postcss'); //PostCSS support for Gulp
-var colorblind = require("postcss-colorblind"); //PostCSS colorblind module to improve accessibility for colorblindness
-var prompt = require('gulp-prompt'); //Get a prompt to configure tasks while running it
-var Table = require('cli-table'); // create tables in console
-var parker = require('gulp-parker'); //Parker stylesheet analysis
-var UglifyJS = require('uglify-js'); //Library to minify JavaScript files
-var eslint = require('gulp-eslint'); //Lint JavaScript with ESlint
-var pa11y = require('gulp-pa11y'); //Pa11y accessibility audit
-var bower = require('gulp-bower'); //install libraries via bower
-var order = require("gulp-order"); //Order files in a stream, used for bootstrap js files
-var debug = require('gulp-debug'); //returns files in stream
-var $ = require('gulp-load-plugins')(); //dynamically load gulp plugins
+var
+  gulp = require('gulp-help')(require('gulp')),
+  config = require('./gulpconfig.json'),
+  path = require('path');
+
+var
+  addsrc = require('gulp-add-src'), //add files midstream
+  autoprefixer = require('gulp-autoprefixer'),  //adds prefixes to css files
+  bower = require('gulp-bower'), //install libraries via bower
+  browserSync = require('browser-sync').create(), //Run synchronized server
+  bytediff = require('gulp-bytediff'), //Size difference before and after alteration
+  cache = require('gulp-cache'), //Cache stream
+  checkDeps = require('gulp-check-deps'), //Check the dependencies
+  colorblind = require("postcss-colorblind"), //PostCSS colorblind module to improve accessibility for colorblindness
+  compass = require('compass-importer'), //Add ability for compass mixins
+  concat = require('gulp-concat'), //Concat files
+  debug = require('gulp-debug'), //returns files in stream
+  eslint = require('gulp-eslint'), //Lint JavaScript with ESlint
+  filter = require('gulp-filter'), //Filter stream
+  gulpif = require('gulp-if'), //conditional tasks
+  gulpSequence = require('gulp-sequence'), //Run tasks in set sequence
+  gzip = require('gulp-gzip'),//gZip CSS & JavaScript
+  imagemin = require('gulp-imagemin'), //Optimize images
+  imageminJpegoptim = require('imagemin-jpegoptim'), //jpegoptim plugin for imagemin
+  imageminPngquant = require('imagemin-pngquant'), //PNGquant plugin for imagemin
+  imageminWebp = require('imagemin-webp'), //Webp plugin for imagemin
+  modernizr = require('gulp-modernizr'), // creates custom modernizr file
+  nano = require('gulp-cssnano'), //minifies css
+  notify = require("gulp-notify"), //adds notifications to tasks
+  open = require('gulp-open'), // Opens url (from notification)
+  order = require("gulp-order"), //Order files in a stream, used for bootstrap js files
+  pa11y = require('gulp-pa11y'), //Pa11y accessibility audit
+  parker = require('gulp-parker'), //Parker stylesheet analysis
+  plumber = require('gulp-plumber'), //Error Handling
+  postcss = require('gulp-postcss'), //PostCSS support for Gulp
+  pngquant = require('imagemin-pngquant'), //Imagemin plugin to optimize PNG files with the pngquant library
+  prompt = require('gulp-prompt'), //Get a prompt to configure tasks while running it
+  rename = require("gulp-rename"), //Rename files
+  sass = require('gulp-sass'), // sass compiler
+  sassLint = require('gulp-sass-lint'), //Lint SCSS for code consistency
+  sizereport = require('gulp-sizereport'),//Create an sizereport for your project
+  shell = require('gulp-shell'), //Run Shellcommands (used for pagespeedsinsight)
+  sourcemaps = require('gulp-sourcemaps'), // creates sourcemaps in css files
+  Table = require('cli-table'), // create tables in console
+  uglify = require('gulp-uglify'), // minifies javascript
+  UglifyJS = require('uglify-js'), //Library to minify JavaScript files
+  $ = require('gulp-load-plugins')(); //dynamically load gulp plugins
 
 var reload = browserSync.reload;
 
-//Configure The Project
-var projectpath = config.general.projectpath; //Project folder root
-var logopath = config.general.logopath; //site logo - optional
-var themeroot = config.general.themeroot;
-
-//Path - SRC
-var scsspathsrc = config.locations.src.scsspath; //Where to look for SCSS
-var jspathsrc = config.locations.src.jspath; //Where to look for JavaScript
-var imagepathsrc = config.locations.src.imagespath; //Where to look for the images
-var fontspathsrc = config.locations.src.fontspath; //Where to look for font files
-var iconspathsrc = config.locations.src.iconspath; //Where to look for icon files
-var templatepathsrc = config.locations.src.templatepath; //Path to PHP or Twig Template
-var functionspathsrc = config.locations.src.functionspath; //Path to PHP Functions
-
-//Path - DIST
-var csspathdist = config.locations.dist.csspath; //Where to put CSS
-var jspathdist = config.locations.dist.jspath; //Destination for JavaScript files
-var imagepathdist = config.locations.dist.imagespath; //Where to put the images (WARNING: cannot be the same as src!!)
-
-//CSS
-var stylescss = config.css.mainscssfile; //Main scss/css file without extension
-var browsersupport = config.css.browsersupport; //Which browsers to support with autoprefixer
-var cssminify = config.css.minify; //Want to minify your CSS?
-var css_sourcemaps = config.css.sourcemaps.sourcemaps; //Want CSS sourcemaps?
-var css_sourcemaps_location = config.css.sourcemaps.location; //Where to put sourcemaps (keep empty to place inline)
-var css_sourcemaps_loadmaps = config.css.sourcemaps.loadmaps; //Load existing sourcemaps
-var css_sourcemaps_identitymap = config.css.sourcemaps.identitymap; //Set to true to generate a full valid source map encoding no changes
-var css_sourcemaps_debug = config.css.sourcemaps.debug; //Get debug messages
-var css_sourcemaps_addcomment = config.css.sourcemaps.addcomment; //By default a comment containing / referencing the source map is added
-var css_sourcemaps_includeContent = config.css.sourcemaps.includecontent; //By default the source maps include the source code. Pass false to use the original files.
-var css_sourcemaps_charset = config.css.sourcemaps.charset; //Sets the charset for inline source maps. Default: utf8
-var css_sourcemaps_destpath = config.css.sourcemaps.destpath; //Set the destination path (the same you pass to gulp.dest()).
-var css_sourcemaps_sourcemappingurlprefix = config.css.sourcemaps.sourcemappingurlprefix; //Specify a prefix to be prepended onto the source map URL when writing external source maps.
-var cssgzip = config.css.gzip; //Want to GZip your CSS files?
-var css_exclude = config.css.exclude; //An array of SCSS files to exclude from compiling, example: bootstrap-grid.scss
-var csscompass = config.css.compass; //Allow use of compass functions?
-var cssspecificitygraphlocation = config.css.specificitygraphlocation; //Where to put Specificity Graph (if empty the folder will be: specificity-graph)
-var parkerlog = config.css.parker.log; //Want to log the parker results in a external file
-var parkerlogname = config.css.parker.logname; //Name the parkerlogfile
-
-//JS
-var jslibspath = config.js.jslibspath; //Where to put libraries as Modernizr and Bootstrap
-var jspluginspath = config.js.jspluginspath; //Where to put libraries as Modernizr and Bootstrap
-var js_eslint_config = config.js.eslint.configlocation; //Location of your ESlint config file
-var js_sourcemaps = config.js.sourcemaps.sourcemaps; //Want JavaScript sourcemaps?
-var js_sourcemaps_location = config.js.sourcemaps.location; //Where to put sourcemaps (keep empty to place inline)
-var js_sourcemaps_loadmaps = config.js.sourcemaps.loadmaps; //Load existing sourcemaps
-var js_sourcemaps_identitymap = config.js.sourcemaps.identitymap; //Set to true to generate a full valid source map encoding no changes
-var js_sourcemaps_debug = config.js.sourcemaps.debug; //Get debug messages
-var js_sourcemaps_addcomment = config.js.sourcemaps.addcomment; //By default a comment containing / referencing the source map is added
-var js_sourcemaps_includeContent = config.js.sourcemaps.includecontent; //By default the source maps include the source code. Pass false to use the original files.
-var js_sourcemaps_charset = config.js.sourcemaps.charset; //Sets the charset for inline source maps. Default: utf8
-var js_sourcemaps_destpath = config.js.sourcemaps.destpath; //Set the destination path (the same you pass to gulp.dest()).
-var js_sourcemaps_sourcemappingurlprefix = config.css.sourcemaps.sourcemappingurlprefix; //Specify a prefix to be prepended onto the source map URL when writing external source maps.
-var jsminify = config.js.minify; //Minify JavaScript/
-var jsgzip = config.js.gzip; //Want to GZip your JavaScript files?
-var modernizrinclude = config.js.modernizr.alwaysinclude; //Which tests do you always want to include in modernizr
-var modernizrexclude = config.js.modernizr.alwaysexclude; //Which tests do you always want to exclude in modernizr
-
-//Images
-var imagejpgprogressive = config.images.jpgprogressive; //Make JPEG images progressive for beter perceived performance
-var imagepngoptimizationlevel = config.images.pngoptimizationlevel; //OPTIPNG optimisation level between 1 and 7 (7 maximum optimalisation, takes longer)
-var imagegifinterlaced = config.images.gifinterlaced; //Interlaced or progressive gif images
-
-//Libraries
-var bower__path = config.libraries.bower.path; //Where to install bower components (default: bower_components)
-var bower__interactive = config.libraries.bower.interactive; //enable prompting from bower
-var bower__verbosity = config.libraries.bower.verbosity; //set verbosity level (0 = no output, 1 = error output, 2 = info)
-
-//Configure Bootstrap CSS & JavaScript preferences
-var bootstrapcsspath = config.css.bootstrap.path;
-var bootstrapjspath = config.js.bootstrap.path;
-var bootalertjs = config.js.bootstrap.alertjs;
-var bootbuttonjs = config.js.bootstrap.buttonjs;
-var bootcarouseljs = config.js.bootstrap.carouseljs;
-var bootcollapsejs = config.js.bootstrap.collapsejs;
-var bootdropdownjs = config.js.bootstrap.dropdownjs;
-var bootmodaljs = config.js.bootstrap.modaljs;
-var bootpopoverjs = config.js.bootstrap.popoverjs;
-var bootscrollspyjs = config.js.bootstrap.scrollspyjs;
-var boottabjs = config.js.bootstrap.tabjs;
-var boottooltipjs = config.js.bootstrap.tooltipjs;
-
-//Pre Gulp Watch tasks
-var watchtasks = config.taskconfig.watchtasks; //Which tasks to run before gulp watch (Browsersync and SASS already included)
-var watchlintscss = config.taskconfig.watch.lintscss; //Lint your SCSS
-var watchimages = config.taskconfig.watch.images; //Want to process new or edited images?
-var watchjs = config.taskconfig.watch.javascript; //Want to lint new or edited javascript files?
-
-//Browsersync Settings
-var browsersyncopen = config.browsersync.open; // Open browsersync page after starting server
-var browsersyncloglevel = config.browsersync.loglevel; //Amount of Browsersync logging you want (debug, info or silent)
-var browsersynclogfilechanges = config.browsersync.logfilechanges; //Commandline notification on refresh (gives you multiple messages on every change)
-var bswatchimages = config.browsersync.watch.images; //Want to reload browsersync on new or edited images?
-var bswatchicons = config.browsersync.watch.icons; //Reload browsersync on new,edited or removed icons
-var bswatchfonts = config.browsersync.watch.fonts; //Reload browsersync on new, edited or removed fonts
-var bswatchjs = config.browsersync.watch.javascript; //Want to reload browsersync JavaScript changes?
-var bswatchphpfunctions = config.browsersync.watch.phpfunctions; //Want to reload browsersync on changes inside the Functions folder?
-var bswatchtemplate = config.browsersync.watch.template; //Want to reload browsersync on changes inside the Templates folder?
-var bswatchyaml = config.browsersync.watch.yaml;
-
-//Share Settings
-var shareopen = config.share.open; // Open share page after starting server
-var shareclicks = config.share.clicks; // Sync clicks on share server
-var shareforms = config.share.forms; //Sync forms on share server
-var sharescroll = config.share.scroll; //Sync Scrolling on share server
-var shareport = config.share.port; // Set port number for share server
-
-//Quality
-var maxsize = config.quality.maxsize.maxisize; //General max size of files, used with gulp sizereport
-var maxsizecss = config.quality.maxsize.css; //Maximum size of CSS files
-var maxsizejs = config.quality.maxsize.js; //Maximum size of JavaScript files
-var maxsizeimages = config.quality.maxsize.images; //Maximum size of Images files
-
-//SCSS Linter settings
-var sasslint_configlocation = config.css.linter.config;
-
-//Pa11y Accessibility Audit settings
-var pa11y_standard = config.accessibility.pa11y.standard; //The standard to use. One of Section508, WCAG2A, WCAG2AA, WCAG2AAA. Default WCAG2AA.
-var pa11y_failOnError = config.accessibility.pa11y.failonerror; //Fail your build if there is any accessibility error
-var pa11y_showFailedOnly = config.accessibility.pa11y.showfailedonly; //Only display the errors in report, Set to false to display errros, warnings and notice.
-var pa11y_reporter = config.accessibility.pa11y.reporter; //The reporter to use with Pa11y
-var pa11y_htmlcs = config.accessibility.pa11y.htmlcs; //The URL to source HTML_CodeSniffer from
-var pa11y_config = config.accessibility.pa11y.config; //The path to a JSON config file or a config object
-var pa11y_timeout = config.accessibility.pa11y.timeout; //he number of milliseconds before a timeout error occurs.
-
 /*====================================================================================================
  =====================================================================================================*/
-
 
 /*CSS------------------------------------------------------------------------------------------------*/
 //SASS - Compile Sass, create sourcemaps, autoprefix and minify
@@ -187,50 +66,50 @@ gulp.task('sass', 'Compile Sass, create sourcemaps, autoprefix and minify.',[], 
     this.emit('end');
   };
   var filter_sourcemaps = filter(['**/*','!**/*.map'], {restore: true});
-  var filter_exclude = filter(css_exclude, {restore: false});
-  return gulp.src(scsspathsrc + '/' + '**/*.s+(a|c)ss')
+  var filter_exclude = filter(config.css.exclude, {restore: false});
+  return gulp.src(config.locations.src.scsspath + '/' + '**/*.s+(a|c)ss')
     .pipe(filter_exclude)
     .pipe(plumber({errorHandler: onError}))
-    .pipe(gulpif(css_sourcemaps == true,sourcemaps.init({
-      loadMaps: css_sourcemaps_loadmaps,
-      identityMap: css_sourcemaps_identitymap,
-      debug: css_sourcemaps_debug
+    .pipe(gulpif(config.css.sourcemaps.sourcemaps == true,sourcemaps.init({
+      loadMaps: config.css.sourcemaps.loadmaps,
+      identityMap: config.css.sourcemaps.identitymap,
+      debug: config.css.sourcemaps.debug
     })))
-    .pipe(gulpif(csscompass != true,sass()))
-    .pipe(gulpif(csscompass == true,sass({ importer: compass }).on('error', sass.logError)))
+    .pipe(gulpif(config.css.compass != true,sass()))
+    .pipe(gulpif(config.css.compass == true,sass({ importer: compass }).on('error', sass.logError)))
     .pipe(autoprefixer({
-      browsers: browsersupport,
+      browsers: config.css.browsersupport,
       cascade: false
     }))
-    .pipe(gulpif(css_sourcemaps == true,sourcemaps.write(css_sourcemaps_location, {
-      addComment: css_sourcemaps_addcomment,
-      includeContent: css_sourcemaps_includeContent,
+    .pipe(gulpif(config.css.sourcemaps.sourcemaps == true,sourcemaps.write(config.css.sourcemaps.location, {
+      addComment: config.css.sourcemaps.addcomment,
+      includeContent: config.css.sourcemaps.includeContent,
       sourceRoot: function(file) {
         return '../'.repeat(file.relative.split('\\').length) + 'src';
       },
-      destPath: css_sourcemaps_destpath,
-      sourceMappingURLPrefix: css_sourcemaps_sourcemappingurlprefix,
-      debug: css_sourcemaps_debug,
-      charset: css_sourcemaps_charset,
+      destPath: config.css.sourcemaps.destpath,
+      sourceMappingURLPrefix: config.css.sourcemaps.sourcemappingurlprefix,
+      debug: config.css.sourcemaps.debug,
+      charset: config.css.sourcemaps.charset,
     })))
-    .pipe(gulp.dest(csspathdist))
+    .pipe(gulp.dest(config.locations.dist.csspath))
     .pipe(filter_sourcemaps)
-    .pipe(gulpif(cssminify == true, bytediff.start()))
-    .pipe(gulpif(cssminify == true, nano()))
-    .pipe(gulpif(cssminify == true,rename(function (path) {
+    .pipe(gulpif(config.css.minify == true, bytediff.start()))
+    .pipe(gulpif(config.css.minify == true, nano()))
+    .pipe(gulpif(config.css.minify == true,rename(function (path) {
       path.basename += ".min";
     })))
-    .pipe(gulpif(cssminify == true, gulp.dest(csspathdist)))
-    .pipe(gulpif(cssminify == true, bytediff.stop()))
-    .pipe(gulpif(cssgzip == true, bytediff.start()))
-    .pipe(gulpif(cssgzip == true,gzip()))
-    .pipe(gulpif(cssgzip == true, gulp.dest(csspathdist)))
-    .pipe(gulpif(cssgzip == true, bytediff.stop()))
+    .pipe(gulpif(config.css.minify == true, gulp.dest(config.locations.dist.csspath)))
+    .pipe(gulpif(config.css.minify == true, bytediff.stop()))
+    .pipe(gulpif(config.css.gzip == true, bytediff.start()))
+    .pipe(gulpif(config.css.gzip == true,gzip()))
+    .pipe(gulpif(config.css.gzip == true, gulp.dest(config.locations.dist.csspath)))
+    .pipe(gulpif(config.css.gzip == true, bytediff.stop()))
     .pipe(filter_sourcemaps.restore)
     .pipe(sizereport({
       gzip: true,
       '*': {
-        'maxSize': maxsizecss
+        'maxSize': config.quality.maxsize.css
       },
     }))
     .pipe(plumber.stop())
@@ -249,11 +128,11 @@ gulp.task('sass', 'Compile Sass, create sourcemaps, autoprefix and minify.',[], 
 
 //SASSlinter validates your SASS
 gulp.task('sasslint', 'validate your SASS', function() {
-  return gulp.src(scsspathsrc + '/' + '**/*.s+(a|c)ss')
+  return gulp.src(config.locations.src.scsspath + '/' + '**/*.s+(a|c)ss')
     .pipe(sassLint({
       options: {
       },
-      config: sasslint_configlocation
+      config: config.css.linter.config
     }))
     .pipe(sassLint.format())
     .pipe(sassLint.failOnError())
@@ -261,14 +140,14 @@ gulp.task('sasslint', 'validate your SASS', function() {
 
 //Parker Stylesheet analysis
 gulp.task('parker', 'Analyse your CSS files with parker', function() {
-  return gulp.src(scsspathsrc + '/' + '**/*.s+(a|c)ss')
-    .pipe(gulpif(csscompass != true,sass()))
-    .pipe(gulpif(csscompass == true,sass({ importer: compass }).on('error', sass.logError)))
-    .pipe(gulpif(parkerlog == true,parker({
-      file: parkerlogname + '.md',
-      title: 'Gulp Parker Test Report - ' + projectpath
+  return gulp.src(config.locations.src.scsspath + '/' + '**/*.s+(a|c)ss')
+    .pipe(gulpif(config.css.compass != true,sass()))
+    .pipe(gulpif(config.css.compass == true,sass({ importer: compass }).on('error', sass.logError)))
+    .pipe(gulpif(config.css.parker.log == true,parker({
+      file: config.css.parker.logname + '.md',
+      title: 'Gulp Parker Test Report - ' + config.general.projectpath
     })))
-    .pipe(gulpif(parkerlog != true,parker()))
+    .pipe(gulpif(config.css.parker.log != true,parker()))
 });
 
 // Create Specificity Graph
@@ -277,7 +156,7 @@ gulp.task('specificity','Create a specificity graph for CSS', function() {
     read: false
   })
     .pipe($.shell([
-      'specificity-graph ' + csspathdist + stylescss + '.css -o ' + cssspecificitygraphlocation,
+      'specificity-graph ' + config.locations.dist.csspath + config.css.mainscssfile + '.css -o ' + config.css.specificitygraphlocation,
     ]))
     .pipe($.notify({
       title: "Caches cleared",
@@ -291,38 +170,38 @@ gulp.task('specificity','Create a specificity graph for CSS', function() {
 //Browsersync - Run server with syncronized screens on multiple devices
 gulp.task('browsersync', 'Run server with syncronized screens on multiple devices.', ['sass'], function() {
   browserSync.init({
-    open: browsersyncopen,
-    proxy: projectpath,
-    logLevel: browsersyncloglevel,
-    logFileChanges: browsersynclogfilechanges,
+    open: config.browsersync.open,
+    proxy: config.general.projectpath,
+    logLevel: config.browsersync.loglevel,
+    logFileChanges: config.browsersync.logfilechanges,
   });
-  return gulp.src(scsspathsrc + '/' + stylescss + '.s+(a|c)ss')
+  return gulp.src(config.locations.src.scsspath + '/' + config.css.mainscssfile + '.s+(a|c)ss')
     .pipe(plumber())
     .pipe(notify({
       title: "Browsersync Started",
       message: 'Click to launch browser',
       onLast: true,
       wait: true ,
-      icon: path.join(__dirname, logopath),
+      icon: path.join(__dirname, config.general.logopath),
     }))
     .pipe(plumber.stop());
 });
 //Share - Run browsersync server without syncronized actions, to share progress
 gulp.task('share', 'Run server to share progress.', function() {
   browserSync.init({
-    open: shareopen,
+    open: config.share.open,
     ghostMode: {
-      clicks: shareclicks,
-      forms: shareforms,
-      scroll: sharescroll
+      clicks: config.share.clicks,
+      forms: config.share.forms,
+      scroll: config.share.scroll
     },
-    port: shareport,
-    proxy: projectpath,
+    port: config.share.port,
+    proxy: config.general.projectpath,
   });
-  return gulp.src(scsspathsrc + '/' + stylescss + '.s+(a|c)ss')
+  return gulp.src(config.locations.src.scsspath + '/' + config.css.mainscssfile + '.s+(a|c)ss')
     .pipe(notify({
       title: "Server started",
-      message: "Share server started on port: " + shareport,
+      message: "Share server started on port: " + config.share.port,
       wait: false ,
     }));
 });
@@ -331,14 +210,14 @@ gulp.task('share', 'Run server to share progress.', function() {
 /*Javascript-----------------------------------------------------------------------------------------*/
 // JS Lint
 gulp.task('jslint', 'JavaScript checker.', function() {
-  return gulp.src([jspathsrc + '**/*.js', '!' + bootstrapjspath + '**/*.js', '!' + jslibspath + '**/*.js', '!' + jspluginspath + '**/*.js','!node_modules/**'])
+  return gulp.src([config.locations.src.jspath + '**/*.js', '!' + config.js.bootstrap.path + '**/*.js', '!' + config.js.jslibspath + '**/*.js', '!' + config.js.jspluginspath + '**/*.js','!node_modules/**'])
     .pipe(reload({
       stream: true,
       once: true
     }))
     .pipe(eslint({
       // Load a specific ESLint config
-      config: js_eslint_config
+      config: config.js.eslint.configlocation
     }))
     .pipe(eslint.format());
 });
@@ -348,9 +227,9 @@ gulp.task('jslint', 'JavaScript checker.', function() {
 //Install libraries via Bower, configure in bower.json
 gulp.task('bower', 'Install libraries via Bower', function() {
   return bower({
-    directory: './' + bower__path,
-    interactive: bower__interactive,
-    verbosity: bower__verbosity
+    directory: './' + config.libraries.bower.path,
+    interactive: config.libraries.bower.interactive,
+    verbosity: config.libraries.bower.verbosity
   })
 });
 
@@ -362,31 +241,31 @@ gulp.task('preen', function(cb) {
 
 //Get Bootstrap CSS from bower components
 gulp.task('getbootstrapcss', 'Get Bootstrap SCSS files.', function () {
-  gulp.src(bower__path + '/bootstrap/scss/**/*.scss')
-    .pipe(gulp.dest(bootstrapcsspath));
+  gulp.src(config.libraries.bower.path + '/bootstrap/scss/**/*.scss')
+    .pipe(gulp.dest(config.css.bootstrap.path));
 });
 
 //Bootstrap - generate bootstrap javascript file, also uglified
 gulp.task('bootstrapjs', 'Generate bootstrap javascript file, also uglified.', function () {
   const filter__sourcemaps = filter(['**/*.js', '!**/*.map']);
-  return gulp.src([bower__path + "/bootstrap/js/dist/util.js"])
+  return gulp.src([config.libraries.bower.path + "/bootstrap/js/dist/util.js"])
     .pipe(plumber())
-    .pipe(gulpif(bootalertjs == true, (addsrc(bower__path + "/bootstrap/js/dist/" + 'alert.js'))))
-    .pipe(gulpif(bootbuttonjs == true, (addsrc(bower__path + "/bootstrap/js/dist/" + 'button.js'))))
-    .pipe(gulpif(bootcarouseljs == true, (addsrc(bower__path + "/bootstrap/js/dist/" + 'carousel.js'))))
-    .pipe(gulpif(bootcollapsejs == true, (addsrc(bower__path + "/bootstrap/js/dist/" + 'collapse.js'))))
-    .pipe(gulpif(bootdropdownjs == true, (addsrc(bower__path + "/bootstrap/js/dist/" + 'dropdown.js'))))
-    .pipe(gulpif(bootmodaljs == true, (addsrc(bower__path + "/bootstrap/js/dist/" + 'modal.js'))))
-    .pipe(gulpif(bootpopoverjs == true, (addsrc(bower__path + "/bootstrap/js/dist/" + 'popover.js'))))
-    .pipe(gulpif(bootscrollspyjs == true, (addsrc(bower__path + "/bootstrap/js/dist/" + 'scrollspy.js'))))
-    .pipe(gulpif(boottabjs == true, (addsrc(bower__path + "/bootstrap/js/dist/" + 'tab.js'))))
-    .pipe(gulpif(boottooltipjs == true, (addsrc(bower__path + "/tether/dist/js/tether.js"))))
-    .pipe(gulpif(boottooltipjs == true, (addsrc(bower__path + "/bootstrap/js/dist/" + 'tooltip.js'))))
+    .pipe(gulpif(config.js.bootstrap.alertjs == true, (addsrc(config.libraries.bower.path + "/bootstrap/js/dist/" + 'alert.js'))))
+    .pipe(gulpif(config.js.bootstrap.buttonjs == true, (addsrc(config.libraries.bower.path + "/bootstrap/js/dist/" + 'button.js'))))
+    .pipe(gulpif(config.js.bootstrap.carouseljs == true, (addsrc(config.libraries.bower.path + "/bootstrap/js/dist/" + 'carousel.js'))))
+    .pipe(gulpif(config.js.bootstrap.collapsejs == true, (addsrc(config.libraries.bower.path + "/bootstrap/js/dist/" + 'collapse.js'))))
+    .pipe(gulpif(config.js.bootstrap.dropdownjs == true, (addsrc(config.libraries.bower.path + "/bootstrap/js/dist/" + 'dropdown.js'))))
+    .pipe(gulpif(config.js.bootstrap.modaljs == true, (addsrc(config.libraries.bower.path + "/bootstrap/js/dist/" + 'modal.js'))))
+    .pipe(gulpif(config.js.bootstrap.popoverjs == true, (addsrc(config.libraries.bower.path + "/bootstrap/js/dist/" + 'popover.js'))))
+    .pipe(gulpif(config.js.bootstrap.scrollspyjs == true, (addsrc(config.libraries.bower.path + "/bootstrap/js/dist/" + 'scrollspy.js'))))
+    .pipe(gulpif(config.js.bootstrap.tabjs == true, (addsrc(config.libraries.bower.path + "/bootstrap/js/dist/" + 'tab.js'))))
+    .pipe(gulpif(config.js.bootstrap.tooltipjs == true, (addsrc(config.libraries.bower.path + "/tether/dist/js/tether.js"))))
+    .pipe(gulpif(config.js.bootstrap.tooltipjs == true, (addsrc(config.libraries.bower.path + "/bootstrap/js/dist/" + 'tooltip.js'))))
     .pipe(filter__sourcemaps)
-    .pipe(gulpif(js_sourcemaps == true, sourcemaps.init({
-      loadMaps: js_sourcemaps_loadmaps,
-      identityMap: js_sourcemaps_identitymap,
-      debug: js_sourcemaps_debug
+    .pipe(gulpif(config.js.sourcemaps.sourcemaps == true, sourcemaps.init({
+      loadMaps: config.js.sourcemaps.loadmaps,
+      identityMap: config.js.sourcemaps.identitymap,
+      debug: config.js.sourcemaps.debug
     })))
     .pipe(order([
       "**/*/util.js",
@@ -404,19 +283,19 @@ gulp.task('bootstrapjs', 'Generate bootstrap javascript file, also uglified.', f
     ], { base: './' }))
     .pipe(debug({title: 'Using file:'}))
     .pipe(concat('bootstrap.js'))
-    .pipe(gulpif(js_sourcemaps == true, sourcemaps.write(js_sourcemaps_location, {
-      addComment: js_sourcemaps_addcomment,
-      includeContent: js_sourcemaps_includeContent,
+    .pipe(gulpif(config.js.sourcemaps.sourcemaps == true, sourcemaps.write(config.js.sourcemaps.location, {
+      addComment: config.js.sourcemaps.addcomment,
+      includeContent: config.js.sourcemaps.includeContent,
       sourceRoot: function (file) {
         return '../'.repeat(file.relative.split('\\').length) + 'src';
       },
-      destPath: js_sourcemaps_destpath,
-      sourceMappingURLPrefix: js_sourcemaps_sourcemappingurlprefix,
-      debug: js_sourcemaps_debug,
-      charset: js_sourcemaps_charset,
+      destPath: config.js.sourcemaps.destpath,
+      sourceMappingURLPrefix: config.js.sourcemaps.sourcemappingurlprefix,
+      debug: config.js.sourcemaps.debug,
+      charset: config.js.sourcemaps.charset,
     })))
     .pipe(plumber.stop())
-    .pipe(gulp.dest(jslibspath))
+    .pipe(gulp.dest(config.js.jslibspath))
     .pipe(sizereport({
       minifier: function (contents, filepath) {
         if (filepath.match(/\.min\./g)) {
@@ -426,26 +305,26 @@ gulp.task('bootstrapjs', 'Generate bootstrap javascript file, also uglified.', f
       },
       gzip: true,
       '*': {
-        'maxSize': maxsizejs
+        'maxSize': config.quality.maxsize.js
       }
     }))
-    .pipe(gulpif(jsminify == true, uglify()))
-    .pipe(gulpif(jsminify == true, rename(function (path) {
+    .pipe(gulpif(config.js.minify == true, uglify()))
+    .pipe(gulpif(config.js.minify == true, rename(function (path) {
       path.basename += ".min";
     })))
-    .pipe(gulpif(jsminify == true, gulp.dest(jslibspath)))
-    .pipe(gulpif(jsgzip == true, gzip()))
-    .pipe(gulpif(jsgzip == true, gulp.dest(jslibspath)))
+    .pipe(gulpif(config.js.minify == true, gulp.dest(config.js.jslibspath)))
+    .pipe(gulpif(config.js.gzip == true, gzip()))
+    .pipe(gulpif(config.js.gzip == true, gulp.dest(config.js.jslibspath)))
 });
 
 //Modernizr - Create modernizr file from SCSS selectors and Javascript, Also uglified the file
 gulp.task('modernizr', 'Create modernizr file from SCSS selectors and Javascript, Also uglified the file.', function() {
-  gulp.src([jspathsrc + '**/*.js', scsspathsrc + '/**/*.s+(a|c)ss', '!' + jslibspath + '**/*.js'])
+  gulp.src([config.locations.src.jspath + '**/*.js', config.locations.src.scsspath + '/**/*.s+(a|c)ss', '!' + config.js.jslibspath + '**/*.js'])
     .pipe(modernizr({
-      excludeTests: modernizrexclude,
-      options : modernizrinclude,
+      excludeTests: config.js.modernizr.alwaysexclude,
+      options : config.js.modernizr.alwaysinclude,
     }))
-    .pipe(gulp.dest(jslibspath))
+    .pipe(gulp.dest(config.js.jslibspath))
     .pipe(sizereport({
       minifier: function (contents, filepath) {
         if (filepath.match(/\.min\./g)) {
@@ -455,22 +334,22 @@ gulp.task('modernizr', 'Create modernizr file from SCSS selectors and Javascript
       },
       gzip: true,
       '*': {
-        'maxSize': maxsizejs
+        'maxSize': config.quality.maxsize.js
       }
     }))
-    .pipe(gulpif(jsminify == true,uglify()))
-    .pipe(gulpif(jsminify == true,rename(function (path) {
+    .pipe(gulpif(config.js.minify == true,uglify()))
+    .pipe(gulpif(config.js.minify == true,rename(function (path) {
       path.basename += ".min";
     })))
-    .pipe(gulpif(jsminify == true,gulp.dest(jslibspath)))
-    .pipe(gulpif(jsgzip == true,gzip()))
-    .pipe(gulpif(jsgzip == true,gulp.dest(jslibspath)))
+    .pipe(gulpif(config.js.minify == true,gulp.dest(config.js.jslibspath)))
+    .pipe(gulpif(config.js.gzip == true,gzip()))
+    .pipe(gulpif(config.js.gzip == true,gulp.dest(config.js.jslibspath)))
 });
 
 //JS - Building JavaScript Libraries, Modernizr and Bootstrap
 gulp.task('jslibs', 'Building JavaScript Libraries, Modernizr and Bootstrap.', ['modernizr', 'bootstrapjs'], function (){
   console.log('Building JavaScript Libraries')
-  gulp.src([jspathsrc])
+  gulp.src([config.locations.src.jspath])
     .pipe(notify({
       title: 'JavaScript Libraries build',
       message: 'Modernizr & Bootstrap',
@@ -483,25 +362,48 @@ gulp.task('jslibs', 'Building JavaScript Libraries, Modernizr and Bootstrap.', [
 /*Images----------------------------------------------------------------------------------------------*/
 //Images - Optimizes images (JPG, PNG, GIF and SVG)
 gulp.task('images', 'Optimizes images (JPG, PNG, GIF and SVG).', function(){
-  return gulp.src(imagepathsrc + '**/*')
+  return gulp.src(config.locations.src.imagespath + '**/*')
     .pipe(bytediff.start())
-    .pipe(cache(imagemin({
-      progressive: imagejpgprogressive, //JPEG
-      optimizationLevel: imagepngoptimizationlevel, //PNG
-      interlaced: imagegifinterlaced, //GIF
-      svgoPlugins: [{
-        removeViewBox: false
-      }],
-      use: [pngquant()]
-    })))
+    .pipe(cache(imagemin([
+      imagemin.gifsicle({
+        interlaced: config.images.gif.interlaced,
+        optimizationLevel: config.images.gif.optimizationlevel
+      }),
+      imageminJpegoptim({
+        progressive: config.images.jpeg.progressive,
+        max: config.images.jpeg.max
+      }),
+      imageminPngquant({
+        floyd: config.images.png.floyd,
+        nofs: config.images.png.nofs,
+        quality: config.images.png.quality,
+        speed: config.images.png.speed,
+        verbose: config.images.png.verbose
+      }),
+      imagemin.svgo()
+    ])))
     .pipe(bytediff.stop())
     .pipe(sizereport({
       gzip: false,
       '*': {
-        'maxSize': maxsizeimages
+        'maxSize': config.quality.maxsize.images
       },
     }))
-    .pipe(gulp.dest(imagepathdist))
+    .pipe(gulp.dest(config.locations.dist.imagespath))
+    .pipe(gulpif(config.images.webp.use == true, imagemin([
+      imageminWebp({
+        preset: config.images.webp.preset,
+        quality: config.images.webp.quality,
+        alphaQuality: config.images.webp.alphaQuality,
+        method: config.images.webp.method,
+        sns: config.images.webp.sns,
+        lossless: config.images.webp.lossless
+      })
+    ])))
+    .pipe(gulpif(config.images.webp.use == true, rename({
+      extname: ".webp"
+    })))
+    .pipe(gulpif(config.images.webp.use == true, gulp.dest(config.locations.dist.imagespath)))
     .pipe(notify({
       title: 'Images Optimized',
       message: 'Image Optimalisation Complete',
@@ -514,19 +416,19 @@ gulp.task('images', 'Optimizes images (JPG, PNG, GIF and SVG).', function(){
 /*Watch----------------------------------------------------------------------------------------------*/
 //Watch - Runs configurable tasks, watches for file changes and runs sass appropriately
 gulp.task('watch', 'Watches for file changes and runs sass appropriately.', function (cb) {
-  gulpSequence(watchtasks,  'browsersync', cb)
-  gulp.watch(scsspathsrc + '/**/*.s+(a|c)ss', ['sass']);
-  gulp.watch(scsspathsrc + '/**/*.s+(a|c)ss', gulpif(watchlintscss == true,(['sasslint'])));
-  gulp.watch(jspathsrc + '**/*.js', gulpif(watchjs == true,(['jslint'])));
-  gulp.watch(imagepathsrc + '**/*', gulpif(watchimages == true,(['images'])));
+  gulpSequence(config.taskconfig.watchtasks,  'browsersync', cb)
+  gulp.watch(config.locations.src.scsspath + '/**/*.s+(a|c)ss', ['sass']);
+  gulp.watch(config.locations.src.scsspath + '/**/*.s+(a|c)ss', gulpif(config.taskconfig.watch.lintscss == true,(['sasslint'])));
+  gulp.watch(config.locations.src.jspath + '**/*.js', gulpif(config.taskconfig.watch.javascript == true,(['jslint'])));
+  gulp.watch(config.locations.src.imagespath + '**/*', gulpif(config.taskconfig.watch.images == true,(['images'])));
   //Browsersync
-  gulp.watch(imagepathsrc + '**/*', gulpif(bswatchimages == true,(browserSync.reload)));
-  gulp.watch(jspathdist + '**/*', gulpif(bswatchjs == true,(browserSync.reload)));
-  gulp.watch(iconspathsrc + '**/*', gulpif(bswatchicons == true,(browserSync.reload)));
-  gulp.watch(fontspathsrc + '**/*', gulpif(bswatchfonts == true,(browserSync.reload)));
-  gulp.watch(templatepathsrc + '**/*', gulpif(bswatchtemplate == true,(browserSync.reload)));
-  gulp.watch(functionspathsrc + '**/*.php', gulpif(bswatchphpfunctions == true,(browserSync.reload)));
-  gulp.watch(themeroot + '**/*.yml', gulpif(bswatchyaml == true,(browserSync.reload)));
+  gulp.watch(config.locations.src.imagespath + '**/*', gulpif(config.browsersync.watch.images == true,(browserSync.reload)));
+  gulp.watch(config.locations.dist.jspath + '**/*', gulpif(config.browsersync.watch.javascript == true,(browserSync.reload)));
+  gulp.watch(config.locations.src.iconspath + '**/*', gulpif(config.browsersync.watch.icons == true,(browserSync.reload)));
+  gulp.watch(config.locations.src.fontspath + '**/*', gulpif(config.browsersync.watch.fonts == true,(browserSync.reload)));
+  gulp.watch(config.locations.src.templatepath + '**/*', gulpif(config.browsersync.watch.template == true,(browserSync.reload)));
+  gulp.watch(config.locations.src.functionspath + '**/*.php', gulpif(config.browsersync.watch.phpfunctions == true,(browserSync.reload)));
+  gulp.watch(config.general.themeroot + '**/*.yml', gulpif(config.browsersync.watch.yaml == true,(browserSync.reload)));
 });
 /*---------------------------------------------------------------------------------------------------*/
 
@@ -549,37 +451,37 @@ gulp.task('colorblind', 'Simulate colorblindness', function(){
         choices: ['Protanomaly', 'Protanopia', 'Deuteranomaly', 'Deuteranopia', 'Tritanomaly', 'Tritanopia', 'Achromatomaly', 'Achromatopsia']
       }, function(res){
         var processors = [ colorblind({method:res.colorblindnessvariation}) ];
-        return gulp.src(scsspathsrc + '/' + '**/*.s+(a|c)ss')
-          .pipe(gulpif(csscompass != true,sass()))
-          .pipe(gulpif(csscompass == true,sass({ importer: compass }).on('error', sass.logError)))
+        return gulp.src(config.locations.src.scsspath + '/' + '**/*.s+(a|c)ss')
+          .pipe(gulpif(config.css.compass != true,sass()))
+          .pipe(gulpif(config.css.compass == true,sass({ importer: compass }).on('error', sass.logError)))
           .pipe(postcss(processors))
           .pipe(plumber())
-          .pipe(gulp.dest(csspathdist))
-          .pipe(gulpif(cssminify == true, bytediff.start()))
-          .pipe(gulpif(cssminify == true, nano()))
-          .pipe(gulpif(cssminify == true,rename(function (path) {
+          .pipe(gulp.dest(config.locations.dist.csspath))
+          .pipe(gulpif(config.css.minify == true, bytediff.start()))
+          .pipe(gulpif(config.css.minify == true, nano()))
+          .pipe(gulpif(config.css.minify == true,rename(function (path) {
             path.basename += ".min";
           })))
-          .pipe(gulpif(cssminify == true, gulp.dest(csspathdist)))
-          .pipe(gulpif(cssminify == true, bytediff.stop()))
-          .pipe(gulpif(cssgzip == true, bytediff.start()))
-          .pipe(gulpif(cssgzip == true,gzip()))
-          .pipe(gulpif(cssgzip == true, gulp.dest(csspathdist)))
-          .pipe(gulpif(cssgzip == true, bytediff.stop()))
+          .pipe(gulpif(config.css.minify == true, gulp.dest(config.locations.dist.csspath)))
+          .pipe(gulpif(config.css.minify == true, bytediff.stop()))
+          .pipe(gulpif(config.css.gzip == true, bytediff.start()))
+          .pipe(gulpif(config.css.gzip == true,gzip()))
+          .pipe(gulpif(config.css.gzip == true, gulp.dest(config.locations.dist.csspath)))
+          .pipe(gulpif(config.css.gzip == true, bytediff.stop()))
           .pipe(plumber.stop())
       }
     ))
 });
 
 gulp.task('pa11y', 'Perform a accessibility Audit on your site', pa11y({
-  url: projectpath,
-  standard: pa11y_standard,
-  failOnError: pa11y_failOnError,
-  showFailedOnly: pa11y_showFailedOnly,
-  reporter: pa11y_reporter,
-  htmlcs: pa11y_htmlcs,
-  config: pa11y_config,
-  timeout: pa11y_timeout,
+  url: config.general.projectpath,
+  standard: config.accessibility.pa11y.standard,
+  failOnError: config.accessibility.pa11y.failonerror,
+  showFailedOnly: config.accessibility.pa11y.showfailedonly,
+  reporter: config.accessibility.pa11y.reporter,
+  htmlcs: config.accessibility.pa11y.htmlcs,
+  config: config.accessibility.pa11y.config,
+  timeout: config.accessibility.pa11y.timeout,
 }));
 /*---------------------------------------------------------------------------------------------------*/
 
@@ -590,7 +492,7 @@ gulp.task('sizereport','Create a sizereport of your project', function () {
     .pipe(sizereport({
       gzip: true,
       '*': {
-        'maxSize': maxsize
+        'maxSize': config.quality.maxsize.maxsize
       },
     }));
 });
