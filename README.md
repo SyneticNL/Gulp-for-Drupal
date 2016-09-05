@@ -21,7 +21,6 @@ This gulp setup features a full Drupal Gulp workflow for proccesing your SCSS fi
 |modernizr      |Create modernizr file from SCSS selectors and Javascript   |
 |parker         |Analyse your CSS files with parker                         |
 |pa11y          |Perform a accessibility Audit on your site                 |
-|preen          |Remove unneeded files from bower components                |
 |sass           |Compile Sass, create sourcemaps, autoprefix and minify.    |
 |sasslint       |validate your SASS Aliases                                 |
 |share          |Run server to share progress                               |
@@ -30,7 +29,7 @@ This gulp setup features a full Drupal Gulp workflow for proccesing your SCSS fi
 |watch          |Watches for file changes and runs sass appropriately.      |
 
 ## Installation
-Make sure you have installed [nodejs](https://nodejs.org/en/) and install gulp-cli globally `npm install gulp-cli -g`. After this move the gulpfiles to your drupal theme and run `npm install`, this will install all the necessary packages. After installation, Windows users should go to the `node_modules` folder and search for `.info` files and remove those, otherwise you wil get conflicts with Browsersync and several administation pages within Drupal.
+Make sure you have installed [nodejs](https://nodejs.org/en/). after this run  `npm install gulp-cli bower bower-installer -g` in your terminal. After this move the gulpfiles to your drupal theme and run `npm install`, this will install all the necessary packages. After installation, Windows users should go to the `node_modules` folder and search for `.info` files and remove those, otherwise you wil get conflicts with Browsersync and several administation pages within Drupal.
 To use browsersync with Drupal, you should install the [Browsersync module] (https://www.drupal.org/project/browsersync) and activiate this in your theme.
 ### Included files
 * gulpfile.js
@@ -122,7 +121,8 @@ The gulp setup is made to be fully configurable by changing the settings in `gul
 |_webp_         |method                     | Set speed between 0 and 6 (6 better optimization but slower, 0 is fastest)|
 |_webp_         |sns                        | Set the amplitude of spatial noise shaping between 0 and 100.|
 |_webp_         |lossless                   | Encode images losslessly.|
-|**libraries**  |                           | Installing libraries via Bower by running Gulp installlibs, this will add the libraries to your package.json                             |
+|**libraries**  |                           ||
+|               |path                       | Path where bower-installer puts your installed libraries, needs to be the same as configured in your bower.json file.|
 |_bower_        |path                       | here to install bower components (default: bower_components)                                                                             |
 |_bower_        |interactive                | enable prompting from bower                                                                                                              |
 |_bower_        |verbosity                  | set verbosity level (0 = no output, 1 = error output, 2 = info)                                                                          |
@@ -161,8 +161,13 @@ The gulp setup is made to be fully configurable by changing the settings in `gul
 |_pa11y_        |htmlcs                     |The URL to source HTML_CodeSniffer from                                                                                                   |
 |_pa11y_        |config                     |The path to a JSON config file or a config object                                                                                         |
 |_pa11y_        |timeout                    |he number of milliseconds before a timeout error occurs.                                                                                  |
+
+###bower.json
+You can configure bower via the bower.json file. Here you can change the library path, select which files you want bower-installer to use (if not the default files) and edit dependency versions.
+To install bower components, run `bower install <package>` and to uninstall `bower uninstall <package>`
+
 ###.sass-lint.yml
 The SASS / SCSS linter is configurable from a separate file, all the settings are described inside `.sass-lint.yml`.
 
 _Created by Synetic_
-_README.md updated on 2016-09-01 version 1.6.0_
+_README.md updated on 2016-09-01 version 1.7.0_

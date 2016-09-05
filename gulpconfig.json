@@ -1,7 +1,7 @@
 {
-  "version": "2.9.0",
-  "versiondate": "2016-09-01",
-  "gulpfileversion": "3.0.0",
+  "version": "2.9.1",
+  "versiondate": "2016-09-05",
+  "gulpfileversion": "3.1.0",
   "general" : {
     "projectpath" : "example.dev/",
     "logopath" : "images/logos/logo.png",
@@ -121,6 +121,7 @@
     }
   },
   "libraries" : {
+    "path" : "libs",
     "bower" : {
       "path" : "bower_components",
       "interactive" : true,

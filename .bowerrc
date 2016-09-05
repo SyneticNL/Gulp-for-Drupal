@@ -1,0 +1,14 @@
+{
+  "bowerrcversion": "1.0.0",
+  "versiondate": "2016-09-05",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "scripts": {
+    "postinstall": "bower-installer"
+  }
+}

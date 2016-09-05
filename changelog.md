@@ -1,14 +1,36 @@
-_Gulp for Drupal Changelog version 2.3.0 2016-09-01_
+_Gulp for Drupal Changelog version 2.4.0 2016-09-05_
 #### included Gulp files:
-    - gulpfile.js       (3.0.0) (2016-09-01)
-    - gulpconfig.json   (2.9.0) (2016-09-01)
+    - gulpfile.js       (3.1.0) (2016-09-05)
+    - gulpconfig.json   (2.9.1) (2016-09-05)
     - package.json      (2.8.0) (2016-09-01)
-    - bower.json        (1.0.0) (2016-08-29)
+    - bower.json        (1.1.0) (2016-08-29)
     - .npmrc            (1.0.0) (2016-03-08)
+    - .bowerrc          (1.0.0) (2016-09-05)
     - .sass-lint.yml    (1.0.1) (2016-06-24)
     - .eslintrc         (1.1.0) (2016-07-01)
-    - .gitignore        (1.1.0) (2016-06-24)
-    - README.md         (1.6.0) (2016-09-01)
+    - .gitignore        (1.2.0) (2016-09-05)
+    - README.md         (1.7.0) (2016-09-05)
+
+#### 2016-09-05 - Bower update
+    bower.json 1.1.0
+    .bowerrc 1.0.0
+    gulpfile.js 3.0.1
+    gulpconfig.json 2.9.1
+    .gitignore 1.2.0
+    README.md 1.7.0
+    
+    - use bower installer for managing bower files (install via 'npm install bower-installer -g')
+    - moved static configuration to .bowerrc file (eg postinstall and ignore)
+    - removed preen
+    - changed bootstrap gulp tasks to new library folder
+    - added bower_components to gitignore
+    - Added bower configuration instructions to readme
+    
+    NOTES: Make sure you install bower-installer globally ('npm install bower-installer -g'). 
+    after 'bower install' bower installer wil run to copy al necessary files to your library folder. 
+    To configure the library folder edit the base inside bower.json. 
+    if you want different files from your bower component add to install - sources in bower.json 
+    
 
 #### 2016-09-01 - Variable cleanup
     gulpfile.js 3.0.0

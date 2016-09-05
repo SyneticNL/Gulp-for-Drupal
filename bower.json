@@ -1,37 +1,28 @@
 {
-  "name": "Gulp-for-Drupal",
-  "version": "1.0.0",
-  "versiondate": "2016-08-29",
-  "description": "Project with Gulp",
-  "main": "gulpfile.js",
-  "authors": [
-    "Synetic"
-  ],
-  "license": "GNU",
-  "keywords": [
-    "Synetic",
-    "Gulp",
-    "Drupal7"
-  ],
-  "homepage": "https://github.com/SyneticNL/Gulp-for-Drupal",
-  "ignore": [
-    "**/.*",
-    "node_modules",
-    "bower_components",
-    "test",
-    "tests"
-  ],
+  "name": "gulp-for-drupal",
+  "version": "1.1.0",
+  "versiondate": "2016-09-05",
   "dependencies": {
-    "bootstrap": "v4.0.0-alpha.3"
+    "bootstrap": "v4.0.0-alpha.3",
+    "normalize-css": "normalize.css#^4.2.0"
   },
-  "preen": {
-    "bootstrap": [
-      "js/dist/*.js",
-      "scss/*",
-      "CHANGELOG.md"
-    ],
-    "jquery": [
-      "*.js"
-    ]
+  "install": {
+    "sources": {
+      "bootstrap": [
+        "bower_components/bootstrap/js/dist/**",
+        "bower_components/bootstrap/scss/**"
+      ]
+    },
+    "base": "libs",
+    "path": {
+      "js": "js/{name}",
+      "css": "css{name}",
+      "/[sc|le]ss$/": "scss/{name}",
+      "eot": "fonts/{name}",
+      "svg": "fonts/{name}",
+      "ttf": "fonts/{name}",
+      "woff": "fonts/{name}",
+      "map": "sourcemaps/{name}"
+    }
   }
 }
