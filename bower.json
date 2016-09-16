@@ -1,9 +1,9 @@
 {
   "name": "gulp-for-drupal",
-  "version": "1.1.0",
-  "versiondate": "2016-09-05",
+  "version": "1.1.1",
+  "versiondate": "2016-09-16",
   "dependencies": {
-    "bootstrap": "v4.0.0-alpha.3",
+    "bootstrap": "v4.0.0-alpha.4",
     "normalize-css": "normalize.css#^4.2.0"
   },
   "install": {

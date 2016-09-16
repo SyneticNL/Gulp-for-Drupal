@@ -1,7 +1,7 @@
 {
-  "version": "2.9.1",
-  "versiondate": "2016-09-05",
-  "gulpfileversion": "3.1.0",
+  "version": "2.9.2",
+  "versiondate": "2016-09-16",
+  "gulpfileversion": "3.1.1",
   "general" : {
     "projectpath" : "example.dev/",
     "logopath" : "images/logos/logo.png",
@@ -77,16 +77,15 @@
     "minify" : false,
     "gzip" : false,
     "bootstrap" : {
-      "path": "js/bootstrap/src/",
-      "alertjs": true,
-      "buttonjs": true,
-      "carouseljs": true,
-      "collapsejs": true,
-      "dropdownjs": true,
-      "modaljs": true,
-      "popoverjs": true,
-      "scrollspyjs": true,
-      "tabjs": true,
+      "alertjs": false,
+      "buttonjs": false,
+      "carouseljs": false,
+      "collapsejs": false,
+      "dropdownjs": false,
+      "modaljs": false,
+      "popoverjs": false,
+      "scrollspyjs": false,
+      "tabjs": false,
       "tooltipjs": false
     },
     "modernizr" : {

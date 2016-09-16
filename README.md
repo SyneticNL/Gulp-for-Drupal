@@ -100,7 +100,6 @@ The gulp setup is made to be fully configurable by changing the settings in `gul
 |_sourcemaps_   |sourcemappingurlprefix     | Specify a prefix to be prepended onto the source map URL when writing external source maps.                                              |
 |_sourcemaps_   |minify                     | Minify JavaScript, this removes comments, linebreaks and spaces                                                                          |
 |_sourcemaps_   |gzip                       | Compress JavaScript using Gzip                                                                                                           |
-|_bootstrap_    |path                       |                                                                                                                                          |
 |_bootstrap_    |alertjs, buttonjs, carouseljs, collapsejs, dropdownjs, popoverjs, scrollspyjs, tabjs, tooltipjs| True or false if you want to include these in your bootstrap.js file |
 |_modernizr_    |alwaysinclude              | Which tests do you always want to include in modernizr (The default test are nessecary for modernizr to work correctly)                  |
 |_modernizr_    |alwaysexclude              | Exclude tests from your modernizr file, useful if you use the same classes                                                               |
@@ -170,4 +169,4 @@ To install bower components, run `bower install <package>` and to uninstall `bow
 The SASS / SCSS linter is configurable from a separate file, all the settings are described inside `.sass-lint.yml`.
 
 _Created by Synetic_
-_README.md updated on 2016-09-01 version 1.7.0_
+_README.md updated on 2016-09-01 version 1.7.1_

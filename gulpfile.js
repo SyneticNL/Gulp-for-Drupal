@@ -1,5 +1,5 @@
 /*==========================================================================
- Gulp for Drupal Gulpfile.js version 3.1.0 2016-09-05
+ Gulp for Drupal Gulpfile.js version 3.1.1 2016-09-16
  ===========================================================================*/
 var
   gulp = require('gulp-help')(require('gulp')),
@@ -17,7 +17,6 @@ var
   colorblind = require("postcss-colorblind"), //PostCSS colorblind module to improve accessibility for colorblindness
   compass = require('compass-importer'), //Add ability for compass mixins
   concat = require('gulp-concat'), //Concat files
-  debug = require('gulp-debug'), //returns files in stream
   eslint = require('gulp-eslint'), //Lint JavaScript with ESlint
   filter = require('gulp-filter'), //Filter stream
   gulpif = require('gulp-if'), //conditional tasks
@@ -46,8 +45,7 @@ var
   sourcemaps = require('gulp-sourcemaps'), // creates sourcemaps in css files
   Table = require('cli-table'), // create tables in console
   uglify = require('gulp-uglify'), // minifies javascript
-  UglifyJS = require('uglify-js'), //Library to minify JavaScript files
-  $ = require('gulp-load-plugins')(); //dynamically load gulp plugins
+  UglifyJS = require('uglify-js'); //Library to minify JavaScript files
 
 var reload = browserSync.reload;
 
@@ -155,10 +153,10 @@ gulp.task('specificity','Create a specificity graph for CSS', function() {
   return gulp.src('', {
     read: false
   })
-    .pipe($.shell([
+    .pipe(shell([
       'specificity-graph ' + config.locations.dist.csspath + config.css.mainscssfile + '.css -o ' + config.css.specificitygraphlocation,
     ]))
-    .pipe($.notify({
+    .pipe(notify({
       title: "Caches cleared",
       message: "Drupal Caches cleared.",
       onLast: true
@@ -210,7 +208,7 @@ gulp.task('share', 'Run server to share progress.', function() {
 /*Javascript-----------------------------------------------------------------------------------------*/
 // JS Lint
 gulp.task('jslint', 'JavaScript checker.', function() {
-  return gulp.src([config.locations.src.jspath + '**/*.js', '!' + config.js.bootstrap.path + '**/*.js', '!' + config.js.jslibspath + '**/*.js', '!' + config.js.jspluginspath + '**/*.js','!node_modules/**'])
+  return gulp.src([config.locations.src.jspath + '**/*.js', '!' + config.js.jslibspath + '**/*.js', '!' + config.js.jspluginspath + '**/*.js','!node_modules/**'])
     .pipe(reload({
       stream: true,
       once: true
@@ -242,7 +240,7 @@ gulp.task('getbootstrapcss', 'Get Bootstrap SCSS files.', function () {
 //Bootstrap - generate bootstrap javascript file, also uglified
 gulp.task('bootstrapjs', 'Generate bootstrap javascript file, also uglified.', function () {
   const filter__sourcemaps = filter(['**/*.js', '!**/*.map']);
-  return gulp.src([config.libraries.path + "/bootstrap/js/dist/util.js"])
+  return gulp.src([config.libraries.path + "js/bootstrap/util.js"])
     .pipe(plumber())
     .pipe(gulpif(config.js.bootstrap.alertjs == true, (addsrc(config.libraries.path + "/js/bootstrap/alert.js"))))
     .pipe(gulpif(config.js.bootstrap.buttonjs == true, (addsrc(config.libraries.path + "/js/bootstrap/button.js"))))
@@ -275,7 +273,6 @@ gulp.task('bootstrapjs', 'Generate bootstrap javascript file, also uglified.', f
       "**/*/tooltip.js",
       "**/*/popover.js"
     ], { base: './' }))
-    .pipe(debug({title: 'Using file:'}))
     .pipe(concat('bootstrap.js'))
     .pipe(gulpif(config.js.sourcemaps.sourcemaps == true, sourcemaps.write(config.js.sourcemaps.location, {
       addComment: config.js.sourcemaps.addcomment,
