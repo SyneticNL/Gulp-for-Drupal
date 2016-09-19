@@ -65,7 +65,7 @@ gulp.task('sass', 'Compile Sass, create sourcemaps, autoprefix and minify.',[], 
   };
   var filter_sourcemaps = filter(['**/*','!**/*.map'], {restore: true});
   var filter_exclude = filter(config.css.exclude, {restore: false});
-  return gulp.src(config.locations.src.scsspath + '/' + '**/*.s+(a|c)ss')
+  return gulp.src([config.locations.src.scsspath + '/' + '**/*.s+(a|c)ss', '!' + config.libraries.path.scss + '/**/*' ])
     .pipe(filter_exclude)
     .pipe(plumber({errorHandler: onError}))
     .pipe(gulpif(config.css.sourcemaps.sourcemaps == true,sourcemaps.init({
@@ -126,7 +126,7 @@ gulp.task('sass', 'Compile Sass, create sourcemaps, autoprefix and minify.',[], 
 
 //SASSlinter validates your SASS
 gulp.task('sasslint', 'validate your SASS', function() {
-  return gulp.src(config.locations.src.scsspath + '/' + '**/*.s+(a|c)ss')
+  return gulp.src([config.locations.src.scsspath + '/' + '**/*.s+(a|c)ss', '!' + config.libraries.path.scss + '/**/*'])
     .pipe(sassLint({
       options: {
       },
@@ -138,7 +138,7 @@ gulp.task('sasslint', 'validate your SASS', function() {
 
 //Parker Stylesheet analysis
 gulp.task('parker', 'Analyse your CSS files with parker', function() {
-  return gulp.src(config.locations.src.scsspath + '/' + '**/*.s+(a|c)ss')
+  return gulp.src([config.locations.src.scsspath + '/' + '**/*.s+(a|c)ss', '!' + config.libraries.path.scss + '/**/*'])
     .pipe(gulpif(config.css.compass != true,sass()))
     .pipe(gulpif(config.css.compass == true,sass({ importer: compass }).on('error', sass.logError)))
     .pipe(gulpif(config.css.parker.log == true,parker({
@@ -154,14 +154,15 @@ gulp.task('specificity','Create a specificity graph for CSS', function() {
     read: false
   })
     .pipe(shell([
-      'specificity-graph ' + config.locations.dist.csspath + config.css.mainscssfile + '.css -o ' + config.css.specificitygraphlocation,
+      'specificity-graph ' + config.locations.dist.csspath + '*.css -o ' + config.css.specificitygraphlocation,
     ]))
     .pipe(notify({
-      title: "Caches cleared",
-      message: "Drupal Caches cleared.",
+      title: "Specificity Graph",
+      message: "Graph Created",
       onLast: true
     }));
 });
+
 /*---------------------------------------------------------------------------------------------------*/
 
 /*Browsersync-----------------------------------------------------------------------------------------*/
@@ -173,7 +174,7 @@ gulp.task('browsersync', 'Run server with syncronized screens on multiple device
     logLevel: config.browsersync.loglevel,
     logFileChanges: config.browsersync.logfilechanges,
   });
-  return gulp.src(config.locations.src.scsspath + '/' + config.css.mainscssfile + '.s+(a|c)ss')
+  return gulp.src('./', {read: false})
     .pipe(plumber())
     .pipe(notify({
       title: "Browsersync Started",
@@ -196,7 +197,7 @@ gulp.task('share', 'Run server to share progress.', function() {
     port: config.share.port,
     proxy: config.general.projectpath,
   });
-  return gulp.src(config.locations.src.scsspath + '/' + config.css.mainscssfile + '.s+(a|c)ss')
+  return gulp.src('./', {read: false})
     .pipe(notify({
       title: "Server started",
       message: "Share server started on port: " + config.share.port,
@@ -208,7 +209,7 @@ gulp.task('share', 'Run server to share progress.', function() {
 /*Javascript-----------------------------------------------------------------------------------------*/
 // JS Lint
 gulp.task('jslint', 'JavaScript checker.', function() {
-  return gulp.src([config.locations.src.jspath + '**/*.js', '!' + config.js.jslibspath + '**/*.js', '!' + config.js.jspluginspath + '**/*.js','!node_modules/**'])
+  return gulp.src([config.locations.src.jspath + '**/*.js', '!' + config.libraries.path.js + '**/*.js', '!' + config.js.jspluginspath + '**/*.js','!node_modules/**'])
     .pipe(reload({
       stream: true,
       once: true
@@ -231,28 +232,22 @@ gulp.task('bower', 'Install libraries via Bower', function() {
   })
 });
 
-//Get Bootstrap CSS from bower components
-gulp.task('getbootstrapcss', 'Get Bootstrap SCSS files.', function () {
-  gulp.src(config.libraries.path + '/scss/bootstrap/**/*.scss')
-    .pipe(gulp.dest(config.css.bootstrap.path));
-});
-
 //Bootstrap - generate bootstrap javascript file, also uglified
 gulp.task('bootstrapjs', 'Generate bootstrap javascript file, also uglified.', function () {
   const filter__sourcemaps = filter(['**/*.js', '!**/*.map']);
-  return gulp.src([config.libraries.path + "js/bootstrap/util.js"])
+  return gulp.src([config.libraries.path.js + "js/bootstrap/util.js"])
     .pipe(plumber())
-    .pipe(gulpif(config.js.bootstrap.alertjs == true, (addsrc(config.libraries.path + "/js/bootstrap/alert.js"))))
-    .pipe(gulpif(config.js.bootstrap.buttonjs == true, (addsrc(config.libraries.path + "/js/bootstrap/button.js"))))
-    .pipe(gulpif(config.js.bootstrap.carouseljs == true, (addsrc(config.libraries.path + "/js/bootstrap/carousel.js"))))
-    .pipe(gulpif(config.js.bootstrap.collapsejs == true, (addsrc(config.libraries.path + "/js/bootstrap/collapse.js"))))
-    .pipe(gulpif(config.js.bootstrap.dropdownjs == true, (addsrc(config.libraries.path + "/js/bootstrap/dropdown.js"))))
-    .pipe(gulpif(config.js.bootstrap.modaljs == true, (addsrc(config.libraries.path + "/js/bootstrap/modal.js"))))
-    .pipe(gulpif(config.js.bootstrap.popoverjs == true, (addsrc(config.libraries.path + "/js/bootstrap/popover.js"))))
-    .pipe(gulpif(config.js.bootstrap.scrollspyjs == true, (addsrc(config.libraries.path + "/js/bootstrap/scrollspy.js"))))
-    .pipe(gulpif(config.js.bootstrap.tabjs == true, (addsrc(config.libraries.path + "/js/bootstrap/tab.js"))))
-    .pipe(gulpif(config.js.bootstrap.tooltipjs == true, (addsrc(config.libraries.path + "/js/tether/tether.js"))))
-    .pipe(gulpif(config.js.bootstrap.tooltipjs == true, (addsrc(config.libraries.path + "/js/bootstrap/tooltip.js"))))
+    .pipe(gulpif(config.js.bootstrap.alertjs == true, (addsrc(config.libraries.path.js + "/js/bootstrap/alert.js"))))
+    .pipe(gulpif(config.js.bootstrap.buttonjs == true, (addsrc(config.libraries.path.js + "/js/bootstrap/button.js"))))
+    .pipe(gulpif(config.js.bootstrap.carouseljs == true, (addsrc(config.libraries.path.js + "/js/bootstrap/carousel.js"))))
+    .pipe(gulpif(config.js.bootstrap.collapsejs == true, (addsrc(config.libraries.path.js + "/js/bootstrap/collapse.js"))))
+    .pipe(gulpif(config.js.bootstrap.dropdownjs == true, (addsrc(config.libraries.path.js + "/js/bootstrap/dropdown.js"))))
+    .pipe(gulpif(config.js.bootstrap.modaljs == true, (addsrc(config.libraries.path.js + "/js/bootstrap/modal.js"))))
+    .pipe(gulpif(config.js.bootstrap.popoverjs == true, (addsrc(config.libraries.path.js + "/js/bootstrap/popover.js"))))
+    .pipe(gulpif(config.js.bootstrap.scrollspyjs == true, (addsrc(config.libraries.path.js + "/js/bootstrap/scrollspy.js"))))
+    .pipe(gulpif(config.js.bootstrap.tabjs == true, (addsrc(config.libraries.path.js + "/js/bootstrap/tab.js"))))
+    .pipe(gulpif(config.js.bootstrap.tooltipjs == true, (addsrc(config.libraries.path.js + "/js/tether/tether.js"))))
+    .pipe(gulpif(config.js.bootstrap.tooltipjs == true, (addsrc(config.libraries.path.js + "/js/bootstrap/tooltip.js"))))
     .pipe(filter__sourcemaps)
     .pipe(gulpif(config.js.sourcemaps.sourcemaps == true, sourcemaps.init({
       loadMaps: config.js.sourcemaps.loadmaps,
@@ -286,7 +281,7 @@ gulp.task('bootstrapjs', 'Generate bootstrap javascript file, also uglified.', f
       charset: config.js.sourcemaps.charset,
     })))
     .pipe(plumber.stop())
-    .pipe(gulp.dest(config.js.jslibspath))
+    .pipe(gulp.dest(config.libraries.path.js))
     .pipe(sizereport({
       minifier: function (contents, filepath) {
         if (filepath.match(/\.min\./g)) {
@@ -303,19 +298,19 @@ gulp.task('bootstrapjs', 'Generate bootstrap javascript file, also uglified.', f
     .pipe(gulpif(config.js.minify == true, rename(function (path) {
       path.basename += ".min";
     })))
-    .pipe(gulpif(config.js.minify == true, gulp.dest(config.js.jslibspath)))
+    .pipe(gulpif(config.js.minify == true, gulp.dest(config.libraries.path.js)))
     .pipe(gulpif(config.js.gzip == true, gzip()))
-    .pipe(gulpif(config.js.gzip == true, gulp.dest(config.js.jslibspath)))
+    .pipe(gulpif(config.js.gzip == true, gulp.dest(config.libraries.path.js)))
 });
 
 //Modernizr - Create modernizr file from SCSS selectors and Javascript, Also uglified the file
 gulp.task('modernizr', 'Create modernizr file from SCSS selectors and Javascript, Also uglified the file.', function() {
-  gulp.src([config.locations.src.jspath + '**/*.js', config.locations.src.scsspath + '/**/*.s+(a|c)ss', '!' + config.js.jslibspath + '**/*.js'])
+  gulp.src([config.locations.src.jspath + '**/*.js', config.locations.src.scsspath + '/**/*.s+(a|c)ss', '!' + config.libraries.path.js + '**/*.js'])
     .pipe(modernizr({
       excludeTests: config.js.modernizr.alwaysexclude,
       options : config.js.modernizr.alwaysinclude,
     }))
-    .pipe(gulp.dest(config.js.jslibspath))
+    .pipe(gulp.dest(config.libraries.path.js))
     .pipe(sizereport({
       minifier: function (contents, filepath) {
         if (filepath.match(/\.min\./g)) {
@@ -332,15 +327,15 @@ gulp.task('modernizr', 'Create modernizr file from SCSS selectors and Javascript
     .pipe(gulpif(config.js.minify == true,rename(function (path) {
       path.basename += ".min";
     })))
-    .pipe(gulpif(config.js.minify == true,gulp.dest(config.js.jslibspath)))
+    .pipe(gulpif(config.js.minify == true,gulp.dest(config.libraries.path.js)))
     .pipe(gulpif(config.js.gzip == true,gzip()))
-    .pipe(gulpif(config.js.gzip == true,gulp.dest(config.js.jslibspath)))
+    .pipe(gulpif(config.js.gzip == true,gulp.dest(config.libraries.path.js)))
 });
 
 //JS - Building JavaScript Libraries, Modernizr and Bootstrap
 gulp.task('jslibs', 'Building JavaScript Libraries, Modernizr and Bootstrap.', ['modernizr', 'bootstrapjs'], function (){
   console.log('Building JavaScript Libraries')
-  gulp.src([config.locations.src.jspath])
+  gulp.src([config.locations.src.jspath, '!' + config.libraries.path.js])
     .pipe(notify({
       title: 'JavaScript Libraries build',
       message: 'Modernizr & Bootstrap',

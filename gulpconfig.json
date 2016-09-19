@@ -1,7 +1,7 @@
 {
-  "version": "2.9.2",
-  "versiondate": "2016-09-16",
-  "gulpfileversion": "3.1.1",
+  "version": "2.10.0",
+  "versiondate": "2016-09-19",
+  "gulpfileversion": "3.2.0",
   "general" : {
     "projectpath" : "example.dev/",
     "logopath" : "images/logos/logo.png",
@@ -24,7 +24,6 @@
     }
   },
   "css" : {
-    "mainscssfile" : "styles",
     "browsersupport": ["last 25 versions"],
     "minify" : false,
     "gzip" :  false,
@@ -45,9 +44,6 @@
       "destpath" : "",
       "sourcemappingurlprefix" : ""
     },
-    "bootstrap" : {
-      "path" : "scss/boostrap/"
-    },
     "linter" : {
       "config" : ".sass-lint.yml"
     },
@@ -57,7 +53,6 @@
     }
   },
   "js" : {
-    "jslibspath" : "js/libs/",
     "jspluginspath" : "js/plugins/",
     "eslint" : {
       "configlocation" : ".eslintrc"
@@ -120,7 +115,10 @@
     }
   },
   "libraries" : {
-    "path" : "libs",
+    "path" : {
+      "js" : "js/libs",
+      "scss" : "scss/libs"
+    },
     "bower" : {
       "path" : "bower_components",
       "interactive" : true,

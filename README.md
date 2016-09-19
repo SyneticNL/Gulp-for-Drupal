@@ -1,10 +1,31 @@
 #Gulp for Drupal
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
 
-##Features
+- [Features](#features)
+- [Installation](#installation)
+- [Tasks](#tasks)
+- [Configuration](#configuration)
+  - [Gulpconfig.json](#gulpconfigjson)
+  - [bower.json](#bowerjson)
+  - [.sass-lint.yml](#sass-lintyml)
+- [Included files](#included-files)
 
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+___
+## Features
 This gulp setup features a full Drupal Gulp workflow for proccesing your SCSS files, running browsersync, linting SCSS and JavaScript, optimizing images and several other tasks. This Gulp setup is made to work with Drupal (tested with Drupal 7 & 8) but can also be configured to work with any other project. The setup is fully configurable by customizing the settings in gulpconfig.json.
 
-##Tasks
+## Installation
+- Install [nodejs](https://nodejs.org/en/)
+- Run `npm install gulp-cli bower bower-installer -g` in your terminal
+- Move the files to your theme folder
+- Run `npm install`
+- _Windows users should go to the `node_modules` folder and search for `.info` files and remove those_
+- Install the [Browsersync module] (https://www.drupal.org/project/browsersync) and activiate this in your theme
+
+## Tasks
 |Task           |Function                                                   |
 |---------------|-----------------------------------------------------------|
 |help           |Shows all available tasks                                  |             
@@ -14,7 +35,6 @@ This gulp setup features a full Drupal Gulp workflow for proccesing your SCSS fi
 |check-deps     |Check your dependencies                                    |
 |clear          |Clear Gulp images Cache                                    |
 |colorblind     |Simulate colorblindness, this overwrites your css files    |
-|getbootstrapcss|Get Bootstrap SCSS files                                   |
 |images         |Optimizes images (JPG, PNG, GIF and SVG)                   |
 |jslint         |JavaScript lint tool                                       |
 |jslibs         |Building JavaScript Libraries, Modernizr and Bootstrap.    |
@@ -28,22 +48,9 @@ This gulp setup features a full Drupal Gulp workflow for proccesing your SCSS fi
 |specificity    |Create a specificity graph for CSS                         |
 |watch          |Watches for file changes and runs sass appropriately.      |
 
-## Installation
-Make sure you have installed [nodejs](https://nodejs.org/en/). after this run  `npm install gulp-cli bower bower-installer -g` in your terminal. After this move the gulpfiles to your drupal theme and run `npm install`, this will install all the necessary packages. After installation, Windows users should go to the `node_modules` folder and search for `.info` files and remove those, otherwise you wil get conflicts with Browsersync and several administation pages within Drupal.
-To use browsersync with Drupal, you should install the [Browsersync module] (https://www.drupal.org/project/browsersync) and activiate this in your theme.
-### Included files
-* gulpfile.js
-* gulpconfig.json
-* package.json
-* bower.json
-* .npmrc
-* .sass-lint.yml
-* .eslintrc
-* .gitignore
-
-##Configuration
+## Configuration
 The gulp setup is made to be fully configurable by changing the settings in `gulpconfig.json`. If you change settings while running a task (eg. gulp watch), make sure you restart the task for the changes to work.
-###Gulpconfig.json
+### Gulpconfig.json
  
 |               |Setting                    | Explanation                                                                                                                              |
 |---------------|---------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
@@ -63,7 +70,6 @@ The gulp setup is made to be fully configurable by changing the settings in `gul
 |_dist_         |jspath                     | Destination for JavaScript files                                                                                                         |
 |_dist_         |imagespath                 | Where to put the images (WARNING: cannot be the same as src!!)                                                                           |
 |**css**        |                           |                                                                                                                                          |
-|               |mainscssfile               | Main scss/css file without extension                                                                                                     |
 |               |browsersupport             | Which browsers to support with autoprefixer                                                                                              |
 |               |minify                     | Want to minify your CSS?                                                                                                                 |
 |               |gzip                       | Compress your CSS files using Gzip.                                                                                                      |
@@ -81,12 +87,10 @@ The gulp setup is made to be fully configurable by changing the settings in `gul
 |_sourcemaps_   |charset                    | Sets the charset for inline source maps. Default: utf8                                                                                   |
 |_sourcemaps_   |destpath                   | Set the destination path (the same you pass to gulp.dest()).                                                                             |
 |_sourcemaps_   |sourcemappingurlprefix     | Specify a prefix to be prepended onto the source map URL when writing external source maps.                                              |
-|_bootstrap_    |path                       |                                                                                                                                          |
 |_linter_       |config                     | Path to sass lint config file                                                                                                            |
 |_parker_       |log                        | Want to log the parker results in a external file                                                                                        |
 |_parker_       |logname                    | Name the parkerlogfile                                                                                                                   |
 |**js**         |                           |                                                                                                                                          |
-|               |jslibspath                 | Where to put libraries as Modernizr and Bootstrap                                                                                        |
 |               |jspluginspath              | Where to put libraries as Modernizr and Bootstrap                                                                                        |
 |_sourcemaps_   |sourcemaps                 | Generate Sourcemaps for JavaScript files (Bootstrap library)                                                                             |
 |_sourcemaps_   |location                   | Where to put sourcemaps (keep empty to place inline)                                                                                     |
@@ -121,7 +125,7 @@ The gulp setup is made to be fully configurable by changing the settings in `gul
 |_webp_         |sns                        | Set the amplitude of spatial noise shaping between 0 and 100.|
 |_webp_         |lossless                   | Encode images losslessly.|
 |**libraries**  |                           ||
-|               |path                       | Path where bower-installer puts your installed libraries, needs to be the same as configured in your bower.json file.|
+|_path_         |js                         | Path where bower-installer puts your installed javascript libraries, needs to be the same as configured in your bower.json file.|
 |_bower_        |path                       | here to install bower components (default: bower_components)                                                                             |
 |_bower_        |interactive                | enable prompting from bower                                                                                                              |
 |_bower_        |verbosity                  | set verbosity level (0 = no output, 1 = error output, 2 = info)                                                                          |
@@ -161,12 +165,23 @@ The gulp setup is made to be fully configurable by changing the settings in `gul
 |_pa11y_        |config                     |The path to a JSON config file or a config object                                                                                         |
 |_pa11y_        |timeout                    |he number of milliseconds before a timeout error occurs.                                                                                  |
 
-###bower.json
+### bower.json
 You can configure bower via the bower.json file. Here you can change the library path, select which files you want bower-installer to use (if not the default files) and edit dependency versions.
-To install bower components, run `bower install <package>` and to uninstall `bower uninstall <package>`
+To install bower components, run `bower install <package> --save` and to uninstall `bower uninstall <package> --save`
 
-###.sass-lint.yml
+### .sass-lint.yml
 The SASS / SCSS linter is configurable from a separate file, all the settings are described inside `.sass-lint.yml`.
 
+## Included files
+* gulpfile.js
+* gulpconfig.json
+* package.json
+* bower.json
+* .npmrc
+* .bowerrc
+* .sass-lint.yml
+* .eslintrc
+* .gitignore
+
 _Created by Synetic_
-_README.md updated on 2016-09-01 version 1.7.1_
+_README.md updated on 2016-09-19 version 1.8.1_

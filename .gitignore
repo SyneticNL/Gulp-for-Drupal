@@ -1,7 +1,9 @@
-# gulp.gitignore - version 1.2.0 2016-09-05
+# gulp.gitignore - version 1.3.0 2016-09-19
 #
-# Drupal
-# Node_Modules
+# GULP IGNORES
 /node_modules/
 /bower_components/
-.idea/
+
+# Advised ignores
+# .idea/
+# **/*.map

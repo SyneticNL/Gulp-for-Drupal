@@ -1,7 +1,7 @@
 {
   "name": "gulp-for-drupal",
-  "version": "1.1.1",
-  "versiondate": "2016-09-16",
+  "version": "1.2.0",
+  "versiondate": "2016-09-19",
   "dependencies": {
     "bootstrap": "v4.0.0-alpha.4",
     "normalize-css": "normalize.css#^4.2.0"
@@ -13,16 +13,16 @@
         "bower_components/bootstrap/scss/**"
       ]
     },
-    "base": "libs",
+    "base": "",
     "path": {
-      "js": "js/{name}",
-      "css": "css{name}",
-      "/[sc|le]ss$/": "scss/{name}",
+      "js": "js/libs/{name}",
+      "css": "css/libs/{name}",
+      "/[sc|le]ss$/": "scss/libs/{name}",
       "eot": "fonts/{name}",
       "svg": "fonts/{name}",
       "ttf": "fonts/{name}",
-      "woff": "fonts/{name}",
-      "map": "sourcemaps/{name}"
+      "woff": "fonts/name}",
+      "map": "sourcemaps/libs/{name}"
     }
   }
 }
