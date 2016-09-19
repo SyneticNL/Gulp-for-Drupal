@@ -1,6 +1,6 @@
-_Gulp for Drupal Changelog version 2.4.1 2016-09-16_
+_Gulp for Drupal Changelog version 2.4.2 2016-09-19_
 #### included Gulp files:
-    - gulpfile.js       (3.2.0) (2016-09-16)
+    - gulpfile.js       (3.2.1) (2016-09-19)
     - gulpconfig.json   (2.10.0)(2016-09-16)
     - package.json      (2.8.0) (2016-09-01)
     - bower.json        (1.2.0) (2016-09-19)
@@ -11,6 +11,11 @@ _Gulp for Drupal Changelog version 2.4.1 2016-09-16_
     - .gitignore        (1.3.0) (2016-09-19)
     - README.md         (1.8.1) (2016-09-19)
 
+#### 2016-09-19 - Bugfix
+    gulpfile.js 3.2.1
+    
+    - Fixed wrong bootstrap js path
+
 #### 2016-09-19 - Removed getbootstrapcss
     gulpfile.js 3.2.0
     gulpconfig.json 2.10.0
@@ -18,7 +23,7 @@ _Gulp for Drupal Changelog version 2.4.1 2016-09-16_
     .gitignore 1.3.0
     README.md 1.8.1
     
-    - Removed getbootstrapcss task (we user bower installer)
+    - Removed getbootstrapcss task (we use bower installer)
     - Changed Bower libraries destination
     - Added 'Advised ignores' to gitignore (just remove # to use)
     - merged js.libraries and libraries.path settings

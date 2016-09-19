@@ -1,5 +1,5 @@
 /*==========================================================================
- Gulp for Drupal Gulpfile.js version 3.1.1 2016-09-16
+ Gulp for Drupal Gulpfile.js version 3.2.1 2016-09-16
  ===========================================================================*/
 var
   gulp = require('gulp-help')(require('gulp')),
@@ -235,19 +235,19 @@ gulp.task('bower', 'Install libraries via Bower', function() {
 //Bootstrap - generate bootstrap javascript file, also uglified
 gulp.task('bootstrapjs', 'Generate bootstrap javascript file, also uglified.', function () {
   const filter__sourcemaps = filter(['**/*.js', '!**/*.map']);
-  return gulp.src([config.libraries.path.js + "js/bootstrap/util.js"])
+  return gulp.src([config.libraries.path.js + "/bootstrap/util.js"])
     .pipe(plumber())
-    .pipe(gulpif(config.js.bootstrap.alertjs == true, (addsrc(config.libraries.path.js + "/js/bootstrap/alert.js"))))
-    .pipe(gulpif(config.js.bootstrap.buttonjs == true, (addsrc(config.libraries.path.js + "/js/bootstrap/button.js"))))
-    .pipe(gulpif(config.js.bootstrap.carouseljs == true, (addsrc(config.libraries.path.js + "/js/bootstrap/carousel.js"))))
-    .pipe(gulpif(config.js.bootstrap.collapsejs == true, (addsrc(config.libraries.path.js + "/js/bootstrap/collapse.js"))))
-    .pipe(gulpif(config.js.bootstrap.dropdownjs == true, (addsrc(config.libraries.path.js + "/js/bootstrap/dropdown.js"))))
-    .pipe(gulpif(config.js.bootstrap.modaljs == true, (addsrc(config.libraries.path.js + "/js/bootstrap/modal.js"))))
-    .pipe(gulpif(config.js.bootstrap.popoverjs == true, (addsrc(config.libraries.path.js + "/js/bootstrap/popover.js"))))
-    .pipe(gulpif(config.js.bootstrap.scrollspyjs == true, (addsrc(config.libraries.path.js + "/js/bootstrap/scrollspy.js"))))
-    .pipe(gulpif(config.js.bootstrap.tabjs == true, (addsrc(config.libraries.path.js + "/js/bootstrap/tab.js"))))
-    .pipe(gulpif(config.js.bootstrap.tooltipjs == true, (addsrc(config.libraries.path.js + "/js/tether/tether.js"))))
-    .pipe(gulpif(config.js.bootstrap.tooltipjs == true, (addsrc(config.libraries.path.js + "/js/bootstrap/tooltip.js"))))
+    .pipe(gulpif(config.js.bootstrap.alertjs == true, (addsrc(config.libraries.path.js + "/bootstrap/alert.js"))))
+    .pipe(gulpif(config.js.bootstrap.buttonjs == true, (addsrc(config.libraries.path.js + "/bootstrap/button.js"))))
+    .pipe(gulpif(config.js.bootstrap.carouseljs == true, (addsrc(config.libraries.path.js + "/bootstrap/carousel.js"))))
+    .pipe(gulpif(config.js.bootstrap.collapsejs == true, (addsrc(config.libraries.path.js + "/bootstrap/collapse.js"))))
+    .pipe(gulpif(config.js.bootstrap.dropdownjs == true, (addsrc(config.libraries.path.js + "/bootstrap/dropdown.js"))))
+    .pipe(gulpif(config.js.bootstrap.modaljs == true, (addsrc(config.libraries.path.js + "/bootstrap/modal.js"))))
+    .pipe(gulpif(config.js.bootstrap.popoverjs == true, (addsrc(config.libraries.path.js + "/bootstrap/popover.js"))))
+    .pipe(gulpif(config.js.bootstrap.scrollspyjs == true, (addsrc(config.libraries.path.js + "/bootstrap/scrollspy.js"))))
+    .pipe(gulpif(config.js.bootstrap.tabjs == true, (addsrc(config.libraries.path.js + "/bootstrap/tab.js"))))
+    .pipe(gulpif(config.js.bootstrap.tooltipjs == true, (addsrc(config.libraries.path.js + "/tether/tether.js"))))
+    .pipe(gulpif(config.js.bootstrap.tooltipjs == true, (addsrc(config.libraries.path.js + "/bootstrap/tooltip.js"))))
     .pipe(filter__sourcemaps)
     .pipe(gulpif(config.js.sourcemaps.sourcemaps == true, sourcemaps.init({
       loadMaps: config.js.sourcemaps.loadmaps,
