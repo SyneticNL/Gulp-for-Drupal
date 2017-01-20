@@ -67,8 +67,8 @@ gulp.task('sass', 'Compile Sass, create sourcemaps, autoprefix and minify.',[], 
   var filter_sourcemaps = filter(['**/*','!**/*.map'], {restore: true});
   var filter_exclude = filter(config.css.exclude, {restore: false});
   return gulp.src([config.locations.src.scsspath + '/' + '**/*.s+(a|c)ss', '!' + config.libraries.path.scss + '/**/*' ])
-		.pipe(bulkSass())
     .pipe(filter_exclude)
+		.pipe(bulkSass())
     .pipe(plumber({errorHandler: onError}))
     .pipe(gulpif(config.css.sourcemaps.sourcemaps == true,sourcemaps.init({
       loadMaps: config.css.sourcemaps.loadmaps,
