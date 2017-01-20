@@ -45,7 +45,8 @@ var
   sourcemaps = require('gulp-sourcemaps'), // creates sourcemaps in css files
   Table = require('cli-table'), // create tables in console
   uglify = require('gulp-uglify'), // minifies javascript
-  UglifyJS = require('uglify-js'); //Library to minify JavaScript files
+  UglifyJS = require('uglify-js'), //Library to minify JavaScript files
+	bulkSass = require('gulp-sass-glob-import');
 
 var reload = browserSync.reload;
 
@@ -66,6 +67,7 @@ gulp.task('sass', 'Compile Sass, create sourcemaps, autoprefix and minify.',[], 
   var filter_sourcemaps = filter(['**/*','!**/*.map'], {restore: true});
   var filter_exclude = filter(config.css.exclude, {restore: false});
   return gulp.src([config.locations.src.scsspath + '/' + '**/*.s+(a|c)ss', '!' + config.libraries.path.scss + '/**/*' ])
+		.pipe(bulkSass())
     .pipe(filter_exclude)
     .pipe(plumber({errorHandler: onError}))
     .pipe(gulpif(config.css.sourcemaps.sourcemaps == true,sourcemaps.init({
