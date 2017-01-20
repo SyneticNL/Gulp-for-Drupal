@@ -172,6 +172,13 @@ To install bower components, run `bower install <package> --save` and to uninsta
 ### .sass-lint.yml
 The SASS / SCSS linter is configurable from a separate file, all the settings are described inside `.sass-lint.yml`.
 
+## Sass Import
+You can import sass files with a wildcard. Use the following setup: 
+@import "folder/**";
+
+For second layer of folders use the following:
+@import "folder/**/*"
+
 ## Included files
 * gulpfile.js
 * gulpconfig.json
