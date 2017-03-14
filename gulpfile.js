@@ -7,46 +7,39 @@ var
   path = require('path');
 
 var
-  addsrc = require('gulp-add-src'), //add files midstream
-  autoprefixer = require('gulp-autoprefixer'),  //adds prefixes to css files
-  bower = require('gulp-bower'), //install libraries via bower
-  browserSync = require('browser-sync').create(), //Run synchronized server
-  bytediff = require('gulp-bytediff'), //Size difference before and after alteration
-  cache = require('gulp-cache'), //Cache stream
-  checkDeps = require('gulp-check-deps'), //Check the dependencies
-  colorblind = require("postcss-colorblind"), //PostCSS colorblind module to improve accessibility for colorblindness
-  compass = require('compass-importer'), //Add ability for compass mixins
-  concat = require('gulp-concat'), //Concat files
-  eslint = require('gulp-eslint'), //Lint JavaScript with ESlint
-  filter = require('gulp-filter'), //Filter stream
-  gulpif = require('gulp-if'), //conditional tasks
-  gulpSequence = require('gulp-sequence'), //Run tasks in set sequence
-  gzip = require('gulp-gzip'),//gZip CSS & JavaScript
-  imagemin = require('gulp-imagemin'), //Optimize images
-  imageminJpegoptim = require('imagemin-jpegoptim'), //jpegoptim plugin for imagemin
-  imageminPngquant = require('imagemin-pngquant'), //PNGquant plugin for imagemin
-  imageminWebp = require('imagemin-webp'), //Webp plugin for imagemin
-  modernizr = require('gulp-modernizr'), // creates custom modernizr file
-  nano = require('gulp-cssnano'), //minifies css
-  notify = require("gulp-notify"), //adds notifications to tasks
+  addsrc = require('gulp-add-src'), // Add files midstream
+  autoprefixer = require('gulp-autoprefixer'),  // Adds prefixes to css files
+  bower = require('gulp-bower'), // Install libraries via bower
+  browserSync = require('browser-sync').create(), // Run synchronized server
+  bytediff = require('gulp-bytediff'), // Size difference before and after alteration
+  cache = require('gulp-cache'), // Cache stream
+  checkDeps = require('gulp-check-deps'), // Check the dependencies
+  compass = require('compass-importer'), // Add ability for compass mixins
+  concat = require('gulp-concat'), // Concat files
+  filter = require('gulp-filter'), // Filter stream
+  gulpif = require('gulp-if'), // Conditional tasks
+  gulpSequence = require('gulp-sequence'), // Run tasks in set sequence
+  gzip = require('gulp-gzip'), // gZip CSS & JavaScript
+  modernizr = require('gulp-modernizr'), // Create custom modernizr file
+  nano = require('gulp-cssnano'), // Minifies css
+  notify = require("gulp-notify"), // Adds notifications to tasks
   open = require('gulp-open'), // Opens url (from notification)
-  order = require("gulp-order"), //Order files in a stream, used for bootstrap js files
-  pa11y = require('gulp-pa11y'), //Pa11y accessibility audit
-  parker = require('gulp-parker'), //Parker stylesheet analysis
-  plumber = require('gulp-plumber'), //Error Handling
-  postcss = require('gulp-postcss'), //PostCSS support for Gulp
-  pngquant = require('imagemin-pngquant'), //Imagemin plugin to optimize PNG files with the pngquant library
-  prompt = require('gulp-prompt'), //Get a prompt to configure tasks while running it
-  rename = require("gulp-rename"), //Rename files
-  sass = require('gulp-sass'), // sass compiler
-  sassLint = require('gulp-sass-lint'), //Lint SCSS for code consistency
-  sizereport = require('gulp-sizereport'),//Create an sizereport for your project
-  shell = require('gulp-shell'), //Run Shellcommands (used for pagespeedsinsight)
-  sourcemaps = require('gulp-sourcemaps'), // creates sourcemaps in css files
-  Table = require('cli-table'), // create tables in console
-  uglify = require('gulp-uglify'), // minifies javascript
-  UglifyJS = require('uglify-js'), //Library to minify JavaScript files
-	bulkSass = require('gulp-sass-glob-import');
+  order = require("gulp-order"), // Order files in a stream, used for bootstrap js files
+  pa11y = require('gulp-pa11y'), // Pa11y accessibility audit
+  parker = require('gulp-parker'), // Parker stylesheet analysis
+  plumber = require('gulp-plumber'), // Error Handling
+  postcss = require('gulp-postcss'), // PostCSS support for Gulp
+  prompt = require('gulp-prompt'), // Get a prompt to configure tasks while running it
+  rename = require("gulp-rename"), // Rename files
+  sass = require('gulp-sass'), // Sass compiler
+  sassLint = require('gulp-sass-lint'), // Lint SCSS for code consistency
+  sizereport = require('gulp-sizereport'), // Create an sizereport for your project
+  shell = require('gulp-shell'), // Run Shellcommands (used for pagespeedsinsight)
+  sourcemaps = require('gulp-sourcemaps'), // Creates sourcemaps in css files
+  Table = require('cli-table'), // Create tables in console
+  uglify = require('gulp-uglify'), // Minifies javascript
+  UglifyJS = require('uglify-js'), // Library to minify JavaScript files
+	bulkSass = require('gulp-sass-glob-import'); // Enables @import folder functionality in Sass
 
 var reload = browserSync.reload;
 
@@ -208,22 +201,6 @@ gulp.task('share', 'Run server to share progress.', function() {
 });
 /*---------------------------------------------------------------------------------------------------*/
 
-/*Javascript-----------------------------------------------------------------------------------------*/
-// JS Lint
-gulp.task('jslint', 'JavaScript checker.', function() {
-  return gulp.src([config.locations.src.jspath + '**/*.js', '!' + config.libraries.path.js + '**/*.js', '!' + config.js.jspluginspath + '**/*.js','!node_modules/**'])
-    .pipe(reload({
-      stream: true,
-      once: true
-    }))
-    .pipe(eslint({
-      // Load a specific ESLint config
-      config: config.js.eslint.configlocation
-    }))
-    .pipe(eslint.format());
-});
-/*---------------------------------------------------------------------------------------------------*/
-
 /*Libraries------------------------------------------------------------------------------------------*/
 //Install libraries via Bower, configure in bower.json
 gulp.task('bower', 'Install libraries via Bower', function() {
@@ -347,68 +324,12 @@ gulp.task('jslibs', 'Building JavaScript Libraries, Modernizr and Bootstrap.', [
 });
 /*---------------------------------------------------------------------------------------------------*/
 
-/*Images----------------------------------------------------------------------------------------------*/
-//Images - Optimizes images (JPG, PNG, GIF and SVG)
-gulp.task('images', 'Optimizes images (JPG, PNG, GIF and SVG).', function(){
-  return gulp.src(config.locations.src.imagespath + '**/*')
-    .pipe(bytediff.start())
-    .pipe(cache(imagemin([
-      imagemin.gifsicle({
-        interlaced: config.images.gif.interlaced,
-        optimizationLevel: config.images.gif.optimizationlevel
-      }),
-      imageminJpegoptim({
-        progressive: config.images.jpeg.progressive,
-        max: config.images.jpeg.max
-      }),
-      imageminPngquant({
-        floyd: config.images.png.floyd,
-        nofs: config.images.png.nofs,
-        quality: config.images.png.quality,
-        speed: config.images.png.speed,
-        verbose: config.images.png.verbose
-      }),
-      imagemin.svgo()
-    ])))
-    .pipe(bytediff.stop())
-    .pipe(sizereport({
-      gzip: false,
-      '*': {
-        'maxSize': config.quality.maxsize.images
-      },
-    }))
-    .pipe(gulp.dest(config.locations.dist.imagespath))
-    .pipe(gulpif(config.images.webp.use == true, imagemin([
-      imageminWebp({
-        preset: config.images.webp.preset,
-        quality: config.images.webp.quality,
-        alphaQuality: config.images.webp.alphaQuality,
-        method: config.images.webp.method,
-        sns: config.images.webp.sns,
-        lossless: config.images.webp.lossless
-      })
-    ])))
-    .pipe(gulpif(config.images.webp.use == true, rename({
-      extname: ".webp"
-    })))
-    .pipe(gulpif(config.images.webp.use == true, gulp.dest(config.locations.dist.imagespath)))
-    .pipe(notify({
-      title: 'Images Optimized',
-      message: 'Image Optimalisation Complete',
-      onLast: true,
-      wait: false
-    }));
-});
-/*---------------------------------------------------------------------------------------------------*/
-
 /*Watch----------------------------------------------------------------------------------------------*/
 //Watch - Runs configurable tasks, watches for file changes and runs sass appropriately
 gulp.task('watch', 'Watches for file changes and runs sass appropriately.', function (cb) {
   gulpSequence(config.taskconfig.watchtasks,  'browsersync', cb)
   gulp.watch(config.locations.src.scsspath + '/**/*.s+(a|c)ss', ['sass']);
   gulp.watch(config.locations.src.scsspath + '/**/*.s+(a|c)ss', gulpif(config.taskconfig.watch.lintscss == true,(['sasslint'])));
-  gulp.watch(config.locations.src.jspath + '**/*.js', gulpif(config.taskconfig.watch.javascript == true,(['jslint'])));
-  gulp.watch(config.locations.src.imagespath + '**/*', gulpif(config.taskconfig.watch.images == true,(['images'])));
   //Browsersync
   gulp.watch(config.locations.src.imagespath + '**/*', gulpif(config.browsersync.watch.images == true,(browserSync.reload)));
   gulp.watch(config.locations.dist.jspath + '**/*', gulpif(config.browsersync.watch.javascript == true,(browserSync.reload)));
@@ -421,46 +342,6 @@ gulp.task('watch', 'Watches for file changes and runs sass appropriately.', func
 /*---------------------------------------------------------------------------------------------------*/
 
 /*Accessibility--------------------------------------------------------------------------------------*/
-gulp.task('colorblind', 'Simulate colorblindness', function(){
-  var colorblindTable = new Table();
-  colorblindTable.push(
-    { 'Trichromat - 3 good cones': ['Normal', '',''] },
-    { 'Anomalous Trichromat - 2 good cones, 1 bad': ['Protanomaly (low red) (M1,3% / F0,2%)', 'Deuteranomaly (low green) (M5,0% / F0,35%)', 'Tritanomaly (low blue) (M0,01% / F0,01%)'] },
-    { 'Dichromat - 2 good cones, 1 blind': ['Protanopia (no red) (M1,3% / F0,02%)', 'Deuteranopia (no green) (M1,2% / F0,01%)', 'Tritanopia (no blue) (M0,001% / F0,03%)'] },
-    { 'Monochromat - 1 good cone, 2 blind/bad': ['Achromatomaly (almost no color) (M0.00001% / F0.00001%)', 'Achromatopsia (no color) (M0.00001% / F0.00001%)', ''] }
-  );
-  console.log("Prevalence of color blindness: M - Males, F - Females (http://www.colour-blindness.com/general/prevalence/)");
-  console.log(colorblindTable.toString());
-  return gulp.src('./', {read: false})
-    .pipe(prompt.prompt({
-        type: 'rawlist',
-        name: 'colorblindnessvariation',
-        message: 'Which Colorblindness variation would you genarate a CSS file for?',
-        choices: ['Protanomaly', 'Protanopia', 'Deuteranomaly', 'Deuteranopia', 'Tritanomaly', 'Tritanopia', 'Achromatomaly', 'Achromatopsia']
-      }, function(res){
-        var processors = [ colorblind({method:res.colorblindnessvariation}) ];
-        return gulp.src(config.locations.src.scsspath + '/' + '**/*.s+(a|c)ss')
-          .pipe(gulpif(config.css.compass != true,sass()))
-          .pipe(gulpif(config.css.compass == true,sass({ importer: compass }).on('error', sass.logError)))
-          .pipe(postcss(processors))
-          .pipe(plumber())
-          .pipe(gulp.dest(config.locations.dist.csspath))
-          .pipe(gulpif(config.css.minify == true, bytediff.start()))
-          .pipe(gulpif(config.css.minify == true, nano()))
-          .pipe(gulpif(config.css.minify == true,rename(function (path) {
-            path.basename += ".min";
-          })))
-          .pipe(gulpif(config.css.minify == true, gulp.dest(config.locations.dist.csspath)))
-          .pipe(gulpif(config.css.minify == true, bytediff.stop()))
-          .pipe(gulpif(config.css.gzip == true, bytediff.start()))
-          .pipe(gulpif(config.css.gzip == true,gzip()))
-          .pipe(gulpif(config.css.gzip == true, gulp.dest(config.locations.dist.csspath)))
-          .pipe(gulpif(config.css.gzip == true, bytediff.stop()))
-          .pipe(plumber.stop())
-      }
-    ))
-});
-
 gulp.task('pa11y', 'Perform a accessibility Audit on your site', pa11y({
   url: config.general.projectpath,
   standard: config.accessibility.pa11y.standard,

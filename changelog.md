@@ -1,4 +1,4 @@
-_Gulp for Drupal Changelog version 2.4.2 2016-09-19_
+_Gulp for Drupal Changelog version 2.4.3 2017-03-14_
 #### included Gulp files:
     - gulpfile.js       (3.2.1) (2016-09-19)
     - gulpconfig.json   (2.10.0)(2016-09-16)
@@ -10,6 +10,22 @@ _Gulp for Drupal Changelog version 2.4.2 2016-09-19_
     - .eslintrc         (1.1.0) (2016-07-01)
     - .gitignore        (1.3.0) (2016-09-19)
     - README.md         (1.8.1) (2016-09-19)
+
+#### 2017-03-14 - added Sass Glob Import
+    - Added Sass Global Import
+    Usable by @import folder/**
+    
+#### 2017-03-14 - removed jsLint
+    - gulpfile.js
+    - gulpconfig.json
+
+#### 2017-03-14 - removed Colorblind modus
+    - gulpfile.js
+    - gulpconfig.json
+
+#### 2017-03-14 - removed imageOptimize
+    - gulpfile.js
+    - gulpconfig.json
 
 #### 2016-09-19 - Bugfix
     gulpfile.js 3.2.1

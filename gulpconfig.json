@@ -13,7 +13,7 @@
       "jspath" : "js/",
       "imagespath" : "images/0_src/",
       "fontspath" : "fonts/",
-      "iconspath" : "icons/",
+      "iconspath" : "fonts/iconfonts/",
       "templatepath" : "/template/",
       "functionspath" : "/functions/"
     },
@@ -88,36 +88,10 @@
       "alwaysexclude" : [""]
     }
   },
-  "images" : {
-    "gif" : {
-      "interlaced" : true,
-      "optimizationlevel" : 3
-    },
-    "jpeg" : {
-      "progressive" : true,
-      "max" : 80
-    },
-    "png" : {
-      "floyd" : 0.5,
-      "nofs" : false,
-      "quality" : 100,
-      "speed" : 3,
-      "verbose" : false
-    },
-    "webp" : {
-      "use" : false,
-      "preset" : "default",
-      "quality" : 75,
-      "alphaQuality" : 100,
-      "method" : 4,
-      "sns" : 80,
-      "lossless" : false
-    }
-  },
   "libraries" : {
     "path" : {
-      "js" : "js/libs",
-      "scss" : "scss/libs"
+      "js" : "js/libraries",
+      "scss" : "scss/libraries"
     },
     "bower" : {
       "path" : "bower_components",
@@ -126,10 +100,9 @@
     }
   },
   "taskconfig" : {
-    "watchtasks" : ["jslibs", "jslint"],
+    "watchtasks" : ["jslibs"],
     "watch" : {
       "lintscss" : true,
-      "images" : true,
       "javascript" : true
     }
   },
