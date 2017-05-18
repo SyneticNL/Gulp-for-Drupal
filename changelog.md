@@ -10,6 +10,16 @@ _Gulp for Drupal Changelog version 2.4.3 2017-03-14_
     - .eslintrc         (1.1.0) (2016-07-01)
     - .gitignore        (1.3.0) (2016-09-19)
     - README.md         (1.8.1) (2016-09-19)
+    
+### 2017-05-18 - Updated Modules
+    - Updated Gulp Filter to 5.0.0
+    - Updated Gulp-Autoprefixer to 4.0.0
+    - Updated Gulp Notify to 3.0.0
+    - Updated Gulp Postcss to 7.0.0
+    - Updated Gulp Sass to 3.1.0
+    - Updated Gulp Shell to 0.6.3
+    - Updated Gulp Sourcemaps to 2.6.0
+    - Updated Postcss to 6.0.1
 
 #### 2017-03-14 - added Sass Glob Import
     - Added Sass Global Import
