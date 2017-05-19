@@ -15,7 +15,7 @@
 <!-- END doctoc generated TOC please keep comment here to allow auto update -->
 ___
 ## Features
-This gulp setup features a full Drupal Gulp workflow for proccesing your SCSS files, running browsersync, linting SCSS and JavaScript, optimizing images and several other tasks. This Gulp setup is made to work with Drupal (tested with Drupal 7 & 8) but can also be configured to work with any other project. The setup is fully configurable by customizing the settings in gulpconfig.json.
+This gulp setup features a full Drupal Gulp workflow for proccesing your SCSS files, running browsersync, linting SCSS and JavaScript and several other tasks. This Gulp setup is made to work with Drupal (tested with Drupal 7 & 8) but can also be configured to work with any other project. The setup is fully configurable by customizing the settings in gulpconfig.json.
 
 ## Installation
 - Install [nodejs](https://nodejs.org/en/)
@@ -34,8 +34,6 @@ This gulp setup features a full Drupal Gulp workflow for proccesing your SCSS fi
 |browsersync    |Run server with syncronized screens on multiple devices    |
 |check-deps     |Check your dependencies                                    |
 |clear          |Clear Gulp images Cache                                    |
-|colorblind     |Simulate colorblindness, this overwrites your css files    |
-|images         |Optimizes images (JPG, PNG, GIF and SVG)                   |
 |jslint         |JavaScript lint tool                                       |
 |jslibs         |Building JavaScript Libraries, Modernizr and Bootstrap.    |
 |modernizr      |Create modernizr file from SCSS selectors and Javascript   |
@@ -107,23 +105,6 @@ The gulp setup is made to be fully configurable by changing the settings in `gul
 |_bootstrap_    |alertjs, buttonjs, carouseljs, collapsejs, dropdownjs, popoverjs, scrollspyjs, tabjs, tooltipjs| True or false if you want to include these in your bootstrap.js file |
 |_modernizr_    |alwaysinclude              | Which tests do you always want to include in modernizr (The default test are nessecary for modernizr to work correctly)                  |
 |_modernizr_    |alwaysexclude              | Exclude tests from your modernizr file, useful if you use the same classes                                                               |
-|**images**     |                           |                                                                                                                                          |
-|_gif_          |interlaced                 | Interlace gif for progressive rendering|
-|_gif_          |optimizationlevel          | Select optimization level between 1 and 3 (3 is better optimization but slower)|
-|_jpeg_         |progressive                | Convert image to progressive image|
-|_jpeg_         |max                        | Set max quality factor|
-|_png_          |floyd                      | controls level of dithering (0 = none, 1=full)|
-|_png_          |nofs                       | Disable Floyd-Steinberg dithering|
-|_png_          |quality                    | Set quality factor between 0 and 100, like JPEG quality settings|
-|_png_          |speed                      | Set speed between 0 and 10 (1 better optimization but slower, 10 is fastest)|
-|_png_          |verbose                    | Print verbose messages|
-|_webp_         |use                        | Enable WebP images (creates copies of your images in webp format)|
-|_webp_         |preset                     | use a webp preset (default, photo, picture, drawing, icon and text)|
-|_webp_         |quality                    | Select quality setting between 0 and 100|
-|_webp_         |alphaQuality               | Set transparency-compression between 0 and 100|
-|_webp_         |method                     | Set speed between 0 and 6 (6 better optimization but slower, 0 is fastest)|
-|_webp_         |sns                        | Set the amplitude of spatial noise shaping between 0 and 100.|
-|_webp_         |lossless                   | Encode images losslessly.|
 |**libraries**  |                           ||
 |_path_         |js                         | Path where bower-installer puts your installed javascript libraries, needs to be the same as configured in your bower.json file.|
 |_bower_        |path                       | here to install bower components (default: bower_components)                                                                             |
@@ -191,4 +172,4 @@ For second layer of folders use the following:
 * .gitignore
 
 _Created by Synetic_
-_README.md updated on 2016-09-19 version 1.8.1_
+_README.md updated on 2017-05-19 version 1.9.0_

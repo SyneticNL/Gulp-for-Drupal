@@ -1,8 +1,8 @@
 {
   "name": "Gulp-for-Drupal",
-  "installationdate": "2016-09-01",
-  "version": "2.8.0",
-  "versiondate": "2016-09-01",
+  "installationdate": "2017-05-19",
+  "version": "2.9.0",
+  "versiondate": "2017-05-19",
   "description": "Project with Gulp",
   "main": "gulpfile.js",
   "scripts": {

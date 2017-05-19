@@ -1,17 +1,22 @@
-_Gulp for Drupal Changelog version 2.4.3 2017-03-14_
+_Gulp for Drupal Changelog version 2.5.0 2017-05-19_
+
+
 #### included Gulp files:
     - gulpfile.js       (3.2.1) (2016-09-19)
-    - gulpconfig.json   (2.10.0)(2016-09-16)
-    - package.json      (2.8.0) (2016-09-01)
+    - gulpconfig.json   (2.11.0)(2017-05-19)
+    - package.json      (2.9.0) (2017-05-19)
     - bower.json        (1.2.0) (2016-09-19)
     - .npmrc            (1.0.0) (2016-03-08)
     - .bowerrc          (1.0.0) (2016-09-05)
     - .sass-lint.yml    (1.0.1) (2016-06-24)
     - .eslintrc         (1.1.0) (2016-07-01)
     - .gitignore        (1.3.0) (2016-09-19)
-    - README.md         (1.8.1) (2016-09-19)
+    - README.md         (1.9.0) (2017-05-19)
+ 
+#### 2017-05-19 - Removed references images and Colorblind
+    - Removed all references to the previous colorblind and image optimize tasks
     
-### 2017-05-18 - Updated Modules
+#### 2017-05-18 - Updated Modules
     - Updated Gulp Filter to 5.0.0
     - Updated Gulp-Autoprefixer to 4.0.0
     - Updated Gulp Notify to 3.0.0

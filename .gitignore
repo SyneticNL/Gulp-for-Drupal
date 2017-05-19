@@ -3,7 +3,8 @@
 # GULP IGNORES
 /node_modules/
 /bower_components/
-.idea/*
+.idea
+.DS_Store
 
 # Advised ignores
 # **/*.map

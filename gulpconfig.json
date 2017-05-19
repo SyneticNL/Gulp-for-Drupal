@@ -19,8 +19,7 @@
     },
     "dist" : {
       "csspath" : "css/",
-      "jspath" : "js/",
-      "imagespath" : "images/"
+      "jspath" : "js/"
     }
   },
   "css" : {
