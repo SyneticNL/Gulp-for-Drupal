@@ -1,10 +1,10 @@
-_Gulp for Drupal Changelog version 2.5.0 2017-05-19_
+_Gulp for Drupal Changelog version 2.6.0 2017-05-23_
 
 
 #### included Gulp files:
-    - gulpfile.js       (3.2.1) (2016-09-19)
+    - gulpfile.js       (3.3.0) (2017-05-23)
     - gulpconfig.json   (2.11.0)(2017-05-19)
-    - package.json      (2.9.0) (2017-05-19)
+    - package.json      (2.10.0)(2017-05-23)
     - bower.json        (1.2.0) (2016-09-19)
     - .npmrc            (1.0.0) (2016-03-08)
     - .bowerrc          (1.0.0) (2016-09-05)
@@ -12,6 +12,10 @@ _Gulp for Drupal Changelog version 2.5.0 2017-05-19_
     - .eslintrc         (1.1.0) (2016-07-01)
     - .gitignore        (1.3.0) (2016-09-19)
     - README.md         (1.9.0) (2017-05-19)
+    
+#### 2017-05-23 - updated browsersync and uglifyjs
+    - Updated Browsersync to 2.18.12
+    - Updated Gulp-Uglify 3.0.0
  
 #### 2017-05-19 - Removed references images and Colorblind
     - Removed all references to the previous colorblind and image optimize tasks

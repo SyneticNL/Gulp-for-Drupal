@@ -1,8 +1,8 @@
 {
   "name": "Gulp-for-Drupal",
-  "installationdate": "2017-05-19",
-  "version": "2.9.0",
-  "versiondate": "2017-05-19",
+  "installationdate": "2017-05-23",
+  "version": "2.10.0",
+  "versiondate": "2017-05-23",
   "description": "Project with Gulp",
   "main": "gulpfile.js",
   "scripts": {
@@ -19,7 +19,7 @@
     "url": "https://github.com/SyneticNL/Gulp-for-Drupal.git"
   },
   "devDependencies": {
-    "browser-sync": "^2.12.8",
+    "browser-sync": "^2.18.12",
     "cli-table": "^0.3.1",
     "compass-importer": "^0.4.1",
     "gulp": "^3.9.1",
@@ -51,9 +51,9 @@
     "gulp-sass-lint": "^1.1.1",
     "gulp-sequence": "^0.4.5",
     "gulp-shell": "^0.6.3",
-    "gulp-sizereport": "^1.1.3",
+    "gulp-sizereport": "^1.2.0",
     "gulp-sourcemaps": "^2.6.0",
-    "gulp-uglify": "^2.0.0",
+    "gulp-uglify": "^3.0.0",
     "hexa-color-regex": "^1.0.0",
     "postcss": "^6.0.1",
     "specificity-graph": "^0.1.7",
