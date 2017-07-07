@@ -1,4 +1,4 @@
-# gulp.gitignore - version 1.3.0 2016-09-19
+# gulp.gitignore - version 1.4.0 2017-07-07
 #
 # GULP IGNORES
 /node_modules/
@@ -7,4 +7,4 @@
 .DS_Store
 
 # Advised ignores
-# **/*.map
+**/*.map
