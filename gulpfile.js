@@ -1,5 +1,5 @@
 /*==========================================================================
- Gulp for Drupal Gulpfile.js version 3.3.0 2017-05-23
+ Gulp for Drupal Gulpfile.js version 3.3.1 2017-07-07
  ===========================================================================*/
 var
     gulp = require('gulp-help')(require('gulp')),
@@ -36,9 +36,7 @@ var
     sizereport = require('gulp-sizereport'), // Create an sizereport for your project
     shell = require('gulp-shell'), // Run Shellcommands (used for pagespeedsinsight)
     sourcemaps = require('gulp-sourcemaps'), // Creates sourcemaps in css files
-    Table = require('cli-table'), // Create tables in console
     uglify = require('gulp-uglify'), // Minifies javascript
-    UglifyJS = require('uglify-js'), // Library to minify JavaScript files
     bulkSass = require('gulp-sass-glob-import'); // Enables @import folder functionality in Sass
 
 var reload = browserSync.reload;
@@ -107,9 +105,6 @@ gulp.task('sass', 'Compile Sass, create sourcemaps, autoprefix and minify.', [],
         }))
         .pipe(plumber.stop())
         .pipe(browserSync.stream())
-        // .pipe(browserSync.reload({
-        //   stream: true
-        // }))
         .pipe(plumber())
         .pipe(notify({
             title: 'Sass Compiled',
@@ -261,18 +256,6 @@ gulp.task('bootstrapjs', 'Generate bootstrap javascript file, also uglified.', f
         })))
         .pipe(plumber.stop())
         .pipe(gulp.dest(config.libraries.path.js))
-        // .pipe(sizereport({
-        //     minifier: function (contents, filepath) {
-        //         if (filepath.match(/\.min\./g)) {
-        //             return contents
-        //         }
-        //         return UglifyJS.minify(contents, {fromString: true}).code;
-        //     },
-        //     gzip: true,
-        //     '*': {
-        //         'maxSize': config.quality.maxsize.js
-        //     }
-        // }))
         .pipe(gulpif(config.js.minify == true, uglify()))
         .pipe(gulpif(config.js.minify == true, rename(function (path) {
             path.basename += ".min";
@@ -290,18 +273,6 @@ gulp.task('modernizr', 'Create modernizr file from SCSS selectors and Javascript
             options: config.js.modernizr.alwaysinclude,
         }))
         .pipe(gulp.dest(config.libraries.path.js))
-        // .pipe(sizereport({
-        //     minifier: function (contents, filepath) {
-        //         if (filepath.match(/\.min\./g)) {
-        //             return contents
-        //         }
-        //         return UglifyJS.minify(contents, {fromString: true}).code;
-        //     },
-        //     gzip: true,
-        //     '*': {
-        //         'maxSize': config.quality.maxsize.js
-        //     }
-        // }))
         .pipe(gulpif(config.js.minify == true, uglify()))
         .pipe(gulpif(config.js.minify == true, rename(function (path) {
             path.basename += ".min";

@@ -2,16 +2,21 @@ _Gulp for Drupal Changelog version 2.6.0 2017-05-23_
 
 
 #### included Gulp files:
-    - gulpfile.js       (3.3.0) (2017-05-23)
+    - gulpfile.js       (3.3.1) (2017-07-07)
     - gulpconfig.json   (2.11.0)(2017-05-19)
-    - package.json      (2.10.0)(2017-05-23)
+    - package.json      (2.10.1)(2017-07-07)
     - bower.json        (1.2.0) (2016-09-19)
     - .npmrc            (1.0.0) (2016-03-08)
     - .bowerrc          (1.0.0) (2016-09-05)
     - .sass-lint.yml    (1.0.1) (2016-06-24)
     - .eslintrc         (1.1.0) (2016-07-01)
     - .gitignore        (1.3.0) (2016-09-19)
-    - README.md         (1.9.0) (2017-05-19)
+    - README.md         (1.9.1) (2017-07-07)
+    
+#### 2017-07-07 - Updated to Fixed version dependencies
+    - Removed sizereport for js
+    - Switched to fixed version dependencies
+
     
 #### 2017-05-23 - updated browsersync and uglifyjs
     - Updated Browsersync to 2.18.12

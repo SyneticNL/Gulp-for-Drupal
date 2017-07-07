@@ -18,7 +18,7 @@ ___
 This gulp setup features a full Drupal Gulp workflow for proccesing your SCSS files, running browsersync, linting SCSS and JavaScript and several other tasks. This Gulp setup is made to work with Drupal (tested with Drupal 7 & 8) but can also be configured to work with any other project. The setup is fully configurable by customizing the settings in gulpconfig.json.
 
 ## Installation
-- Install [nodejs](https://nodejs.org/en/)
+- Install [nodejs](https://nodejs.org/en/) (required V6.0+)
 - Run `npm install gulp-cli bower bower-installer -g` in your terminal
 - Move the files to your theme folder
 - Run `npm install`
@@ -172,4 +172,4 @@ For second layer of folders use the following:
 * .gitignore
 
 _Created by Synetic_
-_README.md updated on 2017-05-19 version 1.9.0_
+_README.md updated on 2017-07-07 version 1.9.1_
