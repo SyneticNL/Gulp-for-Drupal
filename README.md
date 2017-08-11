@@ -1,50 +1,46 @@
 #Gulp for Drupal
-<!-- START doctoc generated TOC please keep comment here to allow auto update -->
-<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
-**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
-
 - [Features](#features)
 - [Installation](#installation)
 - [Tasks](#tasks)
 - [Configuration](#configuration)
   - [Gulpconfig.json](#gulpconfigjson)
-  - [bower.json](#bowerjson)
+  - [libaries.json](#libariesjson)
   - [.sass-lint.yml](#sass-lintyml)
+- [Sass Import](#sass-import)
 - [Included files](#included-files)
-
-<!-- END doctoc generated TOC please keep comment here to allow auto update -->
 ___
 ## Features
 This gulp setup features a full Drupal Gulp workflow for proccesing your SCSS files, running browsersync, linting SCSS and JavaScript and several other tasks. This Gulp setup is made to work with Drupal (tested with Drupal 7 & 8) but can also be configured to work with any other project. The setup is fully configurable by customizing the settings in gulpconfig.json.
 
 ## Installation
 - Install [nodejs](https://nodejs.org/en/)
-- Run `npm install gulp-cli bower bower-installer -g` in your terminal
+- Run `npm install gulp-cli yarn -g` in your terminal
 - Move the files to your theme folder
-- Run `npm install`
+- Run `yarn install`
 - _Windows users should go to the `node_modules` folder and search for `.info` files and remove those_
 - Install the [Browsersync module] (https://www.drupal.org/project/browsersync) and activiate this in your theme
 
 ## Tasks
 |Task           |Function                                                   |
 |---------------|-----------------------------------------------------------|
-|help           |Shows all available tasks                                  |             
-|bootstrapjs    |Generate bootstrap javascript file, also uglified          |
-|bower          |Install JavaScript Libraries via Bower                     |
-|browsersync    |Run server with syncronized screens on multiple devices    |
-|check-deps     |Check your dependencies                                    |
-|clear          |Clear Gulp images Cache                                    |
-|jslint         |JavaScript lint tool                                       |
-|jslibs         |Building JavaScript Libraries, Modernizr and Bootstrap.    |
-|modernizr      |Create modernizr file from SCSS selectors and Javascript   |
+|default        |Run watch Task                                             |             
+|styles (sass)  |Compile SCSS                                               |
+|lint           |Lint SCSS                                                  |
 |parker         |Analyse your CSS files with parker                         |
-|pa11y          |Perform a accessibility Audit on your site                 |
-|sass           |Compile Sass, create sourcemaps, autoprefix and minify.    |
-|sasslint       |validate your SASS Aliases                                 |
-|share          |Run server to share progress                               |
-|sizereport     |Create a sizereport of your project                        |
-|specificity    |Create a specificity graph for CSS                         |
-|watch          |Watches for file changes and runs sass appropriately.      |
+|serve          |Compile SCSS and serve files (without watching)            |
+|browsersync    |Serve files (with watching)                                |
+|share          |Browsersync Server without Synchronising                   |
+|modernizr      |Generate Modenizr.js file based on CSS and JS              |
+|sizereport     |Generate report of project size                            |
+|cd             |Check for Node Updates                                     |
+|cr             |Clear Gulp Cache (for images)                              |
+|bootstrap      |Generate Bootstap JS                                       |
+|js             |Generate JS files (Bootstrap and Modernizr)                |
+|watch--files-only|Watch for file changing                                  |
+|watch          |Compile SCSS and serve files (with watching)               |
+|yarn           |Get necessary library files                                |
+|images         |Optimize Images                                            |
+|stats          |Statistics about your CSS                                  |
 
 ## Configuration
 The gulp setup is made to be fully configurable by changing the settings in `gulpconfig.json`. If you change settings while running a task (eg. gulp watch), make sure you restart the task for the changes to work.
@@ -55,26 +51,13 @@ The gulp setup is made to be fully configurable by changing the settings in `gul
 |**General**    |                           |                                                                                                                                          |
 |               |projectpath                | Project folder root                                                                                                                      |
 |               |logopath                   | Site logo - optional                                                                                                                     |
-|               |themeroot                  | Root of the Drupal theme relative to your Gulpfile                                                                                       |
-|**locations**  |                           |                                                                                                                                          |
-|_src_          |scsspath                   | Location of your SCSS files                                                                                                              |
-|_src_          |jspath                     | Location of your JavaScript files                                                                                                        |
-|_src_          |imagespath                 | Location of your images                                                                                                                  |
-|_src_          |fontspath                  | Location of your font files                                                                                                              |
-|_src_          |iconspath                  | Location of your icon files                                                                                                              |
-|_src_          |templatepath               | Path to PHP or Twig Template                                                                                                             |
-|_src_          |functionspath              | Path to PHP Functions                                                                                                                    |
-|_dist_         |csspath                    | Where to put CSS                                                                                                                         |
-|_dist_         |jspath                     | Destination for JavaScript files                                                                                                         |
-|_dist_         |imagespath                 | Where to put the images (WARNING: cannot be the same as src!!)                                                                           |
+|**locations**  |**                         | Configure Source, destination and library destination for your files                                                                     |
 |**css**        |                           |                                                                                                                                          |
 |               |browsersupport             | Which browsers to support with autoprefixer                                                                                              |
 |               |minify                     | Want to minify your CSS?                                                                                                                 |
 |               |gzip                       | Compress your CSS files using Gzip.                                                                                                      |
 |               |compass                    | Allow use of compass functions?                                                                                                          |
-|               |exclude                    | Exclude SCSS / SASS files from stream, ATTENTION: always have "**/*" as a first item in your array                                        |
-|               |specificitygraphlocation   | Where to put Specificity Graph (if empty the folder will be: specificity-graph)                                                          |
-|_eslint_       |configlocation             | path to your ESlint configuration file, default we supply a yml file but ESlint supports various formats                                 |
+|               |exclude                    | Exclude SCSS / SASS files from stream, ATTENTION: always have "**/*" as a first item in your array                                       |
 |_sourcemaps_   |sourcemaps                 | Want CSS sourcemaps?                                                                                                                     |      
 |_sourcemaps_   |location                   | Where to put sourcemaps (keep empty to place inline)                                                                                     |
 |_sourcemaps_   |loadmaps                   | Load existing sourcemaps                                                                                                                 |
@@ -86,8 +69,6 @@ The gulp setup is made to be fully configurable by changing the settings in `gul
 |_sourcemaps_   |destpath                   | Set the destination path (the same you pass to gulp.dest()).                                                                             |
 |_sourcemaps_   |sourcemappingurlprefix     | Specify a prefix to be prepended onto the source map URL when writing external source maps.                                              |
 |_linter_       |config                     | Path to sass lint config file                                                                                                            |
-|_parker_       |log                        | Want to log the parker results in a external file                                                                                        |
-|_parker_       |logname                    | Name the parkerlogfile                                                                                                                   |
 |**js**         |                           |                                                                                                                                          |
 |               |jspluginspath              | Where to put libraries as Modernizr and Bootstrap                                                                                        |
 |_sourcemaps_   |sourcemaps                 | Generate Sourcemaps for JavaScript files (Bootstrap library)                                                                             |
@@ -100,76 +81,47 @@ The gulp setup is made to be fully configurable by changing the settings in `gul
 |_sourcemaps_   |charset                    | Sets the charset for inline source maps. Default: utf8                                                                                   |
 |_sourcemaps_   |destpath                   | Set the destination path (the same you pass to gulp.dest()).                                                                             |
 |_sourcemaps_   |sourcemappingurlprefix     | Specify a prefix to be prepended onto the source map URL when writing external source maps.                                              |
-|_sourcemaps_   |minify                     | Minify JavaScript, this removes comments, linebreaks and spaces                                                                          |
-|_sourcemaps_   |gzip                       | Compress JavaScript using Gzip                                                                                                           |
-|_bootstrap_    |alertjs, buttonjs, carouseljs, collapsejs, dropdownjs, popoverjs, scrollspyjs, tabjs, tooltipjs| True or false if you want to include these in your bootstrap.js file |
+|               |minify                     | Minify JavaScript, this removes comments, linebreaks and spaces                                                                          |
+|               |gzip                       | Compress JavaScript using Gzip                                                                                                           |
+|_bootstrap_    |**                         | True or false if you want to include these in your bootstrap.js file                                                                     |
 |_modernizr_    |alwaysinclude              | Which tests do you always want to include in modernizr (The default test are nessecary for modernizr to work correctly)                  |
 |_modernizr_    |alwaysexclude              | Exclude tests from your modernizr file, useful if you use the same classes                                                               |
-|**libraries**  |                           ||
-|_path_         |js                         | Path where bower-installer puts your installed javascript libraries, needs to be the same as configured in your bower.json file.|
-|_bower_        |path                       | here to install bower components (default: bower_components)                                                                             |
-|_bower_        |interactive                | enable prompting from bower                                                                                                              |
-|_bower_        |verbosity                  | set verbosity level (0 = no output, 1 = error output, 2 = info)                                                                          |
-|**taskconfig** |                           |                                                                                                                                          |
-|               |watchtasks                 | Which tasks to run before gulp watch (Browsersync and SASS already included)                                                             |
-|_watch_        |lintscss                   | Lint your SCSS                                                                                                                           |
-|_watch_        |images                     | Process new or edited images                                                                                                             |
-|_watch_        |javascript                 | Lint new or edited javascript files                                                                                                      |
+|**images**     |**                         | Image optimize configuration                                                                                                             |
+|**watch**      |**                         | Configure types to watch, you can turn sections on and of, configure extensions to watch and which tasks to run                          |
 |**browsersync**|                           |                                                                                                                                          |
 |               |open                       | Open Browsersync page after starting server                                                                                              |
 |               |loglevel                   | Amount of Browsersync logging you want (debug, info or silent)                                                                           |
 |               |logfilechanges             | Console notification on refresh (gives you multiple messages on every change)                                                            |
-|_watch_        |icons                      | Reload Browsersync on new,edited or removed icons                                                                                        |
-|_watch_        |fonts                      | Reload Browsersync on new, edited or removed fonts                                                                                       |
-|_watch_        |images                     | Reload Browsersync on new or edited images                                                                                               |
-|_watch_        |javascript                 | Reload Browsersync JavaScript changes                                                                                                    |
-|_watch_        |phpfunctions               | Reload Browsersync on changes inside the Functions folder                                                                                |
-|_watch_        |template                   | Reload Browsersync on changes inside the Templates folder                                                                                |
-|_watch_        |yaml                       | Reload Browsersync on changes to Yaml files                                                                                              |
-|               |                           | Share can be used as a separate Browsersync session to share your work while working on it                                               |
-|_share_        |open                       | Open share page after starting server                                                                                                    |
-|_share_        |clicks                     | Sync clicks on share server                                                                                                              |
-|_share_        |forms                      | Sync forms on share server                                                                                                               |
-|_share_        |scroll                     | Sync Scrolling on share server                                                                                                           |
-|_share_        |port                       | Set port number for share server                                                                                                         |
+|**share**      |                           | Share can be used as a separate Browsersync session to share your work while working on it                                               |
+|               |open                       | Open share page after starting server                                                                                                    |
+|               |clicks                     | Sync clicks on share server                                                                                                              |
+|               |forms                      | Sync forms on share server                                                                                                               |
+|               |scroll                     | Sync Scrolling on share server                                                                                                           |
+|               |port                       | Set port number for share server                                                                                                         |
 |**quality**    |                           |                                                                                                                                          |
-|_maxsize_      |maxsize                    | General max size of files, used with gulp sizereport                                                                                     |
-|_maxsize_      |css                        | Maximum size of CSS files                                                                                                                |
-|_maxsize_      |js                         | Maximum size of JavaScript files                                                                                                         |
-|_maxsize_      |images                     | Maximum size of Images files                                                                                                             |
-|**accessibility**|                         |                                                                                                                                          |
-|_pa11y_        |standard                   |The standard to use. One of Section508, WCAG2A, WCAG2AA, WCAG2AAA. Default WCAG2AA                                                        |
-|_pa11y_        |failonerror                |Fail your build if there is any accessibility error                                                                                       |
-|_pa11y_        |showfailedonly             |FOnly display the errors in report, Set to false to display errros, warnings and notice.                                                  |
-|_pa11y_        |reporter                   |The reporter to use with Pa11y                                                                                                            |
-|_pa11y_        |htmlcs                     |The URL to source HTML_CodeSniffer from                                                                                                   |
-|_pa11y_        |config                     |The path to a JSON config file or a config object                                                                                         |
-|_pa11y_        |timeout                    |he number of milliseconds before a timeout error occurs.                                                                                  |
+|_maxsize_      |**                         | General max size of files, used with gulp sizereport                                                                                     |
 
-### bower.json
-You can configure bower via the bower.json file. Here you can change the library path, select which files you want bower-installer to use (if not the default files) and edit dependency versions.
-To install bower components, run `bower install <package> --save` and to uninstall `bower uninstall <package> --save`
+### libaries.json
+After adding libaries with `yarn add` or `npm install --save`, a section will be added to the libraries.json file. after configuring which files you would like, run `gulp yarn` to copy the library files to their location.
 
 ### .sass-lint.yml
 The SASS / SCSS linter is configurable from a separate file, all the settings are described inside `.sass-lint.yml`.
 
 ## Sass Import
 You can import sass files with a wildcard. Use the following setup: 
-@import "folder/**";
+`@import "folder/**";`
 
 For second layer of folders use the following:
-@import "folder/**/*"
+`@import "folder/**/*";`
 
 ## Included files
 * gulpfile.js
 * gulpconfig.json
 * package.json
-* bower.json
-* .npmrc
-* .bowerrc
+* libraries.json
 * .sass-lint.yml
 * .eslintrc
 * .gitignore
 
 _Created by Synetic_
-_README.md updated on 2017-05-19 version 1.9.0_
+_README.md updated on 2017-08-11 version 2.0.0_

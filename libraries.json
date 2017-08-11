@@ -1,0 +1,95 @@
+{
+  "name": "gulp-for-drupal_libraries",
+  "version": "1.0.0",
+  "versiondate": "2017-08-11",
+  "types": {
+    "css": {
+      "allow": true,
+      "path": "css/libraries"
+    },
+    "js": {
+      "allow": true,
+      "path": "js/libraries"
+    },
+    "scss": {
+      "allow": true,
+      "path": "scss/libraries"
+    },
+    "eot": {
+      "allow": true,
+      "path": "fonts"
+    },
+    "svg": {
+      "allow": true,
+      "path": "fonts"
+    },
+    "ttf": {
+      "allow": true,
+      "path": "fonts"
+    },
+    "woff": {
+      "allow": true,
+      "path": "fonts"
+    },
+    "map": {
+      "allow": false,
+      "path": "map"
+    }
+  },
+  "libraries": {
+    "bootstrap": {
+      "files": {
+        "js": [
+          "js/dist/**/*.js"
+        ],
+        "scss": [
+          "scss/**/*.scss"
+        ]
+      },
+      "types": {
+        "js": true,
+        "scss": true,
+        "css": false,
+        "eot": true,
+        "svg": true,
+        "ttf": true,
+        "woff": true,
+        "map": false
+      },
+      "destinationm": {
+        "scss": "libraries/scss",
+        "js": "libraries/js"
+      }
+    },
+    "hamburgerss": {
+      "files": {
+        "scss": [
+          "_sass/hamburgers/**/*.scss"
+        ]
+      },
+      "types": {
+        "js": false,
+        "scss": false,
+        "css": false,
+        "eot": false,
+        "svg": false,
+        "ttf": false,
+        "woff": false,
+        "map": false
+      }
+    },
+    "hamburgers": {
+      "files": "",
+      "types": {
+        "css": false,
+        "js": false,
+        "scss": false,
+        "eot": false,
+        "svg": false,
+        "ttf": false,
+        "woff": false,
+        "map": false
+      }
+    }
+  }
+}

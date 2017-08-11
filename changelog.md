@@ -2,16 +2,22 @@ _Gulp for Drupal Changelog version 2.6.0 2017-05-23_
 
 
 #### included Gulp files:
-    - gulpfile.js       (3.3.0) (2017-05-23)
-    - gulpconfig.json   (2.11.0)(2017-05-19)
-    - package.json      (2.10.0)(2017-05-23)
-    - bower.json        (1.2.0) (2016-09-19)
-    - .npmrc            (1.0.0) (2016-03-08)
-    - .bowerrc          (1.0.0) (2016-09-05)
+    - gulpfile.js       (4.0.0) (2017-08-11)
+    - gulpconfig.json   (4.0.0) (2017-08-11)
+    - package.json      (4.0.0) (2017-08-11)
+    - libraries.json    (1.0.0) (2017-08-11)
     - .sass-lint.yml    (1.0.1) (2016-06-24)
     - .eslintrc         (1.1.0) (2016-07-01)
-    - .gitignore        (1.3.0) (2016-09-19)
-    - README.md         (1.9.0) (2017-05-19)
+
+    
+#### 2017-08-11 - Complete Update (V4)
+    - Removed Bower (in favor of Yarn)
+    - Added Yarn Libraries feature, with libraries.json config file
+    - Rewrite to Gulp 4
+    - Watch tasks configurable from config (add tasks to certain file types)
+    - Brought back Image Optimize (when watched, images removed from source will also be removed from destination)
+    - Added CSS stats task
+    
     
 #### 2017-05-23 - updated browsersync and uglifyjs
     - Updated Browsersync to 2.18.12

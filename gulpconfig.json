@@ -1,25 +1,37 @@
 {
-  "version": "2.10.0",
-  "versiondate": "2016-09-19",
-  "gulpfileversion": "3.2.0",
+  "version": "4.0.0",
+  "versiondate": "2017-08-11",
+  "gulpVersion": "4.0.0",
   "general" : {
-    "projectpath" : "example.dev/",
-    "logopath" : "images/logos/logo.png",
-    "themeroot" : "./"
+    "projectpath" : "develop.dev:94",
+    "logopath" : "images/logos/logo.png"
   },
   "locations" : {
-    "src" : {
-      "scsspath" : "scss/",
-      "jspath" : "js/",
-      "imagespath" : "images/0_src/",
-      "fontspath" : "fonts/",
-      "iconspath" : "fonts/iconfonts/",
-      "templatepath" : "/template/",
-      "functionspath" : "/functions/"
+    "styles" : {
+      "src": "scss/",
+      "dist": "css/",
+      "libaries": "scss/libraries"
     },
-    "dist" : {
-      "csspath" : "css/",
-      "jspath" : "js/"
+    "javascript" : {
+      "src": "js/",
+      "dist": "js/",
+      "libaries": "js/libraries/"
+    },
+    "icons" : {
+      "src": "fonts/iconfonts/"
+    },
+    "fonts" : {
+      "src": "fonts/"
+    },
+    "images" : {
+      "src": "images/0_src/",
+      "dist": "images/"
+    },
+    "php" : {
+      "src": ["template/", "functions/"]
+    },
+    "yaml" : {
+      "src": "./"
     }
   },
   "css" : {
@@ -30,9 +42,8 @@
     "exclude" : [
       "**/*"
     ],
-    "specificitygraphlocation" : "specificity-graph",
     "sourcemaps" : {
-      "sourcemaps" :  true,
+      "generate" :  true,
       "location" : "/",
       "loadmaps" : false,
       "identitymap" : false,
@@ -45,19 +56,11 @@
     },
     "linter" : {
       "config" : ".sass-lint.yml"
-    },
-    "parker" : {
-      "log" : true,
-      "logname" : "parker_css_report"
     }
   },
   "js" : {
-    "jspluginspath" : "js/plugins/",
-    "eslint" : {
-      "configlocation" : ".eslintrc"
-    },
     "sourcemaps" : {
-      "sourcemaps" : true,
+      "generate" : true,
       "location" : "",
       "loadmaps" : false,
       "identitymap" : false,
@@ -71,53 +74,84 @@
     "minify" : false,
     "gzip" : false,
     "bootstrap" : {
-      "alertjs": false,
-      "buttonjs": false,
-      "carouseljs": false,
-      "collapsejs": false,
-      "dropdownjs": false,
-      "modaljs": false,
-      "popoverjs": false,
-      "scrollspyjs": false,
-      "tabjs": false,
-      "tooltipjs": false
+      "alert": true,
+      "button": false,
+      "carousel": false,
+      "collapse": false,
+      "dropdown": false,
+      "modal": false,
+      "popover": false,
+      "scrollspy": true,
+      "tab": false,
+      "tooltip": true
     },
     "modernizr" : {
       "alwaysinclude" : ["setClasses","addTest","html5printshiv","testProp","fnBind"],
       "alwaysexclude" : [""]
     }
   },
-  "libraries" : {
-    "path" : {
-      "js" : "js/libraries",
-      "scss" : "scss/libraries"
+  "images" : {
+    "gif" : {
+      "interlaced" : true,
+      "optimizationlevel" : 3
     },
-    "bower" : {
-      "path" : "bower_components",
-      "interactive" : true,
-      "verbosity" : 2
+    "jpeg" : {
+      "progressive" : true,
+      "max" : 80
+    },
+    "png" : {
+      "floyd" : 0.5,
+      "nofs" : false,
+      "quality" : 100,
+      "speed" : 3,
+      "verbose" : false
+    },
+    "webp" : {
+      "use" : true,
+      "preset" : "default",
+      "quality" : 75,
+      "alphaQuality" : 100,
+      "method" : 4,
+      "sns" : 80,
+      "lossless" : false
     }
   },
-  "taskconfig" : {
-    "watchtasks" : ["jslibs"],
-    "watch" : {
-      "lintscss" : true,
-      "javascript" : true
+  "watch" : {
+    "styles" : {
+      "use" : true,
+      "extensions": ["scss", "sass"],
+      "tasks" : ["styles", "lint"]
+    },
+    "icons" : {
+      "use": true,
+      "extensions": ["eot", "woff", "ttf", "svg"]
+    },
+    "fonts" : {
+      "use": true,
+      "extensions": ["eot", "woff", "ttf", "svg"]
+    },
+    "images" : {
+      "use": true,
+      "extensions": ["jpg", "jpeg", "png", "svg", "gif", "webp"],
+      "tasks": ["sizereport"]
+    },
+    "javascript" : {
+      "use": true,
+      "extensions": ["js", "json"]
+    },
+    "php" : {
+      "use": true,
+      "extensions": ["php", "phtml"]
+    },
+    "yaml" : {
+      "use": true,
+      "extensions": ["yml"]
     }
   },
   "browsersync" : {
     "open" : false,
     "loglevel" : "info",
-    "logfilechanges" : false,
-    "watch" : {
-      "icons" : true,
-      "fonts" : true,
-      "images" : true,
-      "javascript" : true,
-      "phpfunctions" : true,
-      "template" : true,
-      "yaml" : true
-    }
+    "logfilechanges" : false
   },
   "share" : {
     "open" : false,
@@ -128,21 +162,10 @@
   },
   "quality" : {
     "maxsize" : {
-      "maxsize" : "30000",
+      "general" : "30000",
       "css" : "10000",
       "js" : "10000",
       "images" : "15000"
-    }
-  },
-  "accessibility" : {
-    "pa11y" : {
-      "standard" : "WCAG2AA",
-      "failonerror" : true,
-      "showfailedonly" : true,
-      "reporter" : "console",
-      "htmlcs" : "http://squizlabs.github.io/HTML_CodeSniffer/build/HTMLCS.js",
-      "config" : null,
-      "timeout" : 30000
     }
   }
 }
