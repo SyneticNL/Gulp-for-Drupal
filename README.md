@@ -10,7 +10,7 @@
 - [Included files](#included-files)
 ___
 ## Features
-This gulp setup features a full Drupal Gulp workflow for proccesing your SCSS files, running browsersync, linting SCSS and JavaScript and several other tasks. This Gulp setup is made to work with Drupal (tested with Drupal 7 & 8) but can also be configured to work with any other project. The setup is fully configurable by customizing the settings in gulpconfig.json.
+This gulp setup features a full Drupal Gulp workflow for proccesing your SCSS files, running browsersync, linting SCSS and JavaScript and several other tasks. This Gulp setup is made to work with Drupal (tested with Drupal 7 & 8) but can also be configured to work with any other project. The setup is extremely customisable by editing the `gulpconfig.json`.
 
 ## Installation
 - Install [nodejs](https://nodejs.org/en/)
