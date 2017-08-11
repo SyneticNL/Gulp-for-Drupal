@@ -3,7 +3,7 @@
   "versiondate": "2017-08-11",
   "gulpVersion": "4.0.0",
   "general" : {
-    "projectpath" : "develop.dev:94",
+    "projectpath" : "example.dev",
     "logopath" : "images/logos/logo.png"
   },
   "locations" : {
@@ -132,8 +132,7 @@
     },
     "images" : {
       "use": true,
-      "extensions": ["jpg", "jpeg", "png", "svg", "gif", "webp"],
-      "tasks": ["sizereport"]
+      "extensions": ["jpg", "jpeg", "png", "svg", "gif", "webp"]
     },
     "javascript" : {
       "use": true,
@@ -142,6 +141,10 @@
     "php" : {
       "use": true,
       "extensions": ["php", "phtml"]
+    },
+    "twig" : {
+      "use": true,
+      "extensions": ["twig"]
     },
     "yaml" : {
       "use": true,

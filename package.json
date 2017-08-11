@@ -5,7 +5,7 @@
   "description": "Project with Gulp",
   "main": "gulpfile.js",
   "scripts": {
-    "postinstall": "gulp yarn && find node_modules/ -name '*.info' -type f -delete"
+    "postinstall": "gulp libraries && find node_modules/ -name '*.info' -type f -delete"
   },
   "keywords": [
     "Synetic",

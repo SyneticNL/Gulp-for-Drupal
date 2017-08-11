@@ -220,7 +220,7 @@ function share() {
 /*---------------------------------------------------------------------------------------------------*/
 
 /*Libraries------------------------------------------------------------------------------------------*/
-function yarn(cb) {
+function libaries(cb) {
   var package = require('./package.json');
   var libraryConfig = require('./libraries.json');
   var types = Object.keys(libraryConfig.types);
@@ -545,8 +545,8 @@ exports.bootstrap = bootstrap;
 bootstrap.description = 'Generate Bootstap JS';
 exports.watchFiles = watchFiles;
 watchFiles.description = 'Watch for file changing';
-exports.yarn = yarn;
-yarn.description = 'Get necessary library files';
+exports.libaries = libaries;
+libaries.description = 'Get necessary library files';
 exports.images = images;
 images.description = 'Optimize Images';
 exports.cssStats = cssStats;
@@ -575,6 +575,6 @@ gulp.task('bootstrap', bootstrap);
 gulp.task('js', js);
 gulp.task('watch--files-only', watchFiles);
 gulp.task('watch', watch);
-gulp.task('yarn', yarn);
+gulp.task('libaries', libaries);
 gulp.task('images', images);
 gulp.task('stats', cssStats);

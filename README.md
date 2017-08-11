@@ -24,23 +24,23 @@ This gulp setup features a full Drupal Gulp workflow for proccesing your SCSS fi
 |Task           |Function                                                   |
 |---------------|-----------------------------------------------------------|
 |default        |Run watch Task                                             |             
-|styles (sass)  |Compile SCSS                                               |
-|lint           |Lint SCSS                                                  |
-|parker         |Analyse your CSS files with parker                         |
-|serve          |Compile SCSS and serve files (without watching)            |
+|bootstrap      |Generate Bootstap JS                                       |
 |browsersync    |Serve files (with watching)                                |
-|share          |Browsersync Server without Synchronising                   |
-|modernizr      |Generate Modenizr.js file based on CSS and JS              |
-|sizereport     |Generate report of project size                            |
 |cd             |Check for Node Updates                                     |
 |cr             |Clear Gulp Cache (for images)                              |
-|bootstrap      |Generate Bootstap JS                                       |
-|js             |Generate JS files (Bootstrap and Modernizr)                |
-|watch--files-only|Watch for file changing                                  |
-|watch          |Compile SCSS and serve files (with watching)               |
-|yarn           |Get necessary library files                                |
 |images         |Optimize Images                                            |
+|js             |Generate JS files (Bootstrap and Modernizr)                |
+|libraries      |Get necessary library files                                |
+|lint           |Lint SCSS                                                  |
+|modernizr      |Generate Modenizr.js file based on CSS and JS              |
+|parker         |Analyse your CSS files with parker                         |
+|serve          |Compile SCSS and serve files (without watching)            |
+|share          |Browsersync Server without Synchronising                   |
+|sizereport     |Generate report of project size                            |
 |stats          |Statistics about your CSS                                  |
+|styles (sass)  |Compile SCSS                                               |
+|watch          |Compile SCSS and serve files (with watching)               |
+|watch--files-only|Watch for file changing                                  |
 
 ## Configuration
 The gulp setup is made to be fully configurable by changing the settings in `gulpconfig.json`. If you change settings while running a task (eg. gulp watch), make sure you restart the task for the changes to work.
@@ -101,8 +101,17 @@ The gulp setup is made to be fully configurable by changing the settings in `gul
 |**quality**    |                           |                                                                                                                                          |
 |_maxsize_      |**                         | General max size of files, used with gulp sizereport                                                                                     |
 
+To watch more files, add a group to `watch`, set use to true, and enter the extensions. Please make sure you also add a group of the same name to `locations` and configure at least a source.
+On file changes a Browsersync reload will be run by default, to add other tasks you can add `"tasks": []` with an array of tasks to any group.
+
+
 ### libaries.json
-After adding libaries with `yarn add` or `npm install --save`, a section will be added to the libraries.json file. after configuring which files you would like, run `gulp yarn` to copy the library files to their location.
+After adding libaries with `yarn add` or `npm install --save`, a section will be added to the libraries.json file. after configuring which files you would like, run `gulp libraries` to copy the library files to their location.
+You can configure the source files, file types and destination per library. To configure a library specific destination path, add the following to the library configuration and set a destination per filetype.
+` "destination": {
+   "scss": "scss/libaries",
+   "js": "js/libraries"
+ }`
 
 ### .sass-lint.yml
 The SASS / SCSS linter is configurable from a separate file, all the settings are described inside `.sass-lint.yml`.

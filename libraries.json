@@ -56,26 +56,9 @@
         "woff": true,
         "map": false
       },
-      "destinationm": {
-        "scss": "libraries/scss",
-        "js": "libraries/js"
-      }
-    },
-    "hamburgerss": {
-      "files": {
-        "scss": [
-          "_sass/hamburgers/**/*.scss"
-        ]
-      },
-      "types": {
-        "js": false,
-        "scss": false,
-        "css": false,
-        "eot": false,
-        "svg": false,
-        "ttf": false,
-        "woff": false,
-        "map": false
+      "destination": {
+        "scss": "scss/libaries",
+        "js": "js/libraries"
       }
     },
     "hamburgers": {
