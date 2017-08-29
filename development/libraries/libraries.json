@@ -1,0 +1,41 @@
+{
+  "name": "gulp-for-drupal_libraries",
+  "version": "1.0.0",
+  "versiondate": "2017-08-11",
+  "types": {
+    "css": {
+      "allow": true,
+      "path": "css/libraries"
+    },
+    "js": {
+      "allow": true,
+      "path": "js/libraries"
+    },
+    "scss": {
+      "allow": true,
+      "path": "scss/libraries"
+    },
+    "eot": {
+      "allow": true,
+      "path": "fonts"
+    },
+    "svg": {
+      "allow": true,
+      "path": "fonts"
+    },
+    "ttf": {
+      "allow": true,
+      "path": "fonts"
+    },
+    "woff": {
+      "allow": true,
+      "path": "fonts"
+    },
+    "map": {
+      "allow": false,
+      "path": "map"
+    }
+  },
+  "libraries": {
+  }
+}

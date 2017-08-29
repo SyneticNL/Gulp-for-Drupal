@@ -5,7 +5,8 @@ var
   gulp = require('gulp'),
   config = require('./gulpconfig.json'),
   fs = require('fs'),
-  path = require('path');
+  path = require('path'),
+  package = require('./package.json');
 
 var
   autoprefixer = require('gulp-autoprefixer'),  // Adds prefixes to css files
@@ -18,33 +19,31 @@ var
   filter = require('gulp-filter'), // Filter stream
   gulpif = require('gulp-if'), // Conditional tasks
   gzip = require('gulp-gzip'), // gZip CSS & JavaScript
-  modernizr = require('gulp-modernizr'), // Create custom modernizr file
+  modernizr = require('customizr'), // Create custom modernizr file
   nano = require('gulp-cssnano'), // Minifies css
-  notify = require("gulp-notify"), // Adds notifications to tasks
+  notify = require('gulp-notify'), // Adds notifications to tasks
   open = require('gulp-open'), // Opens url (from notification)
-  order = require("gulp-order"), // Order files in a stream, used for bootstrap js files
+  order = require('gulp-order'), // Order files in a stream, used for bootstrap js files
   Parker = require('parker'), // Parker stylesheet analysis
   plumber = require('gulp-plumber'), // Error Handling
   postcss = require('gulp-postcss'), // PostCSS support for Gulp
-  rename = require("gulp-rename"), // Rename files
+  rename = require('gulp-rename'), // Rename files
   sass = require('gulp-sass'), // Sass compiler
   sassLint = require('gulp-sass-lint'), // Lint SCSS for code consistency
   sizereport = require('gulp-sizereport'), // Create an sizereport for your project
-  shell = require('gulp-shell'), // Run Shellcommands (used for pagespeedsinsight)
   sourcemaps = require('gulp-sourcemaps'), // Creates sourcemaps in css files
   uglify = require('gulp-uglify'), // Minifies javascript
   bulkSass = require('gulp-sass-glob-import'), // Enables @import folder functionality in Sass
   through2 = require('through2'),
-  updater = require('jsonfile-updater'),
-  nodetree = require('nodetree'),
-  imagemin = require('gulp-imagemin'), //Optimize images
+  imagemin = require('imagemin'), //Optimize images
   imageminJpegoptim = require('imagemin-jpegoptim'), //jpegoptim plugin for imagemin
   imageminPngquant = require('imagemin-pngquant'), //PNGquant plugin for imagemin
   imageminWebp = require('imagemin-webp'), //Webp plugin for imagemin
+  imageminGifsicle = require('imagemin-gifsicle'),
+  imageminSvgo = require('imagemin-svgo'),
   clean = require('gulp-clean'),
   cssstats = require('cssstats');
 
-var reload = browserSync.reload;
 /*====================================================================================================
  =====================================================================================================*/
 
@@ -53,9 +52,9 @@ var reload = browserSync.reload;
 function styles() {
   var onError = function (err) {
     notify.onError({
-      title: "Error in Sass",
+      title: 'Error in Sass',
       message: "<%= error.message %>",
-      sound: "Beep"
+      sound: 'Beep'
     })(err);
     this.emit('end');
   };
@@ -92,7 +91,7 @@ function styles() {
     .pipe(gulpif(config.css.minify === true, bytediff.start()))
     .pipe(gulpif(config.css.minify === true, nano()))
     .pipe(gulpif(config.css.minify === true, rename(function (path) {
-      path.basename += ".min";
+      path.basename += '.min';
     })))
     .pipe(gulpif(config.css.minify === true, gulp.dest(config.locations.styles.dist)))
     .pipe(gulpif(config.css.minify === true, bytediff.stop()))
@@ -120,7 +119,7 @@ function styles() {
 }
 
 
-//SASSlinter validates your SASS
+//SASSlinter validates your SCSS
 function lint() {
   return gulp.src([config.locations.styles.src + '/' + '**/*.s+(a|c)ss', '!' + config.locations.styles.libraries + '/**/*'])
     .pipe(sassLint({
@@ -135,13 +134,13 @@ function lint() {
 function parker(cb) {
   metrics = require('./node_modules/parker/metrics/all');
   var parker = new Parker(metrics);
-  fs.readdir(config.locations.styles.dist, function(err, files) {
+  fs.readdir(config.locations.styles.dist, function (err, files) {
     if(err) {
-      console.error( "Could read the directory", err);
+      console.error('Could read the directory', err);
       process.exit(1);
     }
-    files.forEach( function(file, index) {
-      if (path.extname(file) === '.css'){
+    files.forEach( function (file, index) {
+      if (path.extname(file) === '.css') {
         fs.readFile('css/' + file, 'utf8', function (err,data) {
           if (err) {
             return console.log(err);
@@ -157,13 +156,13 @@ function parker(cb) {
 
 //Analyse CSS
 function cssStats() {
-  fs.readdir(config.locations.styles.dist, function(err, files) {
-    if(err) {
-      console.error( "Could read the directory", err);
+  fs.readdir(config.locations.styles.dist, function (err, files) {
+    if (err) {
+      console.error('Could read the directory', err);
       process.exit(1);
     }
-    files.forEach( function(file, index) {
-      if (path.extname(file) === '.css'){
+    files.forEach(function (file, index) {
+      if (path.extname(file) === '.css') {
         fs.readFile('css/' + file, 'utf8', function (err,data) {
           if (err) {
             return console.log(err);
@@ -184,7 +183,7 @@ function bs(mode) {
   return gulp.src('./', {read: false})
     .pipe(plumber())
     .pipe(notify({
-      title: "Browsersync Started",
+      title: 'Browsersync Started',
       message: 'Click to launch browser',
       onLast: true,
       wait: true,
@@ -200,7 +199,7 @@ function browsersync() {
     proxy: config.general.projectpath,
     logLevel: config.browsersync.loglevel,
     logFileChanges: config.browsersync.logfilechanges
-  }
+  };
   bs(settings);
 }
 
@@ -214,89 +213,18 @@ function share() {
     },
     port: config.share.port,
     proxy: config.general.projectpath
-  }
+  };
   bs(settings);
 }
-/*---------------------------------------------------------------------------------------------------*/
-
-/*Libraries------------------------------------------------------------------------------------------*/
-function libaries(cb) {
-  var package = require('./package.json');
-  var libraryConfig = require('./libraries.json');
-  var types = Object.keys(libraryConfig.types);
-  var dependencies = Object.keys(package.dependencies);
-  var doneCounter = 0;
-  function incDoneCounter() {
-    doneCounter += 1;
-    if (doneCounter >= types.length) {
-      done();
-    }
-  }
-  for (var i = 0; i < dependencies.length; ++i) {
-    var lib = dependencies[i];
-    for (var j = 0; j < types.length; ++j) {
-      var type = types[j];
-      var libDest = libraryConfig.types[type].path + '/' + lib;
-      var allowFileType;
-      var files = ['node_modules/' + lib + '/**/*.' + type];
-      if (libraryConfig.libraries[lib] !== undefined) {
-        var dest = libraryConfig.libraries[lib].destination;
-        if (dest !== undefined) {
-          if (dest[type] !== undefined) {
-            libDest = dest[type];
-          }
-        }
-        if (libraryConfig.libraries[lib].types[type] !== undefined && libraryConfig.libraries[lib].types[type] !== '') {
-          allowFileType = libraryConfig.libraries[lib].types[type];
-        } else {
-          allowFileType = libraryConfig.types[type].allow;
-        }
-        if (libraryConfig.libraries[lib].files !== undefined) {
-          if (libraryConfig.libraries[lib].files[type] !== undefined) {
-            var srcFiles = libraryConfig.libraries[lib].files[type];
-            files = [];
-            for (var k = 0; k < srcFiles.length; k++) {
-              files.push('node_modules/' + lib + '/' + srcFiles[k]);
-            }
-          }
-        }
-        if (allowFileType === true) {
-          gulp.src(files)
-            .pipe(filter(['**', '!**/Gruntfile.js', '!**/grunt/**', '!**/gulpfile.js', '!**/tests/**', '!**/bs-config.js', '!**/eyeglass-exports.js'], {restore: false}))
-            .pipe(gulp.dest(libDest))
-            .pipe(synchro(incDoneCounter));
-        }
-      } else {
-        var data = {
-          "files": "",
-          "types": {}
-        };
-        for (var l = 0; l < types.length; l++) {
-          var type = types[l];
-          data.types[type] = false;
-        }
-        updater('./libraries.json').add('libraries.' + lib, data);
-        nodetree('./node_modules/' + lib + '/', {
-          all: true,
-          directories: false,
-          prune: true,
-          noreport: false
-        });
-      }
-    }
-  }
-  cb();
-}
-
 
 // Bootstrap - generate bootstrap javascript file, also uglified
 function bootstrap() {
   var bootstrap = [config.locations.javascript.libraries + '/bootstrap/util.js'];
   for (var prop in config.js.bootstrap) {
-    if (config.js.bootstrap[prop]){
+    if (config.js.bootstrap[prop]) {
       var path = config.locations.javascript.libraries + '/bootstrap/' + prop + '.js';
       bootstrap.push(path);
-      if (prop === 'tooltip'){
+      if (prop === 'tooltip') {
         bootstrap.push(config.locations.javascript.libraries + '/tether/tether.js');
       }
     }
@@ -309,18 +237,18 @@ function bootstrap() {
       debug: config.js.sourcemaps.debug
     })))
     .pipe(order([
-      "**/*/util.js",
-      "**/*/alert.js",
-      "**/*/button.js",
-      "**/*/carousel.js",
-      "**/*/collapse.js",
-      "**/*/dropdown.js",
-      "**/*/modal.js",
-      "**/*/scrollspy.js",
-      "**/*/tab.js",
-      "**/*/tether.js",
-      "**/*/tooltip.js",
-      "**/*/popover.js"
+      '**/*/util.js',
+      '**/*/alert.js',
+      '**/*/button.js',
+      '**/*/carousel.js',
+      '**/*/collapse.js',
+      '**/*/dropdown.js',
+      '**/*/modal.js',
+      '**/*/scrollspy.js',
+      '**/*/tab.js',
+      '**/*/tether.js',
+      '**/*/tooltip.js',
+      '**/*/popover.js'
     ], {base: './'}))
     .pipe(concat('bootstrap.js'))
     .pipe(gulpif(config.js.sourcemaps.generate == true, sourcemaps.write(config.js.sourcemaps.location, {
@@ -336,45 +264,75 @@ function bootstrap() {
     })))
     .pipe(plumber.stop())
     .pipe(gulp.dest(config.locations.javascript.libraries))
-    .pipe(gulpif(config.js.minify == true, uglify()))
-    .pipe(gulpif(config.js.minify == true, rename(function (path) {
-      path.basename += ".min";
+    .pipe(gulpif(config.js.minify === true, uglify()))
+    .pipe(gulpif(config.js.minify === true, rename(function (path) {
+      path.basename += '.min';
     })))
-    .pipe(gulpif(config.js.minify == true, gulp.dest(config.locations.javascript.libraries)))
-    .pipe(gulpif(config.js.gzip == true, gzip()))
-    .pipe(gulpif(config.js.gzip == true, gulp.dest(config.locations.javascript.libraries)))
+    .pipe(gulpif(config.js.minify === true, gulp.dest(config.locations.javascript.libraries)))
+    .pipe(gulpif(config.js.gzip === true, gzip()))
+    .pipe(gulpif(config.js.gzip === true, gulp.dest(config.locations.javascript.libraries)));
 }
 
 //Modernizr - Create modernizr file from SCSS selectors and Javascript, Also uglified the file
-function generateModenizr(cb) {
-  gulp.src([config.locations.javascript.src + '**/*.js', config.locations.styles.src + '/**/*.s+(a|c)ss', '!' + config.locations.javascript.libraries + '**/*.js'])
-    .pipe(modernizr({
-      excludeTests: config.js.modernizr.alwaysexclude,
-      options: config.js.modernizr.alwaysinclude
-    }))
-    .pipe(gulp.dest(config.locations.javascript.libraries))
-    .pipe(gulpif(config.js.minify == true, uglify()))
-    .pipe(gulpif(config.js.minify == true, rename(function (path) {
-      path.basename += ".min";
-    })))
-    .pipe(gulpif(config.js.minify == true, gulp.dest(config.locations.javascript.libraries)))
-    .pipe(gulpif(config.js.gzip == true, gzip()))
-    .pipe(gulpif(config.js.gzip == true, gulp.dest(config.locations.javascript.libraries)));
-    cb();
+function generateModernizr(cb) {
+  var filename;
+  if (config.js.minify) {
+    filename = config.locations.javascript.libraries + 'modernizr.min.js';
+  } else {
+    filename = config.locations.javascript.libraries + 'modernizr.js';
+  }
+  modernizr({
+    cache: true,
+    devFile: false,
+    dest: filename,
+    options: [
+      'setClasses',
+      'addTest',
+      'html5printshiv',
+      'testProp',
+      'fnBind'
+    ],
+    uglify: config.js.minify,
+    tests: config.js.modernizr.include,
+    excludeTests: config.js.modernizr.exclude,
+    crawl: true,
+    useBuffers: false,
+    files: {
+      src: [config.locations.javascript.src + '**/*.js', config.locations.styles.src + '/**/*.s+(a|c)ss', '!' + config.locations.javascript.libraries + '**/*.js']
+    },
+    customTests: []
+  }, function () { });
+  cb();
 }
 /*---------------------------------------------------------------------------------------------------*/
-
 
 /*Images----------------------------------------------------------------------------------------------*/
 function images() {
   image(config.locations.images.src + '**/*');
 }
 //Image - Optimizes images (JPG, PNG, GIF and SVG)
-function image(path){
-  return gulp.src(path)
-    .pipe(bytediff.start())
-    .pipe(cache(imagemin([
-      imagemin.gifsicle({
+function image(path) {
+  var basePath = path.replace('**/*', '');
+  fs.readdir(basePath, (err, files) => {
+    files.forEach(file => {
+      if (fs.lstatSync(basePath + file).isDirectory()) {
+      optimizImage(basePath + file + '**/*', config.locations.images.dist + file);
+      if (config.images.webp.use) {
+          convertWebP(basePath + file + '**/*', config.locations.images.dist + file);
+        }
+      }
+    });
+    optimizImage(basePath + '*.*', config.locations.images.dist);
+    if (config.images.webp.use) {
+      convertWebP(basePath + '*.*', config.locations.images.dist);
+    }
+  });
+}
+var imageminZopfli = require('imagemin-zopfli');
+function optimizImage(path, dest) {
+  imagemin([path], dest, {
+    plugins: [
+      imageminGifsicle({
         interlaced: config.images.gif.interlaced,
         optimizationLevel: config.images.gif.optimizationlevel
       }),
@@ -389,43 +347,25 @@ function image(path){
         speed: config.images.png.speed,
         verbose: config.images.png.verbose
       }),
-      imagemin.svgo()
-    ])))
-    .pipe(bytediff.stop())
-    .pipe(sizereport({
-      gzip: false,
-      '*': {
-        'maxSize': config.quality.maxsize.images
-      },
-    }))
-    .pipe(gulp.dest(config.locations.images.dist))
-    .pipe(gulpif(config.images.webp.use == true, imagemin([
-      imageminWebp({
-        preset: config.images.webp.preset,
-        quality: config.images.webp.quality,
-        alphaQuality: config.images.webp.alphaQuality,
-        method: config.images.webp.method,
-        sns: config.images.webp.sns,
-        lossless: config.images.webp.lossless
-      })
-    ])))
-    .pipe(gulpif(config.images.webp.use == true, rename({
-      extname: ".webp"
-    })))
-    .pipe(gulpif(config.images.webp.use == true, gulp.dest(config.locations.images.dist)))
-    .pipe(notify({
-      title: 'Images Optimized',
-      message: 'Image Optimalisation Complete',
-      onLast: true,
-      wait: false
-    }));
+      imageminZopfli({more: true}),
+      imageminSvgo()
+    ]
+  });
+}
+
+function convertWebP(path, dest) {
+  imagemin([path], dest, {
+    plugins: [
+      imageminWebp({quality: 50})
+    ]
+  });
 }
 /*---------------------------------------------------------------------------------------------------*/
 
 /*Watch----------------------------------------------------------------------------------------------*/
 //Watch - Runs configurable tasks, watches for file changes and runs sass appropriately
 function watchFiles(cb) {
-  console.log("Watching Files");
+  console.log('Watching Files');
   for (var prop in config.watch) {
     console.log(prop);
     if (!config.watch.hasOwnProperty(prop)) continue;
@@ -510,12 +450,12 @@ notify.on('click', function (options) {
 
 function synchro(done) {
   return through2.obj(function (data, enc, cb) {
-      cb();
-    },
-    function (cb) {
-      cb();
-      done();
-    });
+    cb();
+  },
+  function (cb) {
+    cb();
+    done();
+  });
 }
 
 //Clear Gulp Cache
@@ -533,8 +473,8 @@ exports.browsersync = browsersync;
 browsersync.description = 'Synchronised browser testing';
 exports.share = share;
 share.description = 'Browsersync Server without Synchronising';
-exports.generateModenizr = generateModenizr;
-generateModenizr.description = 'Generate Modenizr.js file based on CSS and JS';
+exports.generateModernizr = generateModernizr;
+generateModernizr.description = 'Generate Modernizr.js file based on CSS and JS';
 exports.generateSizereport = generateSizereport;
 generateSizereport.description = 'Generate report of project size';
 exports.checkdependencies = checkdependencies;
@@ -545,8 +485,6 @@ exports.bootstrap = bootstrap;
 bootstrap.description = 'Generate Bootstap JS';
 exports.watchFiles = watchFiles;
 watchFiles.description = 'Watch for file changing';
-exports.libaries = libaries;
-libaries.description = 'Get necessary library files';
 exports.images = images;
 images.description = 'Optimize Images';
 exports.cssStats = cssStats;
@@ -554,7 +492,7 @@ cssStats.description = 'Statistics about your CSS';
 
 var serve = gulp.series(styles, bs);
 serve.description = 'Compile SCSS and serve files (without watching)';
-var js = gulp.parallel(bootstrap, generateModenizr);
+var js = gulp.parallel(bootstrap, generateModernizr);
 js.description = 'Generate JS files (Bootstrap and Modernizr)';
 var watch = gulp.series(styles, gulp.parallel(bs, watchFiles));
 watch.description = 'Compile SCSS and serve files (with watching)';
@@ -567,7 +505,7 @@ gulp.task('parker', parker);
 gulp.task('serve', serve);
 gulp.task('browsersync', browsersync);
 gulp.task('share', share);
-gulp.task('modenizr', generateModenizr);
+gulp.task('modernizr', generateModernizr);
 gulp.task('sizereport', generateSizereport);
 gulp.task('cd', checkdependencies);
 gulp.task('cr', cacheClear);
@@ -575,6 +513,5 @@ gulp.task('bootstrap', bootstrap);
 gulp.task('js', js);
 gulp.task('watch--files-only', watchFiles);
 gulp.task('watch', watch);
-gulp.task('libaries', libaries);
 gulp.task('images', images);
 gulp.task('stats', cssStats);

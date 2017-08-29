@@ -10,12 +10,12 @@
     "styles" : {
       "src": "scss/",
       "dist": "css/",
-      "libaries": "scss/libraries"
+      "libraries": "scss/libraries/"
     },
     "javascript" : {
       "src": "js/",
       "dist": "js/",
-      "libaries": "js/libraries/"
+      "libraries": "js/libraries/"
     },
     "icons" : {
       "src": "fonts/iconfonts/"
@@ -86,8 +86,8 @@
       "tooltip": true
     },
     "modernizr" : {
-      "alwaysinclude" : ["setClasses","addTest","html5printshiv","testProp","fnBind"],
-      "alwaysexclude" : [""]
+      "include" : [],
+      "exclude" : []
     }
   },
   "images" : {

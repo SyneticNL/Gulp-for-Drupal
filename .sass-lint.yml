@@ -46,7 +46,7 @@ rules:
   # https://github.com/sasstools/sass-lint/blob/master/docs/rules/border-zero.md
     - 0
     -
-      convention: '0'
+      convention: 'none'
 #---------------------------------------------------------------
   brace-style:
   # Options:

@@ -84,8 +84,8 @@ The gulp setup is made to be fully configurable by changing the settings in `gul
 |               |minify                     | Minify JavaScript, this removes comments, linebreaks and spaces                                                                          |
 |               |gzip                       | Compress JavaScript using Gzip                                                                                                           |
 |_bootstrap_    |**                         | True or false if you want to include these in your bootstrap.js file                                                                     |
-|_modernizr_    |alwaysinclude              | Which tests do you always want to include in modernizr (The default test are nessecary for modernizr to work correctly)                  |
-|_modernizr_    |alwaysexclude              | Exclude tests from your modernizr file, useful if you use the same classes                                                               |
+|_modernizr_    |include                    | Which tests do you always want to include in modernizr (The default test are nessecary for modernizr to work correctly)                  |
+|_modernizr_    |exclude                    | Exclude tests from your modernizr file, useful if you use the same classes                                                               |
 |**images**     |**                         | Image optimize configuration                                                                                                             |
 |**watch**      |**                         | Configure types to watch, you can turn sections on and of, configure extensions to watch and which tasks to run                          |
 |**browsersync**|                           |                                                                                                                                          |
