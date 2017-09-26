@@ -1,4 +1,8 @@
 # Gulp for Drupal
+<!-- START doctoc generated TOC please keep comment here to allow auto update -->
+<!-- DON'T EDIT THIS SECTION, INSTEAD RE-RUN doctoc TO UPDATE -->
+**Table of Contents**  *generated with [DocToc](https://github.com/thlorenz/doctoc)*
+
 - [Features](#features)
 - [Installation](#installation)
 - [Tasks](#tasks)
@@ -6,9 +10,15 @@
   - [Gulpconfig.json](#gulpconfigjson)
   - [libaries.json](#libariesjson)
   - [.sass-lint.yml](#sass-lintyml)
-- [Sass Import](#sass-import)
+- [SCSS/Sass Import](#scsssass-import)
+- [Local Configuration](#local-configuration)
+- [Watch](#watch)
+- [Libraries](#libraries)
+  - [Examples](#examples)
 - [Included files](#included-files)
-___
+
+<!-- END doctoc generated TOC please keep comment here to allow auto update -->
+
 ## Features
 This gulp setup features a full Drupal Gulp workflow for proccesing your SCSS files, running browsersync, linting SCSS and JavaScript and several other tasks. This Gulp setup is made to work with Drupal (tested with Drupal 7 & 8) but can also be configured to work with any other project. The setup is extremely customisable by editing the `gulpconfig.json`.
 
@@ -48,16 +58,18 @@ The gulp setup is made to be fully configurable by changing the settings in `gul
  
 |               |Setting                    | Explanation                                                                                                                              |
 |---------------|---------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+|               |allowLocalOverride         | Choose whether or not to allow a global configuration file to override the project config file                                           |
 |**General**    |                           |                                                                                                                                          |
 |               |projectpath                | Project folder root                                                                                                                      |
 |               |logopath                   | Site logo - optional                                                                                                                     |
 |**locations**  |**                         | Configure Source, destination and library destination for your files                                                                     |
-|**css**        |                           |                                                                                                                                          |
+|**styles**     |                           |                                                                                                                                          |
 |               |browsersupport             | Which browsers to support with autoprefixer                                                                                              |
 |               |minify                     | Want to minify your CSS?                                                                                                                 |
 |               |gzip                       | Compress your CSS files using Gzip.                                                                                                      |
 |               |compass                    | Allow use of compass functions?                                                                                                          |
-|               |exclude                    | Exclude SCSS / SASS files from stream, ATTENTION: always have "**/*" as a first item in your array                                       |
+|               |compass                    | Allow use of compass functions?                                                                                                          |
+|               |exclude                    | Exclude SCSS / SASS files from stream                                                                                                    |
 |_sourcemaps_   |sourcemaps                 | Want CSS sourcemaps?                                                                                                                     |      
 |_sourcemaps_   |location                   | Where to put sourcemaps (keep empty to place inline)                                                                                     |
 |_sourcemaps_   |loadmaps                   | Load existing sourcemaps                                                                                                                 |
@@ -116,12 +128,89 @@ You can configure the source files, file types and destination per library. To c
 ### .sass-lint.yml
 The SASS / SCSS linter is configurable from a separate file, all the settings are described inside `.sass-lint.yml`.
 
-## Sass Import
+## SCSS/Sass Import
 You can import sass files with a wildcard. Use the following setup: 
 `@import "folder/**";`
 
 For second layer of folders use the following:
 `@import "folder/**/*";`
+
+## Local Configuration
+It is posible to override the gulpconfig locally. If override is allowed (in `gulpconfig.json`), you can create a new `gulpconfig.local.json` file. In this you can add any setting from the gulpconfig. 
+
+Example: 
+```json
+{ 
+   "locations": {
+     "styles": {
+       "dist": "myowncssfolder/"
+     }
+   }
+ }
+ ``` 
+ 
+## Watch
+Like every part of Gulp-for-Drupal, the watch task is fully configurable. You can simply add or remove filegroups yourself. for each group, you can configure which file extensions should be watched and which tasks should be run. By default browsersync is run for all groups. Each group should also have at least the src configured under locations.
+
+Example 
+```
+"watch" : {
+  "styles" : { // Group name
+    "use" : true, //Choose wheter or not to watch this group (especially handy while using a local config file)
+    "extensions": ["scss", "sass"], // an array of extensions to watch
+    "tasks" : ["styles", "lint"] // an array of gulp tasks to perform (Optional)
+  }
+}
+``` 
+## Libraries
+The libraries task can be used to extract all neccessary files from libraries installed with Bower, NPM or Yarn. When running this task will look for any dependency configured in bower.json or package.json (bassed on your settings) and add these to libraries.json. For each library you can configure which files you want to copy, this can either be done by file type or as an single directory/file string (see examples). You have to set all file types you which to copy to true. By default each file will be copied to the path configured per file type and per library (eg css files go under css/libraries/bootstrap). You can specify different destinations per library (see examples).
+It is possible to flatten the output so all files will be copied without the original folderstructure. To use this, the global setting can be used. This setting can be overwritten for each of the libraries (see examples).
+### Examples
+```json
+  "bootstrap": {
+      "files": {
+        "js": [
+          "js/dist/**/*.js"
+        ],
+        "scss": [
+          "scss/**/*.scss"
+        ]
+      },
+      "types": {
+        "js": true,
+        "scss": true,
+        "css": false,
+        "eot": true,
+        "svg": true,
+        "ttf": true,
+        "woff": true,
+        "map": false
+      },
+      "destination": {
+        "scss": "libraries/scss",
+        "js": "libraries/js"
+      }
+    }
+```
+
+```json
+    "bootstrap": {
+      "files": "dist/**/*",
+      "flatten": true,
+      "types": {
+        "css": false,
+        "js": true,
+        "scss": true,
+        "eot": false,
+        "svg": false,
+        "ttf": false,
+        "woff": false,
+        "map": false
+      }
+      "destination": "my-bootstrap"
+    }
+```
+
 
 ## Included files
 * gulpfile.js

@@ -2,13 +2,25 @@ _Gulp for Drupal Changelog version 2.6.0 2017-05-23_
 
 
 #### included Gulp files:
-    - gulpfile.js       (4.0.0) (2017-08-11)
-    - gulpconfig.json   (4.0.0) (2017-08-11)
-    - package.json      (4.0.0) (2017-08-11)
-    - libraries.json    (1.0.0) (2017-08-11)
+    - gulpfile.js       (4.1.0) (2017-09-26)
+    - gulpconfig.json   (4.0.0) (2017-09-26)
+    - package.json      (4.0.0) (2017-09-26)
+    - libraries.json    (1.0.0) (2017-09-26)
     - .sass-lint.yml    (1.0.1) (2016-06-24)
-    - .eslintrc         (1.1.0) (2016-07-01)
+    - bower.json        (1.4.0) (2016-09-26)
 
+#### 2017-08-11 - Added Libraries task, Normalize, localconfig
+    - Added task to extract alle necessary library files from bower_components and node_modules
+    - Added option to include normalize.css based on browsersupport
+    - Changed default browsersupport
+    - Added option to disable sounds (default disabled)
+    - Added Twig to locations (It's Drupal after all)
+    - Added option to locally overwrite the configuration
+    - Replaced Gulp notify with notifier
+    - Improved log messages (with color)
+    - Added option to configure bootstrap version so popper.js is used for >4.0.0-beta
+    - Readded Bower, Yarn / NPM does not install peerdependencies.
+    
     
 #### 2017-08-11 - Complete Update (V4)
     - Removed Bower (in favor of Yarn)

@@ -1,0 +1,89 @@
+{
+  "name": "gulp-for-drupal_libraries",
+  "version": "1.0.0",
+  "versiondate": "2017-08-11",
+  "dependency-manager": "bower",
+  "flatten": true,
+  "types": {
+    "css": {
+      "allow": true,
+      "path": "css/libraries"
+    },
+    "js": {
+      "allow": true,
+      "path": "js/libraries"
+    },
+    "scss": {
+      "allow": true,
+      "path": "scss/libraries"
+    },
+    "eot": {
+      "allow": true,
+      "path": "fonts"
+    },
+    "svg": {
+      "allow": true,
+      "path": "fonts"
+    },
+    "ttf": {
+      "allow": true,
+      "path": "fonts"
+    },
+    "woff": {
+      "allow": true,
+      "path": "fonts"
+    },
+    "map": {
+      "allow": false,
+      "path": "map"
+    }
+  },
+  "libraries": {
+    "bootstrap": {
+      "filess": {
+        "js": [
+          "js/dist/**/*.js"
+        ],
+        "scss": [
+          "scss/**/*.scss"
+        ]
+      },
+      "files": "**/*",
+      "types": {
+        "css": false,
+        "js": true,
+        "scss": true,
+        "eot": false,
+        "svg": false,
+        "ttf": false,
+        "woff": false,
+        "map": false
+      },
+      "destination": "libraries/scss"
+    },
+    "normalize-css": {
+      "files": "",
+      "types": {
+        "css": false,
+        "js": false,
+        "scss": false,
+        "eot": false,
+        "svg": false,
+        "ttf": false,
+        "woff": false,
+        "map": false
+      }
+    },
+    "css-hamburgers": {
+      "files": "**/*",
+      "types": {
+        "js": false,
+        "eot": false,
+        "svg": false,
+        "ttf": false,
+        "woff": false,
+        "map": false
+      }
+    }
+  }
+}

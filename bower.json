@@ -1,0 +1,32 @@
+{
+  "name": "gulp-for-drupal",
+  "version": "1.4.0",
+  "versiondate": "2017-09-26",
+  "dependencies": {
+    "bootstrap": "4.0.0-beta",
+    "normalize-css": "normalize.css#7.0.0",
+    "css-hamburgers": "0.9.1"
+  },
+  "install": {
+    "sources": {
+      "bootstrap": [
+        "bower_components/bootstrap/js/dist/**",
+        "bower_components/bootstrap/scss/**"
+      ],
+      "css-hamburgers": [
+        "bower_components/css-hamburgers/_sass/hamburgers/**"
+      ]
+    },
+    "base": "",
+    "path": {
+      "js": "js/libraries/{name}",
+      "scss": "scss/libraries/{name}",
+      "css": "css/libraries/{name}",
+      "eot": "fonts/{name}",
+      "svg": "fonts/{name}",
+      "ttf": "fonts/{name}",
+      "woff": "fonts/name}",
+      "map": "sourcemaps/libraries/{name}"
+    }
+  }
+}

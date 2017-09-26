@@ -1,48 +1,87 @@
 /*==========================================================================
- Gulp for Drupal Gulpfile.js version 4.0.0 2017-08-11
+ Gulp for Drupal Gulpfile.js version 4.1.0 2017-09-26
  ===========================================================================*/
 var
   gulp = require('gulp'),
   config = require('./gulpconfig.json'),
   fs = require('fs'),
   path = require('path'),
-  package = require('./package.json');
+  _ = require('underscore-node');
+
+if (config.allowLocalOverride){
+  try {
+    var local = require('./gulpconfig.local.json');
+    var temp = createConfig(config, local);
+    config = temp;
+    console.log("Using Local Project Config");
+  } catch (e) {
+    if (e instanceof Error && e.code === "MODULE_NOT_FOUND")
+      console.log("Using Project Config");
+    else
+      throw e;
+  }
+}
+
+//Build the configuration by combining the project and local gulpconfig files
+function createConfig(config, local) {
+  var newConfig = {};
+  Object.keys(config).forEach(function(key) {
+    if (typeof config[key] === 'object') {
+      if (_.isEmpty(local[key])){
+        newConfig[key] = config[key];
+      } else {
+        newConfig[key] = createConfig(config[key], local[key]);
+      }
+    } else {
+      if (_.isEmpty(local[key])){
+        newConfig[key] = config[key];
+      } else {
+        newConfig[key] = local[key];
+      }
+    }
+  });
+  return newConfig;
+}
 
 var
   autoprefixer = require('gulp-autoprefixer'),  // Adds prefixes to css files
   browserSync = require('browser-sync').create(), // Run synchronized server
+  bulkSass = require('gulp-sass-glob-import'), // Enables @import folder functionality in Sass
   bytediff = require('gulp-bytediff'), // Size difference before and after alteration
-  cache = require('gulp-cache'), // Cache stream
-  checkDeps = require('gulp-check-deps'), // Check the dependencies
+  chalk = require('chalk'),
   compass = require('compass-importer'), // Add ability for compass mixins
   concat = require('gulp-concat'), // Concat files
+  clean = require('gulp-clean'),
+  cssstats = require('cssstats'),
   filter = require('gulp-filter'), // Filter stream
+  flatten = require('gulp-flatten'),
   gulpif = require('gulp-if'), // Conditional tasks
   gzip = require('gulp-gzip'), // gZip CSS & JavaScript
+  imagemin = require('imagemin'), //Optimize images
+  imageminGifsicle = require('imagemin-gifsicle'),
+  imageminJpegoptim = require('imagemin-jpegoptim'), //jpegoptim plugin for imagemin
+  imageminPngquant = require('imagemin-pngquant'), //PNGquant plugin for imagemin
+  imageminSvgo = require('imagemin-svgo'),
+  imageminWebp = require('imagemin-webp'), //Webp plugin for imagemin
+  jsonfile = require('jsonfile'),
+  log = require('fancy-log'),
   modernizr = require('customizr'), // Create custom modernizr file
   nano = require('gulp-cssnano'), // Minifies css
-  notify = require('gulp-notify'), // Adds notifications to tasks
-  open = require('gulp-open'), // Opens url (from notification)
+  notifier = require('node-notifier'), // Adds notifications to tasks
+  open = require('open'), // Opens url (from notification)
   order = require('gulp-order'), // Order files in a stream, used for bootstrap js files
   Parker = require('parker'), // Parker stylesheet analysis
   plumber = require('gulp-plumber'), // Error Handling
-  postcss = require('gulp-postcss'), // PostCSS support for Gulp
+  postcss = require('gulp-postcss'),
   rename = require('gulp-rename'), // Rename files
   sass = require('gulp-sass'), // Sass compiler
   sassLint = require('gulp-sass-lint'), // Lint SCSS for code consistency
   sizereport = require('gulp-sizereport'), // Create an sizereport for your project
   sourcemaps = require('gulp-sourcemaps'), // Creates sourcemaps in css files
-  uglify = require('gulp-uglify'), // Minifies javascript
-  bulkSass = require('gulp-sass-glob-import'), // Enables @import folder functionality in Sass
   through2 = require('through2'),
-  imagemin = require('imagemin'), //Optimize images
-  imageminJpegoptim = require('imagemin-jpegoptim'), //jpegoptim plugin for imagemin
-  imageminPngquant = require('imagemin-pngquant'), //PNGquant plugin for imagemin
-  imageminWebp = require('imagemin-webp'), //Webp plugin for imagemin
-  imageminGifsicle = require('imagemin-gifsicle'),
-  imageminSvgo = require('imagemin-svgo'),
-  clean = require('gulp-clean'),
-  cssstats = require('cssstats');
+  uglify = require('gulp-uglify'), // Minifies javascript
+  os = require('os'),
+  ifaces = os.networkInterfaces();
 
 /*====================================================================================================
  =====================================================================================================*/
@@ -51,54 +90,57 @@ var
 //SASS - Compile Sass, create sourcemaps, autoprefix and minify
 function styles() {
   var onError = function (err) {
-    notify.onError({
-      title: 'Error in Sass',
-      message: "<%= error.message %>",
-      sound: 'Beep'
-    })(err);
-    this.emit('end');
+    error(err, 'Styles')
   };
   var filter_sourcemaps = filter(['**/*', '!**/*.map'], {restore: true});
-  var filter_exclude = filter(config.css.exclude, {restore: false});
+  var excludeFiles = (config.styles.exclude).unshift('**/*');
+  var filter_exclude = filter(excludeFiles, {restore: false});
   return gulp.src([config.locations.styles.src + '/' + '**/*.s+(a|c)ss', '!' + config.locations.styles.libraries + '/**/*'])
     .pipe(filter_exclude)
     .pipe(bulkSass())
     .pipe(plumber({errorHandler: onError}))
-    .pipe(gulpif(config.css.sourcemaps.generate === true, sourcemaps.init({
-      loadMaps: config.css.sourcemaps.loadmaps,
-      identityMap: config.css.sourcemaps.identitymap,
-      debug: config.css.sourcemaps.debug
+    .pipe(gulpif(config.styles.sourcemaps.generate === true, sourcemaps.init({
+      loadMaps: config.styles.sourcemaps.loadmaps,
+      identityMap: config.styles.sourcemaps.identitymap,
+      debug: config.styles.sourcemaps.debug
     })))
-    .pipe(gulpif(config.css.compass !== true, sass()))
-    .pipe(gulpif(config.css.compass === true, sass({importer: compass}).on('error', sass.logError)))
+    .pipe(gulpif(config.styles.compass !== true, sass()))
+    .pipe(gulpif(config.styles.compass === true, sass({importer: compass}).on('error', sass.logError)))
     .pipe(autoprefixer({
-      browsers: config.css.browsersupport,
+      browsers: config.styles.browsersupport,
       cascade: false
     }))
-    .pipe(gulpif(config.css.sourcemaps.generate === true, sourcemaps.write(config.css.sourcemaps.location, {
-      addComment: config.css.sourcemaps.addcomment,
-      includeContent: config.css.sourcemaps.includeContent,
+    .pipe(postcss([
+      require('postcss-normalize')({
+        browsers: config.styles.browsersupport,
+        forceImport: config.styles.normalize.force,
+        allowDuplicates: config.styles.normalize.allowDuplicates
+      })
+    ]))
+    .pipe(gulpif(config.styles.sourcemaps.generate === true, sourcemaps.write(config.styles.sourcemaps.location, {
+      addComment: config.styles.sourcemaps.addcomment,
+      includeContent: config.styles.sourcemaps.includeContent,
       sourceRoot: function (file) {
         return '../'.repeat(file.relative.split('\\').length) + 'src';
       },
-      destPath: config.css.sourcemaps.destpath,
-      sourceMappingURLPrefix: config.css.sourcemaps.sourcemappingurlprefix,
-      debug: config.css.sourcemaps.debug,
-      charset: config.css.sourcemaps.charset
+      destPath: config.styles.sourcemaps.destpath,
+      sourceMappingURLPrefix: config.styles.sourcemaps.sourcemappingurlprefix,
+      debug: config.styles.sourcemaps.debug,
+      charset: config.styles.sourcemaps.charset
     })))
     .pipe(gulp.dest(config.locations.styles.dist))
     .pipe(filter_sourcemaps)
-    .pipe(gulpif(config.css.minify === true, bytediff.start()))
-    .pipe(gulpif(config.css.minify === true, nano()))
-    .pipe(gulpif(config.css.minify === true, rename(function (path) {
+    .pipe(gulpif(config.styles.minify === true, bytediff.start()))
+    .pipe(gulpif(config.styles.minify === true, nano()))
+    .pipe(gulpif(config.styles.minify === true, rename(function (path) {
       path.basename += '.min';
     })))
-    .pipe(gulpif(config.css.minify === true, gulp.dest(config.locations.styles.dist)))
-    .pipe(gulpif(config.css.minify === true, bytediff.stop()))
-    .pipe(gulpif(config.css.gzip === true, bytediff.start()))
-    .pipe(gulpif(config.css.gzip === true, gzip()))
-    .pipe(gulpif(config.css.gzip === true, gulp.dest(config.locations.styles.dist)))
-    .pipe(gulpif(config.css.gzip === true, bytediff.stop()))
+    .pipe(gulpif(config.styles.minify === true, gulp.dest(config.locations.styles.dist)))
+    .pipe(gulpif(config.styles.minify === true, bytediff.stop()))
+    .pipe(gulpif(config.styles.gzip === true, bytediff.start()))
+    .pipe(gulpif(config.styles.gzip === true, gzip()))
+    .pipe(gulpif(config.styles.gzip === true, gulp.dest(config.locations.styles.dist)))
+    .pipe(gulpif(config.styles.gzip === true, bytediff.stop()))
     .pipe(filter_sourcemaps.restore)
     .pipe(sizereport({
       gzip: true,
@@ -109,12 +151,6 @@ function styles() {
     .pipe(plumber.stop())
     .pipe(browserSync.stream())
     .pipe(plumber())
-    .pipe(notify({
-      title: 'Sass Compiled',
-      message: '<%= file.relative %>',
-      onLast: true,
-      wait: false
-    }))
     .pipe(plumber.stop());
 }
 
@@ -124,7 +160,7 @@ function lint() {
   return gulp.src([config.locations.styles.src + '/' + '**/*.s+(a|c)ss', '!' + config.locations.styles.libraries + '/**/*'])
     .pipe(sassLint({
       options: {},
-      config: config.css.linter.config
+      config: config.styles.linter.config
     }))
     .pipe(sassLint.format())
     .pipe(sassLint.failOnError())
@@ -141,11 +177,11 @@ function parker(cb) {
     }
     files.forEach( function (file, index) {
       if (path.extname(file) === '.css') {
-        fs.readFile('css/' + file, 'utf8', function (err,data) {
+        fs.readFile(config.locations.styles.dist + file, 'utf8', function (err,data) {
           if (err) {
-            return console.log(err);
+            return log(err);
           }
-          console.log('\n' + file);
+          log(file);
           console.log(parker.run(data));
         });
       }
@@ -163,11 +199,11 @@ function cssStats() {
     }
     files.forEach(function (file, index) {
       if (path.extname(file) === '.css') {
-        fs.readFile('css/' + file, 'utf8', function (err,data) {
+        fs.readFile(config.locations.styles.dist +  file, 'utf8', function (err,data) {
           if (err) {
-            return console.log(err);
+            return log(err);
           }
-          console.log('\n' + file);
+          log(file);
           console.log(cssstats(data));
         });
       }
@@ -177,20 +213,28 @@ function cssStats() {
 /*---------------------------------------------------------------------------------------------------*/
 
 /*Browsersync-----------------------------------------------------------------------------------------*/
-function bs(mode) {
-  browserSync.init(mode);
-
-  return gulp.src('./', {read: false})
-    .pipe(plumber())
-    .pipe(notify({
-      title: 'Browsersync Started',
-      message: 'Click to launch browser',
-      onLast: true,
-      wait: true,
-      icon: path.join(__dirname, config.general.logopath)
-    }))
-    .pipe(plumber.stop());
+function bs(mode, settings) {
+  browserSync.init(settings, function(err, bs){
+    var port = (bs.server._connectionKey).substr((bs.server._connectionKey).length - 4);
+    var title = "Browsersync started",
+        ip = 'localhost';
+    if (mode === 'share'){
+      title += " in share mode";
+      ip = getIP();
+    }
+    notifier.notify({
+      title: title,
+      message: 'on ' + ip + ':' + port + '\nClick to launch browser',
+      icon: path.join(__dirname, config.general.logopath),
+      sound: config.general.sound,
+      wait: true
+    });
+    notifier.on('click', function (notifierObject, options) {
+      open("http://" + ip + ":" + port);
+    });
+  });
 }
+
 
 function browsersync() {
   console.log(config.general.projectpath);
@@ -200,7 +244,7 @@ function browsersync() {
     logLevel: config.browsersync.loglevel,
     logFileChanges: config.browsersync.logfilechanges
   };
-  bs(settings);
+  bs('regular', settings);
 }
 
 function share() {
@@ -214,19 +258,23 @@ function share() {
     port: config.share.port,
     proxy: config.general.projectpath
   };
-  bs(settings);
+  bs('share', settings);
 }
 
 // Bootstrap - generate bootstrap javascript file, also uglified
 function bootstrap() {
   var bootstrap = [config.locations.javascript.libraries + '/bootstrap/util.js'];
-  for (var prop in config.js.bootstrap) {
-    if (config.js.bootstrap[prop]) {
+  for (var prop in config.js.bootstrap.files) {
+    if (config.js.bootstrap.files[prop]) {
       var path = config.locations.javascript.libraries + '/bootstrap/' + prop + '.js';
-      bootstrap.push(path);
       if (prop === 'tooltip') {
-        bootstrap.push(config.locations.javascript.libraries + '/tether/tether.js');
+        if (config.js.bootstrap.version === '4.0.0-beta'){
+          bootstrap.push(config.locations.javascript.libraries + '/popper.js/popper.js');
+        } else {
+          bootstrap.push(config.locations.javascript.libraries + '/tether/tether.js');
+        }
       }
+      bootstrap.push(path);
     }
   }
   return gulp.src(bootstrap)
@@ -236,20 +284,7 @@ function bootstrap() {
       identityMap: config.js.sourcemaps.identitymap,
       debug: config.js.sourcemaps.debug
     })))
-    .pipe(order([
-      '**/*/util.js',
-      '**/*/alert.js',
-      '**/*/button.js',
-      '**/*/carousel.js',
-      '**/*/collapse.js',
-      '**/*/dropdown.js',
-      '**/*/modal.js',
-      '**/*/scrollspy.js',
-      '**/*/tab.js',
-      '**/*/tether.js',
-      '**/*/tooltip.js',
-      '**/*/popover.js'
-    ], {base: './'}))
+    .pipe(order(bootstrap, {base: './'}))
     .pipe(concat('bootstrap.js'))
     .pipe(gulpif(config.js.sourcemaps.generate == true, sourcemaps.write(config.js.sourcemaps.location, {
       addComment: config.js.sourcemaps.addcomment,
@@ -316,20 +351,20 @@ function image(path) {
   fs.readdir(basePath, (err, files) => {
     files.forEach(file => {
       if (fs.lstatSync(basePath + file).isDirectory()) {
-      optimizImage(basePath + file + '**/*', config.locations.images.dist + file);
+      optimizeImage(basePath + file + '**/*', config.locations.images.dist + file);
       if (config.images.webp.use) {
           convertWebP(basePath + file + '**/*', config.locations.images.dist + file);
         }
       }
     });
-    optimizImage(basePath + '*.*', config.locations.images.dist);
+    optimizeImage(basePath + '*.*', config.locations.images.dist);
     if (config.images.webp.use) {
       convertWebP(basePath + '*.*', config.locations.images.dist);
     }
   });
 }
-var imageminZopfli = require('imagemin-zopfli');
-function optimizImage(path, dest) {
+
+function optimizeImage(path, dest) {
   imagemin([path], dest, {
     plugins: [
       imageminGifsicle({
@@ -347,7 +382,6 @@ function optimizImage(path, dest) {
         speed: config.images.png.speed,
         verbose: config.images.png.verbose
       }),
-      imageminZopfli({more: true}),
       imageminSvgo()
     ]
   });
@@ -427,10 +461,150 @@ function generateSizereport(cb) {
     }));
   cb();
 }
+/*---------------------------------------------------------------------------------------------------*/
 
-//heck your dependencies
-function checkdependencies() {
-  return gulp.src('package.json').pipe(checkDeps());
+/*Libraries------------------------------------------------------------------------------------------*/
+function libraries(cb) {
+  var libraryConfig = require('./libraries.json');
+  var mode = libraryConfig['dependency-manager'];
+  var libraryFlatten = libraryConfig.flatten;
+  var libaryPath;
+  var dependencies;
+  var types = Object.keys(libraryConfig.types);
+  var doneCounter = 0;
+  var ignoreList = ['**', '!**/Gruntfile.js', '!**/grunt/**', '!**/gulpfile.js', '!**/tests/**', '!**/bs-config.js', '!**/eyeglass-exports.js']
+
+  if (mode === 'bower') {
+    var bower = require('./bower.json');
+    libaryPath = 'bower_components';
+    dependencies = Object.keys(bower.dependencies);
+  } else {
+    var pkg = require('./package.json');
+    libaryPath = 'node_modules';
+    dependencies = Object.keys(pkg.dependencies);
+  }
+
+  function incDoneCounter() {
+    doneCounter += 1;
+    if (doneCounter >= types.length) {
+      done();
+    }
+  }
+
+  var addToLibConfig = libraryConfig.libraries;
+  dependencies.forEach(function (lib) {
+    types.forEach(function (type) {
+      var libDest = libraryConfig.types[type].path + '/' + lib;
+      var allowFileType;
+      var files = [libaryPath + '/' + lib + '/**/*.' + type];
+      if (libraryConfig.libraries[lib] !== undefined) {
+        if (libraryConfig.libraries[lib].destination !== undefined) {
+          if (typeof libraryConfig.libraries[lib].destination === 'string') {
+            libDest = libraryConfig.libraries[lib].destination
+          } else if (libraryConfig.libraries[lib].destination[type] !== undefined) {
+            libDest = libraryConfig.libraries[lib].destination[type];
+          }
+        }
+        if (libraryConfig.libraries[lib].types[type] !== undefined && libraryConfig.libraries[lib].types[type] !== '') {
+          allowFileType = libraryConfig.libraries[lib].types[type];
+        } else {
+          allowFileType = libraryConfig.types[type].allow;
+        }
+        if (libraryConfig.libraries[lib].files !== undefined) {
+          if (typeof libraryConfig.libraries[lib].files === 'object') {
+            if (libraryConfig.libraries[lib].files[type] !== undefined) {
+              var srcFiles = libraryConfig.libraries[lib].files[type];
+              files = [];
+              srcFiles.forEach(function (file) {
+                files.push(libaryPath + '/' + lib + '/' + file);
+              });
+            }
+          } else {
+            var re = /(?:\.([^.]+))?$/;
+            var ext = re.exec(libraryConfig.libraries[lib].files)[1];
+            var lastChar = (libraryConfig.libraries[lib].files).slice(-2);
+            var allowedTypes = [];
+            _.each( libraryConfig.libraries[lib].types, function( val, key ) {
+              if ( val ) {
+                allowedTypes.push(key);
+              }
+            });
+            if ( _.indexOf(Object.keys(allowedTypes), ext) !== -1 ){
+              files = [libaryPath + '/' + lib + '/' + libraryConfig.libraries[lib].files];
+            } else if (lastChar === '/*') {
+              files = [libaryPath + '/' + lib + '/' + libraryConfig.libraries[lib].files + '.' + type];
+            } else {
+              files = [libaryPath + '/' + lib + '/' + libraryConfig.libraries[lib].files + "/*." + type];
+            }
+          }
+        }
+        if (allowFileType === true) {
+          if (libraryConfig.libraries[lib].flatten){
+            libraryFlatten = libraryConfig.libraries[lib].flatten;
+          }
+          gulp.src(files)
+            .pipe(filter(ignoreList, {restore: false}))
+            .pipe(gulpif(libraryFlatten === true, flatten()))
+            .pipe(gulp.dest(libDest))
+            .pipe(synchro(incDoneCounter));
+        }
+      }
+    });
+
+    if (libraryConfig.libraries[lib] !== undefined) {
+    } else {
+      var data = {
+        files: '**/*',
+        types: {}
+      };
+
+      for (var l = 0; l < types.length; l++) {
+        data.types[types[l]] = false;
+      }
+      addToLibConfig[lib] = data;
+    }
+  });
+  var file = './libraries.json';
+  libraryConfig.libraries = addToLibConfig;
+  jsonfile.writeFile(file, libraryConfig, {spaces: 2}, function(err) {
+    if (err) {
+      log(chalk.red(err))
+    }
+  });
+  cb();
+}
+/*---------------------------------------------------------------------------------------------------*/
+
+/*Helper---------------------------------------------------------------------------------------------*/
+function error(err, task){
+  log(chalk.cyan(task + " Error") + " " + chalk.red(err.message));
+  var message;
+  if (err.relativePath) {
+    message = "Error in " + err.relativePath
+  } else {
+    message = err.message;
+  }
+  notifier.notify({
+    title: task + ' Error',
+    message: message,
+    icon: path.join(__dirname, config.general.logopath),
+    sound: true, // Only Notification Center or Windows Toasters
+    wait: true, // Wait with callback, until user action is taken against notification
+    type: 'error'
+  });
+}
+
+function getIP() {
+  var ip = [];
+  Object.keys(ifaces).forEach(function (ifname) {
+    ifaces[ifname].forEach(function (iface) {
+      if ('IPv4' !== iface.family || iface.internal !== false) {
+        return; // skip over internal (i.e. 127.0.0.1) and non-ipv4 addresses
+      }
+      ip.push(iface.address);
+    });
+  });
+  return ip[0];
 }
 
 function deleteFile(path) {
@@ -438,15 +612,6 @@ function deleteFile(path) {
   return gulp.src(path, {read: false})
     .pipe(clean());
 }
-/*---------------------------------------------------------------------------------------------------*/
-
-/*Helper---------------------------------------------------------------------------------------------*/
-//Helper class for notification actions
-notify.on('click', function (options) {
-    gulp.src(__filename)
-        .pipe(plumber())
-        .pipe(open({uri: 'http://localhost:3000'}));
-});
 
 function synchro(done) {
   return through2.obj(function (data, enc, cb) {
@@ -458,10 +623,6 @@ function synchro(done) {
   });
 }
 
-//Clear Gulp Cache
-function cacheClear(done) {
-  return cache.clearAll(done);
-}
 // /*---------------------------------------------------------------------------------------------------*/
 exports.styles = styles;
 styles.description = 'Compile SCSS';
@@ -477,10 +638,6 @@ exports.generateModernizr = generateModernizr;
 generateModernizr.description = 'Generate Modernizr.js file based on CSS and JS';
 exports.generateSizereport = generateSizereport;
 generateSizereport.description = 'Generate report of project size';
-exports.checkdependencies = checkdependencies;
-checkdependencies.description = 'Check for Node Updates';
-exports.cacheClear = cacheClear;
-cacheClear.description = 'Clear Gulp Cache (for images)';
 exports.bootstrap = bootstrap;
 bootstrap.description = 'Generate Bootstap JS';
 exports.watchFiles = watchFiles;
@@ -489,6 +646,8 @@ exports.images = images;
 images.description = 'Optimize Images';
 exports.cssStats = cssStats;
 cssStats.description = 'Statistics about your CSS';
+exports.libraries = libraries;
+libraries.description = 'Get necessary library files';
 
 var serve = gulp.series(styles, bs);
 serve.description = 'Compile SCSS and serve files (without watching)';
@@ -507,11 +666,10 @@ gulp.task('browsersync', browsersync);
 gulp.task('share', share);
 gulp.task('modernizr', generateModernizr);
 gulp.task('sizereport', generateSizereport);
-gulp.task('cd', checkdependencies);
-gulp.task('cr', cacheClear);
 gulp.task('bootstrap', bootstrap);
 gulp.task('js', js);
 gulp.task('watch--files-only', watchFiles);
 gulp.task('watch', watch);
 gulp.task('images', images);
 gulp.task('stats', cssStats);
+gulp.task('libraries', libraries);

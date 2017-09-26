@@ -1,10 +1,12 @@
 {
-  "version": "4.0.0",
-  "versiondate": "2017-08-11",
-  "gulpVersion": "4.0.0",
+  "version": "4.1.0",
+  "versiondate": "2017-09-26",
+  "gulpVersion": "4.1.0",
+  "allowLocalOverride": true,
   "general" : {
     "projectpath" : "example.dev",
-    "logopath" : "images/logos/logo.png"
+    "logopath" : "images/logos/logo.png",
+    "sound": false
   },
   "locations" : {
     "styles" : {
@@ -30,18 +32,23 @@
     "php" : {
       "src": ["template/", "functions/"]
     },
+    "twig" : {
+      "src": "templates/"
+    },
     "yaml" : {
       "src": "./"
     }
   },
-  "css" : {
-    "browsersupport": ["last 25 versions"],
+  "styles" : {
+    "browsersupport": ["> 1%", "last 2 versions", "IE 9"],
     "minify" : false,
     "gzip" :  false,
     "compass" :  false,
-    "exclude" : [
-      "**/*"
-    ],
+    "normalize" : {
+      "force" : false,
+      "allowDuplicates" : false
+    },
+    "exclude" : [],
     "sourcemaps" : {
       "generate" :  true,
       "location" : "/",
@@ -74,16 +81,19 @@
     "minify" : false,
     "gzip" : false,
     "bootstrap" : {
-      "alert": true,
-      "button": false,
-      "carousel": false,
-      "collapse": false,
-      "dropdown": false,
-      "modal": false,
-      "popover": false,
-      "scrollspy": true,
-      "tab": false,
-      "tooltip": true
+      "version": "4.0.0-beta",
+      "files": {
+        "alert": true,
+        "button": false,
+        "carousel": false,
+        "collapse": false,
+        "dropdown": false,
+        "modal": false,
+        "popover": false,
+        "scrollspy": true,
+        "tab": false,
+        "tooltip": true
+      }
     },
     "modernizr" : {
       "include" : [],
