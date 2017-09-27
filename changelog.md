@@ -9,7 +9,10 @@ _Gulp for Drupal Changelog version 2.6.0 2017-05-23_
     - .sass-lint.yml    (1.0.1) (2016-06-24)
     - bower.json        (1.4.0) (2016-09-26)
 
-#### 2017-08-11 - Added Libraries task, Normalize, localconfig
+#### 2017-09-27 - Bugfix
+    - Fixed bug in styles: exclude not working causing task to crash
+
+#### 2017-09-26 - Added Libraries task, Normalize, localconfig
     - Added task to extract alle necessary library files from bower_components and node_modules
     - Added option to include normalize.css based on browsersupport
     - Changed default browsersupport

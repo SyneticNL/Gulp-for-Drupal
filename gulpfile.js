@@ -1,5 +1,5 @@
 /*==========================================================================
- Gulp for Drupal Gulpfile.js version 4.1.0 2017-09-26
+ Gulp for Drupal Gulpfile.js version 4.1.1 2017-09-27
  ===========================================================================*/
 var
   gulp = require('gulp'),
@@ -93,7 +93,8 @@ function styles() {
     error(err, 'Styles')
   };
   var filter_sourcemaps = filter(['**/*', '!**/*.map'], {restore: true});
-  var excludeFiles = (config.styles.exclude).unshift('**/*');
+  var excludeFiles = config.styles.exclude;
+  excludeFiles.unshift('**/*');
   var filter_exclude = filter(excludeFiles, {restore: false});
   return gulp.src([config.locations.styles.src + '/' + '**/*.s+(a|c)ss', '!' + config.locations.styles.libraries + '/**/*'])
     .pipe(filter_exclude)
