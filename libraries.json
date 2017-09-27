@@ -40,14 +40,6 @@
   },
   "libraries": {
     "bootstrap": {
-      "filess": {
-        "js": [
-          "js/dist/**/*.js"
-        ],
-        "scss": [
-          "scss/**/*.scss"
-        ]
-      },
       "files": "**/*",
       "types": {
         "css": false,
@@ -58,11 +50,10 @@
         "ttf": false,
         "woff": false,
         "map": false
-      },
-      "destination": "libraries/scss"
+      }
     },
     "normalize-css": {
-      "files": "",
+      "files": "**/*",
       "types": {
         "css": false,
         "js": false,
