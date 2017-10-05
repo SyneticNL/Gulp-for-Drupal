@@ -5,9 +5,15 @@ _Gulp for Drupal Changelog version 2.6.0 2017-05-23_
     - gulpfile.js       (4.1.0) (2017-09-26)
     - gulpconfig.json   (4.0.0) (2017-09-26)
     - package.json      (4.0.0) (2017-09-26)
-    - libraries.json    (1.0.0) (2017-09-26)
+    - libraries.json    (1.0.1) (2017-10-05)
     - .sass-lint.yml    (1.0.1) (2016-06-24)
-    - bower.json        (1.4.0) (2016-09-26)
+    - bower.json        (1.4.1) (2016-10-05)
+
+#### 2017-10-05 - Updated Default Settings
+    - Removed normalize.css as default dependency, switch to bootstrap reboot (still posible to use normalize by running: bower install normalize.css --save)
+    - Set all bootstrap libraries to false
+    - Configured default bootstrap files
+    - set libraries flatten to false    
 
 #### 2017-09-27 - Bugfix
     - Fixed bug in styles: exclude not working causing task to crash

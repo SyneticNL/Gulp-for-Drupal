@@ -1,9 +1,9 @@
 {
   "name": "gulp-for-drupal_libraries",
-  "version": "1.0.0",
-  "versiondate": "2017-08-11",
+  "version": "1.0.1",
+  "versiondate": "2017-10-05",
   "dependency-manager": "bower",
-  "flatten": true,
+  "flatten": false,
   "types": {
     "css": {
       "allow": true,
@@ -40,7 +40,14 @@
   },
   "libraries": {
     "bootstrap": {
-      "files": "**/*",
+      "files": {
+        "js": [
+          "js/dist/**/*.js"
+        ],
+        "scss": [
+          "scss/**/*.scss"
+        ]
+      },
       "types": {
         "css": false,
         "js": true,
@@ -52,7 +59,7 @@
         "map": false
       }
     },
-    "normalize-css": {
+    "popper.js": {
       "files": "**/*",
       "types": {
         "css": false,

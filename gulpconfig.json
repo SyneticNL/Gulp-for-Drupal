@@ -45,6 +45,7 @@
     "gzip" :  false,
     "compass" :  false,
     "normalize" : {
+      "use" : true,
       "force" : false,
       "allowDuplicates" : false
     },
@@ -83,16 +84,16 @@
     "bootstrap" : {
       "version": "4.0.0-beta",
       "files": {
-        "alert": true,
+        "alert": false,
         "button": false,
         "carousel": false,
         "collapse": false,
         "dropdown": false,
         "modal": false,
         "popover": false,
-        "scrollspy": true,
+        "scrollspy": false,
         "tab": false,
-        "tooltip": true
+        "tooltip": false
       }
     },
     "modernizr" : {

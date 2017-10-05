@@ -206,11 +206,12 @@ It is possible to flatten the output so all files will be copied without the ori
         "ttf": false,
         "woff": false,
         "map": false
-      }
+      },
       "destination": "my-bootstrap"
     }
 ```
-
+## Normalize.css
+The Styles task can include normalize.css based on your browsersupport. To include this you need to enable normalize inside the ```gulpconfig.json``` and add ```@import-normalize;``` inside your scss file. 
 
 ## Included files
 * gulpfile.js

@@ -111,13 +111,13 @@ function styles() {
       browsers: config.styles.browsersupport,
       cascade: false
     }))
-    .pipe(postcss([
+    .pipe(gulpif(config.styles.normalize.use === true, postcss([
       require('postcss-normalize')({
         browsers: config.styles.browsersupport,
         forceImport: config.styles.normalize.force,
         allowDuplicates: config.styles.normalize.allowDuplicates
       })
-    ]))
+    ])))
     .pipe(gulpif(config.styles.sourcemaps.generate === true, sourcemaps.write(config.styles.sourcemaps.location, {
       addComment: config.styles.sourcemaps.addcomment,
       includeContent: config.styles.sourcemaps.includeContent,
